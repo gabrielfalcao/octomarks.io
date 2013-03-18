@@ -6,7 +6,10 @@ Steps
 
 Just put the business name and the location, just like yelp.  We could
 get the business from our database first, and then try to get from
-yelp if nothing was found in our db.
+yelp if nothing was found in our db. [SDS: And as a last resort, have the user
+enter it directly. Since our address info may be wrong for a lot of businesses
+I think we should also a note here saying something like "Don't worry if not 
+all of the information is correct -- you'll have a chance to update it later.]
 
 ## 2. Claim the profile
 

@@ -53,3 +53,6 @@ A bullet list with all the cool features she can enjoy from yipit
 * Preview your deal (with a pay button below that)
 
 * See the stats of your campaign
+
+
+[http://piratepad.net/SLcFmFfnJz](http://piratepad.net/SLcFmFfnJz)

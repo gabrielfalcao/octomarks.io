@@ -10,9 +10,14 @@ def create_bundles(app):
     Currently, we have just two bundles: `main_css` and `main_js`.
     """
     assets = Environment(app)
+    assets.url = app.static_url_path
+
     assets.register(
         'main_css',
-        Bundle('style.css'),
+        Bundle(
+            'screen.scss',
+            filters='compass,cssrewrite',
+            output='screen.css'),
         Bundle('components/bootstrap/css/bootstrap.css',
                'components/bootstrap/css/bootstrap-responsive.css'))
 

@@ -19,4 +19,7 @@ build.log
 .DS_Store
 
 .tox
+/merchants/static/.sass-cache
+/merchants/static/.webassets-cache
 /merchants/static/webassets-external
+/merchants/static/screen.css

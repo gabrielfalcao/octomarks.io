@@ -11,3 +11,8 @@ create_bundles(app)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/dashboard/competitors')
+def dashboard_competitors():
+    return render_template('dashboard/competitors.html')

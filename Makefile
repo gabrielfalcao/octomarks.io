@@ -24,3 +24,7 @@ deps:
 
 clean:
 	find . -name *.pyc -delete
+
+
+
+.PHONY: modules

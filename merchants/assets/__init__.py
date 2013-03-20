@@ -1,4 +1,5 @@
 from flask.ext.assets import Environment, Bundle, ManageAssets
+import yipit_static_assets
 
 
 __all__ = 'manager',
@@ -10,6 +11,9 @@ class AssetsManager(object):
         self.app = app
         self.env = Environment(app)
         self.env.url = app.static_url_path
+        self.env.load_path.append(self.env.get_directory())
+        self.env.load_path.append(yipit_static_assets.STATIC_ROOT)
+        self.env.set_directory(None)
 
     def create_bundles(self):
         """Create static bundles and bind them to the `app`
@@ -31,7 +35,11 @@ class AssetsManager(object):
 
         self.env.register(
             'main_js',
-            Bundle('components/bootstrap/js/bootstrap.js'))
+            Bundle('components/bootstrap/js/bootstrap.js'),
+
+            # Yipit specific stuff
+            Bundle('js/yipit/index.js'),
+        )
 
     def create_assets_command(self, manager):
         """Create the `assets` command in Flask-Script

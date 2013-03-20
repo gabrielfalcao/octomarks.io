@@ -23,3 +23,4 @@ build.log
 /merchants/static/.webassets-cache
 /merchants/static/webassets-external
 /merchants/static/css
+/modules/

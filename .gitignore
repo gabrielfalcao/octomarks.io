@@ -22,4 +22,4 @@ build.log
 /merchants/static/.sass-cache
 /merchants/static/.webassets-cache
 /merchants/static/webassets-external
-/merchants/static/screen.css
+/merchants/static/css

@@ -1,11 +1,11 @@
 from flask import Flask, render_template
-from flask.ext.assets import Environment, Bundle
+
+from merchants.bundles import create_bundles
 
 app = Flask(__name__)
-assets = Environment(app)
 
-assets.load_path.append(assets.get_directory())
-assets.register('css', Bundle('style.css'))
+# Loading our JS/CSS
+create_bundles(app)
 
 
 @app.route('/')

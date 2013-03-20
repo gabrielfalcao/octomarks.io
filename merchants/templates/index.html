@@ -10,8 +10,9 @@
         <meta name="description" content="Yipit Merchant is an analytics dashboard that will help Merchants get new clients and be informed about their competitors.">
         <meta name="author" content="Yipit's SaMBa">
 
-        <link href="../static/components/bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="../static/components/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        {% assets "main_css" %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}" type="text/css">
+        {% endassets %}
         <link rel="shortcut icon" href="/favicon.png">
     </head>
 
@@ -87,7 +88,9 @@
 
         </div>
 
+        {% assets "main_js" %}
+        <script src="{{ ASSET_URL }}"></script>
+        {% endassets %}
     </body>
 
 </html>
-

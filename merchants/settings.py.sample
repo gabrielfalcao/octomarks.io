@@ -1,1 +1,14 @@
-COMPASS_CONFIG=".compass.conf.rb"
+COMPASS_CONFIG = dict(
+    http_path="/",
+    css_dir="static/css",
+    sass_dir="static/sass",
+    images_dir="static/img",
+    javascripts_dir="static/js",
+    generated_images_dir="static/",
+    additional_import_paths=[
+        "../../modules/yipit-static-assets/yipit_static_assets/static/sass",
+    ],
+    output_style='nested',
+    relative_assets=True,
+    line_comments=False,
+)

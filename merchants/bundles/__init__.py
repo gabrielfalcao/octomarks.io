@@ -14,12 +14,11 @@ def create_bundles(app):
 
     assets.register(
         'main_css',
-        Bundle(
-            'sass/screen.scss',
-            filters='compass,cssrewrite',
-            output='css/screen.css'),
+        Bundle('sass/reset.scss', output='css/reset.css', filters='compass,cssrewrite'),
         Bundle('components/bootstrap/css/bootstrap.css',
-               'components/bootstrap/css/bootstrap-responsive.css'))
+               'components/bootstrap/css/bootstrap-responsive.css'),
+        Bundle('sass/screen.scss', output='css/screen.css', filters='compass,cssrewrite')
+    )
 
     assets.register(
         'main_js',

@@ -19,6 +19,7 @@ build.log
 .DS_Store
 
 .tox
+/merchants/settings.py
 /merchants/static/.sass-cache
 /merchants/static/.webassets-cache
 /merchants/static/webassets-external

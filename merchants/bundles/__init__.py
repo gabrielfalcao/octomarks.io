@@ -15,9 +15,9 @@ def create_bundles(app):
     assets.register(
         'main_css',
         Bundle(
-            'screen.scss',
+            'sass/screen.scss',
             filters='compass,cssrewrite',
-            output='screen.css'),
+            output='css/screen.css'),
         Bundle('components/bootstrap/css/bootstrap.css',
                'components/bootstrap/css/bootstrap-responsive.css'))
 

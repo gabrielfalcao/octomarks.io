@@ -13,3 +13,7 @@ setup_modules:
 
 setup_python_requirements:
 	@pip install -r requirements.txt
+
+
+clean:
+	find . -name *.pyc -delete

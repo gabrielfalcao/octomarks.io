@@ -1,11 +1,18 @@
 from flask import Flask, render_template
+from flask.ext.script import Manager
 
-from merchants.bundles import create_bundles
+from merchants.assets import AssetsManager
 
 app = Flask(__name__)
 
 # Loading our JS/CSS
-create_bundles(app)
+assets = AssetsManager(app)
+assets.create_bundles()
+
+# Setting up our commands
+commands = Manager(app)
+assets.create_assets_command(commands)
+
 
 @app.route('/')
 def index():

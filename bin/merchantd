@@ -5,13 +5,10 @@ import sys
 
 # This command won't be used in production, so it's just an easy way to
 # run the app and all the commands in the development environment.
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from merchants.app import get_app
-
-app = get_app()
+from merchants.app import app
 
 # Parsing the command-line arguments
 if len(sys.argv) == 1:
-    app.run(debug=True)
+    app.web.run(debug=True)
 else:
     app.commands.run()

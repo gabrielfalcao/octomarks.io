@@ -1,7 +1,14 @@
+# -*- coding: utf-8; mode: python -*-
+
 from os.path import join, abspath
 
+# Database connection URI
+SQLALCHEMY_DATABASE_URI = "sqlite:///../data/db.sqlite"
+
+# Static assets craziness
 self_path = lambda *p: abspath(join(__file__, '..', *p))
-y_static_assets_path = lambda *p: self_path('..', 'modules', 'yipit-static-assets', 'yipit_static_assets', *p)
+y_static_assets_path = lambda *p: self_path(
+    '..', 'modules', 'yipit-static-assets', 'yipit_static_assets', *p)
 
 COMPASS_CONFIG = dict(
     http_path='/',

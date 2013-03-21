@@ -1,8 +1,8 @@
 SETTINGS_FILE="settings.py"
-
+PYTHONPATH=".:./modules/yipit-static-assets"
 
 run:
-	@./bin/merchantd
+	@PYTHONPATH=$(PYTHONPATH) ./bin/merchantd
 
 setup: settings modules deps
 
@@ -25,6 +25,8 @@ deps:
 clean:
 	find . -name *.pyc -delete
 
-
+test:
+	MERCHANTS_SETTINGS_MODULE="tests.settings" PYTHONPATH="$(PYTHONPATH)" \
+		nosetests --stop --verbosity=2 -s tests
 
 .PHONY: modules

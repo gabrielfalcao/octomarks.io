@@ -1,26 +1,52 @@
+import os
+
 from flask import Flask
 from flask.ext.script import Manager
+from flask.ext.sqlalchemy import SQLAlchemy
 
 from merchants.assets import AssetsManager
 from merchants import views
 
 
-def get_app():
-    app = Flask(__name__)
+__all__ = 'app',
 
-    # Loading our settings
-    app.config.from_object('merchants.settings')
 
-    # Loading our JS/CSS
-    assets = AssetsManager(app)
-    assets.create_bundles()
+class App(object):
+    """Manage the main web app and all its subcomponents.
 
-    # Setting up our commands
-    app.commands = Manager(app)
-    assets.create_assets_command(app.commands)
+    By subcomponents I mean the database access, the command interface,
+    the static assets, etc.
+    """
 
-    # Time to register our blueprints
-    app.register_blueprint(views.mod)
+    def __init__(self, settings_path='merchants.settings'):
+        self.web = Flask(__name__)
 
-    # We're done, just return the app
-    return app
+        # Loading our settings
+        self.web.config.from_object(settings_path)
+
+        # Loading our JS/CSS
+        self.assets = AssetsManager(self.web)
+        self.assets.create_bundles()
+
+        # Setting up our commands
+        self.commands = Manager(self.web)
+        self.assets.create_assets_command(self.commands)
+
+        # Setting up our database component
+        self.db = SQLAlchemy(self.web)
+
+        # Time to register our blueprints
+        self.web.register_blueprint(views.mod)
+
+    @staticmethod
+    def from_env():
+        """Return an instance of `App` fed with settings from the env.
+        """
+        smodule = os.environ.get(
+            'MERCHANTS_SETTINGS_MODULE',
+            'merchants.settings'
+        )
+        return App(smodule)
+
+
+app = App.from_env()

@@ -25,17 +25,16 @@ class AssetsManager(object):
         """
         self.env.register(
             'main_css',
-                Bundle('components/bootstrap/css/bootstrap.css'),
                 Bundle('sass/screen.scss', filters='compass,cssrewrite'),
             output='css/main.css', depends='sass/_*.scss',
         )
 
         self.env.register(
             'main_js',
-            Bundle('components/bootstrap/js/bootstrap.js'),
 
             # Yipit specific stuff
             Bundle('js/yipit/index.js'),
+            Bundle('js/yipit/components/dropdown.js'),
         )
 
     def create_assets_command(self, manager):

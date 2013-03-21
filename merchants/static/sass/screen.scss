@@ -1,3 +1,4 @@
+
 @import 'compass';
 // fixes a bug in compass. the bug is already fixed in HEAD but I don't know version contains it.
 // https://github.com/chriseppstein/compass/commit/e32559198405075c5a7bfd05cdaf49753301ad47
@@ -5,7 +6,9 @@
 
 @import 'reset';
 @import 'globals';
+@import 'grid';
 @import 'form';
+@import 'layout';
 
 @import 'sprites/icon';
 @import 'sprites/logo';
@@ -14,4 +17,4 @@
 
 @import 'sections/header';
 
-@import 'layout';
+@import 'main';

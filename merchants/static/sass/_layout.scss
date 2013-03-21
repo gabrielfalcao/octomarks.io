@@ -1,3 +1,11 @@
 body {
-    padding-top: 70px;
+    background: image-url('bg-main.png') repeat;
+}
+
+.top-nav {
+    margin-bottom: 20px;
+}
+
+.header-nav-item .dropdown-hover {
+    width: 100%;
 }

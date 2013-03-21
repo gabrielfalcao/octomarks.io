@@ -1,5 +1,17 @@
-@import "compass";
-@import "globals";
-@import "form";
-@import "sections/header";
-@import "layout";
+@import 'compass';
+// fixes a bug in compass. the bug is already fixed in HEAD but I don't know version contains it.
+// https://github.com/chriseppstein/compass/commit/e32559198405075c5a7bfd05cdaf49753301ad47
+@import 'compass/css3/user-interface';
+
+@import 'reset';
+@import 'globals';
+@import 'form';
+
+@import 'sprites/icon';
+@import 'sprites/logo';
+
+@import 'components/dropdown';
+
+@import 'sections/header';
+
+@import 'layout';

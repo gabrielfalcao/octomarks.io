@@ -25,11 +25,8 @@ class AssetsManager(object):
         """
         self.env.register(
             'main_css',
-            Bundle('sass/reset.scss', filters='compass,cssrewrite'),
-            Bundle('components/bootstrap/css/bootstrap.css',
-                   'components/bootstrap/css/bootstrap-responsive.css'),
-            Bundle('sass/screen.scss', filters='compass,cssrewrite'),
-
+                Bundle('components/bootstrap/css/bootstrap.css'),
+                Bundle('sass/screen.scss', filters='compass,cssrewrite'),
             output='css/main.css', depends='sass/_*.scss',
         )
 

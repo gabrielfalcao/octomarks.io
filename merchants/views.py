@@ -16,3 +16,10 @@ def dashboard():
 @mod.route('/dashboard/competitors/')
 def dashboard_competitors():
     return render_template('dashboard/competitors.html')
+
+
+# deprecated stuff, maybe
+
+@mod.route('/dashboard-old/')
+def dashboard_old():
+    return render_template('dashboard/old.html')

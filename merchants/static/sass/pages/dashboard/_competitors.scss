@@ -1,9 +1,13 @@
 .dashboard-competitors-list {
-    border: solid 1px gray;
+    box-shadow: inset 0 0 5px gray;
+    padding: 10px 0;
 }
 
 .dashboard-competitors-list-item {
     display: block;
-    padding: 10px;
+    margin: 4px 0;
+    padding: 8px;
     background-color: #a7c3d0;
+    font-size: 12pt;
+    color: gray;
 }

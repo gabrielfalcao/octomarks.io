@@ -23,5 +23,6 @@ build.log
 /merchants/static/.sass-cache
 /merchants/static/.webassets-cache
 /merchants/static/webassets-external
+/merchants/static/sprites
 /merchants/static/css
 /modules/

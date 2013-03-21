@@ -1,5 +1,28 @@
+.header-nav-item .dropdown-toggle {
+    /* never do this. VERY BAD */
+    @include transition(none);
+    color: #A4DEF9;
+    display: block;
+    font-weight: 500;
+    font-size: 13px;
+    text-transform: lowercase;
+    text-align: center;
+    text-shadow: #145B7A 0 -1px 0;
+}
+
 .header-nav-item-merchants {
     &.checked {
         background-color: #fd8227;
     }
+    .header-nav-item-icon {
+        background-position: 11px -215px;
+        padding: 0;
+        width: 100%;
+    }
+    .dropdown-toggle {
+        overflow: hidden;
+        display: block;
+        padding: 0px 10px 5px 10px;
+    }
 }
+

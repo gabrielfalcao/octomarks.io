@@ -15,7 +15,7 @@ modules:
 	if [ -d yipit-static-assets/.git ]; then \
 		cd yipit-static-assets && git pull; \
 	else \
-		git clone https://github.com/Yipit/yipit-static-assets.git; \
+		git clone git@github.com:Yipit/yipit-static-assets.git; \
 	fi
 
 deps:

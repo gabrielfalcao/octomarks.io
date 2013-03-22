@@ -4,18 +4,50 @@
 {% block content %}
 <div class="row">
     <div class="span12">
-        <h2 class="page-title">Sign up</h2>
+        <h2 class="page-title">Claim your business profile</h2>
     </div>
 </div>
 
 <div class="row">
     <div class="span6">
-      <img src="/static/img/merchants-checkmark.png" />
-      <img src="/static/img/merchants-imac.png" />
-      <img src="/static/img/merchants-magnifier-icon.png" />
+        <h2>Step 1: Find your business on Yipit</h2>
 
-      <input type="text" name="first-name" class="input-mutreta with-placeholder" placeholder="Type your name here..."/>
-      <input type="text" name="last-name" class="input-mutreta" value="Smith" />
+        <img src="/static/img/merchants-magnifier-icon.png" />
+
+        <input type="text" name="first-name" class="input-mutreta with-placeholder js-autocomplete" data-autocomplete-source="businesses" placeholder="start typing your business name..."/>
+
+        <input type="text" name="first-name" class="input-mutreta with-placeholder" placeholder="Type your name here..."/>
+        <input type="text" name="last-name" class="input-mutreta" value="Smith" />
+
+        <h2>Step 2: Provide your information</h2>
+
+    </div>
+
+    <div class="span6">
+        <ul>
+            <li>
+                <img src="/static/img/merchants-checkmark.png" />
+                <h3>Attract more customers with a premium profile</h3>
+                <p>
+                    Update your address and contact information, and bring more
+                    customers through your doors with reviews and photos
+                </p>
+            </li>
+            <li>
+                <img src="/static/img/merchants-checkmark.png" />
+                <h3>Track your competitors</h3>
+                <p>
+                    We'll show you how daily deals are performing in your neighborhood,
+                    and alert you when your competitors launch campaigns
+                </p>
+            </li>
+            <li>
+                <img src="/static/img/merchants-checkmark.png" />
+                <h3>Run a deal</h3>
+                <p>We'll feature your business and help you attract nearby customers</p>
+            </li>
+        </ul>
+        <img src="/static/img/merchants-imac.png" />
     </div>
 </div>
 

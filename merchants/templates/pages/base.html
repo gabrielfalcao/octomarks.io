@@ -19,6 +19,8 @@
             <link rel="stylesheet" href="{{ ASSET_URL }}" type="text/css">
             {% endassets %}
         {% endblock %}
+
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" type="text/css">
     </head>
 
     <body {% block body_attrs %}{% endblock %}>
@@ -34,6 +36,7 @@
 
         {% block after_body %}
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+            <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
             {% assets "main_js" %}
             <script src="{{ ASSET_URL }}"></script>

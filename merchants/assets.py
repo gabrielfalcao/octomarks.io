@@ -34,6 +34,8 @@ class AssetsManager(object):
 
             # Yipit specific stuff
             Bundle('js/yipit/index.js'),
+            Bundle('js/yipit/components/autocomplete/autocomplete.js'),
+            Bundle('js/autocomplete-source-businesses.js'),
             Bundle('js/yipit/components/dropdown.js'),
         )
 

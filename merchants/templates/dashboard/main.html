@@ -10,7 +10,12 @@
 
 <div class="row">
     <div class="span8">
-        <div class="widget"></div>
+        <div class="widget">
+            <p class="widget-title">Tracked competitors' sales in your region</p>
+            <div class="widget-area">
+                <img src="{{ url_for('.chart1') }}" style="width:100%">
+            </div>
+        </div>
     </div>
     <div class="span4">
         <div class="widget">
@@ -24,10 +29,11 @@
             </div>
             <p class="widget-title">Potential customers in your area</p>
             <div class="widget-area">
-                <img src=""/>
+                <img src="/static/img/map.png" style="width:100%">
             </div>
         </div>
     </div>
 </div>
 
 {% endblock %}
+

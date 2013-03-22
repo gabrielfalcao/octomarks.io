@@ -20,6 +20,9 @@
                             <li><a href="{{ url_for('views.logout') }}">Logout</a></li>
                         </ul>
                     </div>
+                    {% else %}
+                    <!-- placeholder -->
+                    <div style="height:62px"></div>
                     {% endif %}
                 </li>
             </ul>

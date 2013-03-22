@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import pygal
 from flask import (
     Blueprint, request, session, render_template, redirect, url_for, g, flash
 )
@@ -47,18 +48,21 @@ def signup():
 
     form = SignupForm(csrf_enabled=False)
     if form.validate_on_submit():
-        inst = Merchant(
-            business_id=form.business_id.data,
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
-            email=form.email.data,
-            password=form.password.data,
-        )
-        app.db.session.add(inst)
-        app.db.session.commit()
-
         session[COOKIE_NAME] = form.email.data
         return redirect(url_for('.dashboard'))
+
+        # inst = Merchant(
+        #     business_id=form.business_id.data,
+        #     first_name=form.first_name.data,
+        #     last_name=form.last_name.data,
+        #     email=form.email.data,
+        #     password=form.password.data,
+        # )
+        # app.db.session.add(inst)
+        # app.db.session.commit()
+
+        # session[COOKIE_NAME] = form.email.data
+        # return redirect(url_for('.dashboard'))
     if form.errors:
         flash(
             'We found some things that need to fix before '
@@ -92,3 +96,14 @@ def track_competitors():
 @requires_login
 def run_deal():
     return render_template('dashboard/run-deal.html')
+
+
+# -- charts --
+
+@mod.route('/charts/c1')
+def chart1():
+    chart = pygal.Line()
+    chart.add(
+        'Deals from your competitors',
+        range(0, 1000, 10))
+    return chart.render_response()

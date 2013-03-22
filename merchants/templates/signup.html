@@ -1,6 +1,8 @@
 {% extends "pages/navbar.html" %}
 
 
+{% block body_attrs %}class="p-signup"{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="span12">
@@ -10,23 +12,22 @@
 
 <div class="row">
     <div class="span6">
-        <h2>Step 1: Find your business on Yipit</h2>
+        <h3 class="page-title-3">Step 1: Find your business on Yipit</h3>
 
         <img src="/static/img/merchants-magnifier-icon.png" />
 
         <input type="text" name="first-name" class="input-mutreta with-placeholder js-autocomplete" data-autocomplete-source="businesses" placeholder="start typing your business name..."/>
 
+        <h3 class="page-title-3">Step 2: Provide your information</h3>
+
         <input type="text" name="first-name" class="input-mutreta with-placeholder" placeholder="Type your name here..."/>
         <input type="text" name="last-name" class="input-mutreta" value="Smith" />
-
-        <h2>Step 2: Provide your information</h2>
 
     </div>
 
     <div class="span6">
-        <ul>
+        <ul class="highlights-list">
             <li>
-                <img src="/static/img/merchants-checkmark.png" />
                 <h3>Attract more customers with a premium profile</h3>
                 <p>
                     Update your address and contact information, and bring more
@@ -34,7 +35,6 @@
                 </p>
             </li>
             <li>
-                <img src="/static/img/merchants-checkmark.png" />
                 <h3>Track your competitors</h3>
                 <p>
                     We'll show you how daily deals are performing in your neighborhood,
@@ -42,7 +42,6 @@
                 </p>
             </li>
             <li>
-                <img src="/static/img/merchants-checkmark.png" />
                 <h3>Run a deal</h3>
                 <p>We'll feature your business and help you attract nearby customers</p>
             </li>

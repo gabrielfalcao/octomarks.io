@@ -26,7 +26,7 @@ class AssetsManager(object):
         self.env.register(
             'main_css',
             Bundle('sass/screen.scss', filters='compass,cssrewrite'),
-            output='css/main.css', depends='sass/_*.scss',
+            output='css/main.css', depends=['sass/pages/_*.scss', 'sass/_*.scss'],
         )
 
         self.env.register(

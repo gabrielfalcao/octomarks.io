@@ -15,9 +15,10 @@
         <h3 class="page-title-3">Step 1: Find your business on Yipit</h3>
 
         <form method="post" id="mano-merchant-neves" action="{{ url_for('.signup') }}">
-            <img src="/static/img/merchants-magnifier-icon.png" />
 
-            {{ form.business_id(class='input-mutreta with-placeholder js-autocomplete', placeholder='start typing your business name...',
+            <img style="float: left" src="/static/img/merchants-magnifier-icon.png" />
+
+            {{ form.business_id(class='input-mutreta input-mutreta-search with-placeholder js-autocomplete', placeholder='start typing your business name...',
                                 **{'data-autocomplete-source': "businesses"}) }}
             {% if form.business_id.errors %}
             <ul class="errors">{% for error in form.business_id.errors %}<li>{{ error }}</li>{% endfor %}</ul>
@@ -51,7 +52,8 @@
             {% endif %}
 
             <input type="submit" name="submit" value="Create your FREE profile"
-                   class="btn btn-primary">
+                   class="btn btn-primary" style="float: right">
+
         </form>
     </div>
 

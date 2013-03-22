@@ -43,6 +43,11 @@ def signup():
     return render_template('signup.html')
 
 
+@mod.route('/preview')
+def preview():
+    return render_template('preview.html')
+
+
 @mod.route('/dashboard/')
 @requires_login
 def dashboard():

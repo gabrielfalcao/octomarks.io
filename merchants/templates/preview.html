@@ -1,0 +1,59 @@
+{% extends "pages/navbar.html" %}
+
+
+{% block content %}
+<div class="row">
+    <div class="span12">
+        <h2 class="page-title">Add and preview a custom deal</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span7">
+      <div class="preview-iframe-container">
+        <img src="/static/img/merchants-preview-mockup.png" />
+      </div>
+    </div>
+    <div class="span4 offset1">
+      <div class="photo-slider">
+        <a href="#previous" class="slider-btn">
+          <img src="/static/img/merchants-slider-left-arrow.png" />
+        </a>
+        <ul class="slider">
+          <li>
+            <img src="/static/img/merchants-preview-thumb-restaurant.png" alt="Restaurant model 1" />
+            <img src="/static/img/merchants-preview-thumb-yoga.png" alt="Yoga model 1" />
+          </li>
+        </ul>
+        <a href="#next" class="slider-btn">
+          <img class="right" src="/static/img/merchants-slider-right-arrow.png" />
+        </a>
+      </div>
+      <div class="form-mutreta">
+        <label for="title" class="label-mutreta">Title:</label>
+        <input type="text" name="title" id="title" class="input-mutreta medium-large" />
+
+
+        <label for="subtitle" class="label-mutreta">Subtitle:</label>
+        <input type="text" name="subtitle" id="subtitle" class="input-mutreta medium-large" />
+
+
+        <label for="description" class="label-mutreta">Description:</label>
+        <textarea rows="6" type="text" name="description" id="description" class="input-mutreta medium-large"></textarea>
+
+        <label class="label-mutreta">Bullets:</label>
+        <div class="item-manager">
+          <div class="item-row">
+            <a href="#add" class="icon-add"></a>
+            <input type="text" name="subtitle" id="subtitle" class="input-mutreta" />
+          </div>
+          <div class="item-row">
+            <a href="#remove" class="icon-remove"></a>
+            <input type="text" name="subtitle" id="subtitle" class="input-mutreta" />
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

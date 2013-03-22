@@ -1,19 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, redirect
+from flask import (
+    Blueprint, request, session, render_template, redirect, url_for
+)
+
 
 mod = Blueprint('views', __name__)
 
 
+COOKIE_NAME = 'login-malandro'
+
+
 @mod.route('/')
 def index():
-    # if authenticated, send to dashboard
-    return redirect('/join')
+    next_page = COOKIE_NAME in session and 'dashboard' or 'join'
+    return redirect(url_for(next_page))
+
+
+@mod.route('/logout')
+def logout():
+    if COOKIE_NAME in session:
+        del session[COOKIE_NAME]
+    return redirect(request.refferer or url_for('index'))
 
 
 @mod.route('/join')
-def join_teaser():
+def join():
     return render_template('teaser.html')
 
 

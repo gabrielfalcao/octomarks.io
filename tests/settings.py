@@ -1,3 +1,3 @@
 from merchants.settings import *
 
-SQLALCHEMY_DATABASE_URI = ":memmory:"
+SQLALCHEMY_DATABASE_URI = "sqlite://"

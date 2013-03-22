@@ -29,4 +29,7 @@ test:
 	MERCHANTS_SETTINGS_MODULE="tests.settings" PYTHONPATH="$(PYTHONPATH)" \
 		nosetests --stop --verbosity=2 -s tests
 
+shell:
+	@PYTHONPATH=$(PYTHONPATH) ./bin/merchantd shell
+
 .PHONY: modules

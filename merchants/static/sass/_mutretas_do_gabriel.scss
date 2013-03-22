@@ -1,0 +1,67 @@
+.header-logo {
+  padding: 14px 0 0 0;
+
+  .header-logo-content {
+    padding: 0;
+    .logo-yipit-merchants {
+      width: 170px;
+      height: 30px;
+      background-image: url(/static/img/Merchants-logo.png);
+      background-repeat: no-repeat;
+    }
+  }
+}
+
+.teaser-preview {
+  -moz-box-shadow: 0 11px 12px rgba(65,65,66,.75); /* drop shadow */
+  -webkit-box-shadow: 0 11px 12px rgba(65,65,66,.75); /* drop shadow */
+  box-shadow: 0 11px 12px rgba(65,65,66,.75); /* drop shadow */
+  float: left;
+}
+
+.jumbo {
+  font-size: 60px;
+}
+
+.callout-text {
+    color: #414142;
+    font-size: 30px;
+    font-weight: 300;
+    padding-bottom: 36px;
+}
+
+.advantage {
+  color: #a21919;
+}
+
+.preview-button {
+  color: #fff; /* text color */
+  font-family: "Helvetica Neue";
+  font-size: 30px;
+  text-align:center;
+  display: block;
+  padding-top: 10px;
+  font-weight: 300;
+  position: relative;
+  width: 371px;
+  height: 62px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px; /* border radius */
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box; /* prevents bg color from leaking outside the border */
+  background-color: #a11919; /* layer fill content */
+  -moz-box-shadow: inset 0 1px 2px rgba(84,84,84,.29); /* inner shadow */
+  -webkit-box-shadow: inset 0 1px 2px rgba(84,84,84,.29); /* inner shadow */
+  box-shadow: inset 0 1px 2px rgba(84,84,84,.29); /* inner shadow */
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDM3MSA3MiIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGxpbmVhckdyYWRpZW50IGlkPSJoYXQwIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjUwJSIgeTE9IjEwMCUiIHgyPSI1MCUiIHkyPSItMS40MjEwODU0NzE1MjAyZS0xNCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjYTgyODI4IiBzdG9wLW9wYWNpdHk9IjAuNSIvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkYjRhNGEiIHN0b3Atb3BhY2l0eT0iMC41Ii8+CiAgIDwvbGluZWFyR3JhZGllbnQ+Cgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMzcxIiBoZWlnaHQ9IjcyIiBmaWxsPSJ1cmwoI2hhdDApIiAvPgo8L3N2Zz4=); /* gradient overlay */
+  background-image: -moz-linear-gradient(bottom, rgba(168,40,40,.5) 0%, rgba(219,75,75,.5) 100%); /* gradient overlay */
+  background-image: -o-linear-gradient(bottom, rgba(168,40,40,.5) 0%, rgba(219,75,75,.5) 100%); /* gradient overlay */
+  background-image: -webkit-linear-gradient(bottom, rgba(168,40,40,.5) 0%, rgba(219,75,75,.5) 100%); /* gradient overlay */
+  background-image: linear-gradient(bottom, rgba(168,40,40,.5) 0%, rgba(219,75,75,.5) 100%); /* gradient overlay */
+  }
+
+.preview-button:hover {
+  color: #fffbed;
+}

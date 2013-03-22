@@ -1,11 +1,20 @@
-from flask import Blueprint, render_template
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from flask import Blueprint, render_template, redirect
 
 mod = Blueprint('views', __name__)
 
 
 @mod.route('/')
 def index():
-    return render_template('index.html')
+    # if authenticated, send to dashboard
+    return redirect('/join')
+
+
+@mod.route('/join')
+def join_teaser():
+    return render_template('teaser.html')
 
 
 @mod.route('/dashboard/')
@@ -14,12 +23,10 @@ def dashboard():
 
 
 @mod.route('/dashboard/competitors/')
-def dashboard_competitors():
+def track_competitors():
     return render_template('dashboard/competitors.html')
 
 
-# deprecated stuff, maybe
-
-@mod.route('/dashboard-old/')
-def dashboard_old():
-    return render_template('dashboard/old.html')
+@mod.route('/dashboard/create-campaign/')
+def run_deal():
+    return render_template('dashboard/run-deal.html')

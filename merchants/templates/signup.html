@@ -14,15 +14,45 @@
     <div class="span6">
         <h3 class="page-title-3">Step 1: Find your business on Yipit</h3>
 
-        <img src="/static/img/merchants-magnifier-icon.png" />
+        <form method="post" id="mano-merchant-neves" action="{{ url_for('.signup') }}">
+            <img src="/static/img/merchants-magnifier-icon.png" />
 
-        <input type="text" name="first-name" class="input-mutreta with-placeholder js-autocomplete" data-autocomplete-source="businesses" placeholder="start typing your business name..."/>
+            {{ form.business_id(class='input-mutreta with-placeholder js-autocomplete', placeholder='start typing your business name...',
+                                **{'data-autocomplete-source': "businesses"}) }}
+            {% if form.business_id.errors %}
+            <ul class="errors">{% for error in form.business_id.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
 
-        <h3 class="page-title-3">Step 2: Provide your information</h3>
+            <h3 class="page-title-3">Step 2: Provide your information</h3>
 
-        <input type="text" name="first-name" class="input-mutreta with-placeholder" placeholder="Type your name here..."/>
-        <input type="text" name="last-name" class="input-mutreta" value="Smith" />
+            {{ form.first_name(class='input-mutreta with-placeholder', placeholder='Zachary') }}
+            {% if form.first_name.errors %}
+            <ul class="errors">{% for error in form.first_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
 
+            {{ form.last_name(class='input-mutreta with-placeholder', placeholder='Smith') }}
+            {% if form.last_name.errors %}
+            <ul class="errors">{% for error in form.last_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+
+            {{ form.email(class='input-mutreta with-placeholder') }}
+            {% if form.email.errors %}
+            <ul class="errors">{% for error in form.email.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+
+            {{ form.password(class='input-mutreta with-placeholder') }}
+            {% if form.password.errors %}
+            <ul class="errors">{% for error in form.password.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+
+            {{ form.confirm(class='input-mutreta with-placeholder') }}
+            {% if form.confirm.errors %}
+            <ul class="errors">{% for error in form.confirm.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+
+            <input type="submit" name="submit" value="Create your FREE profile"
+                   class="btn btn-primary">
+        </form>
     </div>
 
     <div class="span6">
@@ -51,3 +81,5 @@
 </div>
 
 {% endblock %}
+
+

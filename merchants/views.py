@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import (
-    Blueprint, request, session, render_template, redirect, url_for, g
+    Blueprint, request, session, render_template, redirect, url_for, g, flash
 )
 
 from merchants.utils import requires_login
@@ -38,9 +38,20 @@ def join():
     return render_template('teaser.html')
 
 
-@mod.route('/signup')
+@mod.route('/signup', methods=('GET', 'POST'))
 def signup():
-    return render_template('signup.html')
+    from merchants.forms import SignupForm
+    from merchants.models import Merchant
+
+    form = SignupForm(csrf_enabled=False)
+    if form.validate_on_submit():
+        # do something
+        return redirect(url_for('.dashboard'))
+    if form.errors:
+        flash(
+            'We found some things that need to fix before '
+            'creating your profile')
+    return render_template('signup.html', form=form)
 
 
 @mod.route('/preview')

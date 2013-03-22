@@ -14,8 +14,8 @@ class Merchant(db.Model):
     first_name = db.Column(db.String(256), nullable=False)
     last_name = db.Column(db.String(256), nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)
-    phone = db.Column(db.String(15), unique=True, nullable=False)
-    address = db.Column(db.String(256), nullable=False)
+    phone = db.Column(db.String(15), unique=True)
+    address = db.Column(db.String(256))
     email = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
 

@@ -53,12 +53,12 @@
 }
 
 .widget-menu-item-link {
+    @include transition(background-color 200ms);
     display: block;
-    padding: 3px 14px;
+    padding: 2px 14px;
 
     &:hover, &.hover {
-        color: #fff;
-        background-color: #2d80a6;
+        background-color: rgba(#2d80a6, .14);
     }
 }
 

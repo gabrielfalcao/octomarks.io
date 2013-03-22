@@ -71,6 +71,11 @@ def preview():
     return render_template('preview.html')
 
 
+@mod.route('/purchase')
+def purchase():
+    return render_template('purchase.html')
+
+
 @mod.route('/dashboard/')
 @requires_login
 def dashboard():

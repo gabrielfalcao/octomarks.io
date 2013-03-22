@@ -162,6 +162,7 @@ textarea {
 .photo-slider {
   width: 564px;
   height: 122px;
+
   .slider-btn {
     display: block;
     width: 30px;
@@ -184,6 +185,7 @@ textarea {
     background-image: linear-gradient(bottom, #66a828 0%, #90db4a 100%); /* gradient overlay */
     position: relative;
     float: left;
+
     img {
       position:absolute;
       top: 50px;
@@ -242,8 +244,8 @@ textarea {
   }
 }
 
-.button-row-mutreta {
-  position: absolute;
+.row-mutreta {
+  position: relative;
   width: 390px;
 }
 
@@ -298,5 +300,20 @@ textarea {
 .preview-iframe-container {
   img {
     margin: 8px 0 0 8px;
+  }
+}
+
+.upload-line {
+  margin: 0 5px 0 0;
+  position: absolute;
+  right: 0px;
+  p {
+    color: #333; /* text color */
+    font-family: "Helvetica";
+    font-size: 14px;
+    font-weight: bold;
+    a {
+      color: #3a90b8;
+    }
   }
 }

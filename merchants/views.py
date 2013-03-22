@@ -14,7 +14,7 @@ COOKIE_NAME = 'login-malandro'
 
 @mod.route('/')
 def index():
-    next_page = COOKIE_NAME in session and 'dashboard' or 'join'
+    next_page = COOKIE_NAME in session and '.dashboard' or '.join'
     return redirect(url_for(next_page))
 
 
@@ -22,7 +22,7 @@ def index():
 def logout():
     if COOKIE_NAME in session:
         del session[COOKIE_NAME]
-    return redirect(request.refferer or url_for('index'))
+    return redirect(request.refferer or url_for('.index'))
 
 
 @mod.route('/join')

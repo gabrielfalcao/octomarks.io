@@ -1,25 +1,33 @@
 .header-logo {
-    padding: 14px 0 0 0;
+  padding: 14px 0 0 0;
 
-    .header-logo-content {
-        padding: 0;
-
-        .logo-yipit-merchants {
-            width: 170px;
-            height: 30px;
-            background-image: url(/static/img/Merchants-logo.png);
-            background-repeat: no-repeat;
-        }
+  .header-logo-content {
+    padding: 0;
+    .logo-yipit-merchants {
+      width: 170px;
+      height: 30px;
+      background-image: url(/static/img/Merchants-logo.png);
+      background-repeat: no-repeat;
     }
+  }
 }
 
+
+
+
+/************************************************************
+TEASER
+*************************************************************/
+
 .teaser-preview {
-    box-shadow: 0 11px 12px rgba(65, 65, 66, .75); /* drop shadow */
-    float: left;
+  -moz-box-shadow: 0 11px 12px rgba(65,65,66,.75); /* drop shadow */
+  -webkit-box-shadow: 0 11px 12px rgba(65,65,66,.75); /* drop shadow */
+  box-shadow: 0 11px 12px rgba(65,65,66,.75); /* drop shadow */
+  float: left;
 }
 
 .jumbo {
-    font-size: 60px;
+  font-size: 60px;
 }
 
 .callout-text {
@@ -30,44 +38,197 @@
 }
 
 .advantage {
-    color: #a21919;
+  color: #a21919;
 }
 
 .preview-button {
-    color: #fff; /* text color */
-    font-size: 30px;
-    text-align:center;
-    display: block;
-    padding-top: 10px;
-    font-weight: 300;
-    position: relative;
-    width: 371px;
-    height: 62px;
-    border-radius: 3px; /* border radius */
-    background-clip: padding-box; /* prevents bg color from leaking outside the border */
-    background-color: #a11919; /* layer fill content */
-    box-shadow: inset 0 1px 2px rgba(84,84,84,.29); /* inner shadow */
-    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDM3MSA3MiIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGxpbmVhckdyYWRpZW50IGlkPSJoYXQwIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjUwJSIgeTE9IjEwMCUiIHgyPSI1MCUiIHkyPSItMS40MjEwODU0NzE1MjAyZS0xNCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjYTgyODI4IiBzdG9wLW9wYWNpdHk9IjAuNSIvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkYjRhNGEiIHN0b3Atb3BhY2l0eT0iMC41Ii8+CiAgIDwvbGluZWFyR3JhZGllbnQ+Cgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMzcxIiBoZWlnaHQ9IjcyIiBmaWxsPSJ1cmwoI2hhdDApIiAvPgo8L3N2Zz4=); /* gradient overlay */
-    background-image: linear-gradient(bottom, rgba(168,40,40,.5) 0%, rgba(219,75,75,.5) 100%); /* gradient overlay */
-}
+  color: #fff; /* text color */
+  font-family: "Helvetica Neue";
+  font-size: 30px;
+  text-align:center;
+  display: block;
+  padding-top: 10px;
+  font-weight: 300;
+  position: relative;
+  width: 371px;
+  height: 62px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px; /* border radius */
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box; /* prevents bg color from leaking outside the border */
+  background-color: #a11919; /* layer fill content */
+  -moz-box-shadow: inset 0 1px 2px rgba(84,84,84,.29); /* inner shadow */
+  -webkit-box-shadow: inset 0 1px 2px rgba(84,84,84,.29); /* inner shadow */
+  box-shadow: inset 0 1px 2px rgba(84,84,84,.29); /* inner shadow */
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDM3MSA3MiIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGxpbmVhckdyYWRpZW50IGlkPSJoYXQwIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjUwJSIgeTE9IjEwMCUiIHgyPSI1MCUiIHkyPSItMS40MjEwODU0NzE1MjAyZS0xNCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjYTgyODI4IiBzdG9wLW9wYWNpdHk9IjAuNSIvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkYjRhNGEiIHN0b3Atb3BhY2l0eT0iMC41Ii8+CiAgIDwvbGluZWFyR3JhZGllbnQ+Cgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMzcxIiBoZWlnaHQ9IjcyIiBmaWxsPSJ1cmwoI2hhdDApIiAvPgo8L3N2Zz4=); /* gradient overlay */
+  background-image: -moz-linear-gradient(bottom, rgba(168,40,40,.5) 0%, rgba(219,75,75,.5) 100%); /* gradient overlay */
+  background-image: -o-linear-gradient(bottom, rgba(168,40,40,.5) 0%, rgba(219,75,75,.5) 100%); /* gradient overlay */
+  background-image: -webkit-linear-gradient(bottom, rgba(168,40,40,.5) 0%, rgba(219,75,75,.5) 100%); /* gradient overlay */
+  background-image: linear-gradient(bottom, rgba(168,40,40,.5) 0%, rgba(219,75,75,.5) 100%); /* gradient overlay */
+  }
 
 .preview-button:hover {
-    color: #fffbed;
+  color: #fffbed;
+}
+
+
+/************************************************************
+                    SIGNUP
+*************************************************************/
+
+.form-mutreta {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 12px 0 0 0;
+}
+
+.label-mutreta {
+  display: block;
+  color: #333; /* text color */
+  font-family: "Helvetica";
+  font-size: 14px;
+  font-weight: bold;
+}
+
+input {
+  &.input-mutreta {
+    height: 27px;
+    font-family: "Helvetica";
+    font-size: 12px;
+  }
+}
+
+textarea {
+  &.input-mutreta {
+    font-family: "Helvetica";
+    font-size: 12px;
+  }
 }
 
 .input-mutreta {
-    padding-top: 3px;
-    padding-left: 3px;
-    width: 352px;
-    height: 27px;
-    border: 1px solid #d5d5d5; /* stroke */
-    border-radius: 5px / 3px; /* border radius */
-    background-clip: padding-box; /* prevents bg color from leaking outside the border */
-    background-color: #f7f7f7; /* layer fill content + color overlay */
-    box-shadow: inset 0 1px 2px #cbcbcb, inset 0 0 5px rgba(251,247,199,.75); /* inner shadow and inner glow */
+  padding-top: 3px;
+  padding-left: 3px;
+  width: 100%;
+  border: 1px solid #d5d5d5; /* stroke */
+  -moz-border-radius: 5px / 3px;
+  -webkit-border-radius: 5px / 3px;
+  border-radius: 5px / 3px; /* border radius */
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box; /* prevents bg color from leaking outside the border */
+  background-color: #f7f7f7; /* layer fill content + color overlay */
+  -moz-box-shadow: inset 0 1px 2px #cbcbcb, inset 0 0 5px rgba(251,247,199,.75); /* inner shadow and inner glow */
+  -webkit-box-shadow: inset 0 1px 2px #cbcbcb, inset 0 0 5px rgba(251,247,199,.75); /* inner shadow and inner glow */
+  box-shadow: inset 0 1px 2px #cbcbcb, inset 0 0 5px rgba(251,247,199,.75); /* inner shadow and inner glow */
 
-    &.with-placeholder {
-        color: #999; /* text color */
-        font-size: 12px;
+  margin-bottom: 22px;
+
+  &.medium-large {
+    width: 390px;
+  }
+
+  &.with-placeholder {
+    color: #999; /* text color */
+    font-family: "Helvetica";
+    font-size: 12px;
+  }
+}
+
+/************************************************************
+                    PREVIEW EMAIL
+*************************************************************/
+
+.preview-iframe-container {
+  width: 593px;
+  height: 729px;
+  border: 1px solid #d5d5d5; /* stroke */
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px; /* border radius */
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box; /* prevents bg color from leaking outside the border */
+  background-color: #fff; /* layer fill content + color overlay */
+  -moz-box-shadow: inset 0 1px 2px #cbcbcb, inset 0 0 5px rgba(251,247,199,.75); /* inner shadow and inner glow */
+  -webkit-box-shadow: inset 0 1px 2px #cbcbcb, inset 0 0 5px rgba(251,247,199,.75); /* inner shadow and inner glow */
+  box-shadow: inset 0 1px 2px #cbcbcb, inset 0 0 5px rgba(251,247,199,.75); /* inner shadow and inner glow */
+  }
+
+
+.photo-slider {
+  width: 564px;
+  height: 122px;
+  .slider-btn {
+    display: block;
+    width: 30px;
+    height: 120px;
+    border: 1px solid rgba(255,255,255,.2); /* stroke */
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px; /* border radius */
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box; /* prevents bg color from leaking outside the border */
+    background-color: #cbcbcb; /* layer fill content */
+    -moz-box-shadow: inset 0 -2px 2px rgba(84,84,84,.29); /* inner shadow */
+    -webkit-box-shadow: inset 0 -2px 2px rgba(84,84,84,.29); /* inner shadow */
+    box-shadow: inset 0 -2px 2px rgba(84,84,84,.29); /* inner shadow */
+    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDMwIDEyMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGxpbmVhckdyYWRpZW50IGlkPSJoYXQwIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjUwJSIgeTE9IjEwMCUiIHgyPSI1MCUiIHkyPSItMS40MjEwODU0NzE1MjAyZS0xNCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNjZhODI4IiBzdG9wLW9wYWNpdHk9IjEiLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjOTBkYjRhIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgPC9saW5lYXJHcmFkaWVudD4KCjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIzMCIgaGVpZ2h0PSIxMjAiIGZpbGw9InVybCgjaGF0MCkiIC8+Cjwvc3ZnPg==); /* gradient overlay */
+    background-image: -moz-linear-gradient(bottom, #66a828 0%, #90db4a 100%); /* gradient overlay */
+    background-image: -o-linear-gradient(bottom, #66a828 0%, #90db4a 100%); /* gradient overlay */
+    background-image: -webkit-linear-gradient(bottom, #66a828 0%, #90db4a 100%); /* gradient overlay */
+    background-image: linear-gradient(bottom, #66a828 0%, #90db4a 100%); /* gradient overlay */
+    position: relative;
+    float: left;
+    img {
+      position:absolute;
+      top: 50px;
+      left: 8px;
+      &.right {
+        left: 10px;
+
+        }
+      }
     }
+
+
+  .slider {
+    display: block;
+    float: left;
+
+    overflow: hidden;
+    li {
+      float: left;
+      margin-right: 2px;
+      }
+    }
+  }
+
+.offset1 {
+  margin:0 0 0 30px;
+}
+
+.item-manager {
+  .item-row {
+    width: 390px;
+    .icon {
+      width: 30px;
+      height: 30px;
+      float: left;
+      margin-right: 7px;
+      &.add {
+        background: url(/static/img/merchant-bullet-add.png) no-repeat;
+      }
+      &.remove {
+        background: url(/static/img/merchant-bullet-remove.png) no-repeat;
+      }
+    }
+    input {
+      float: left;
+    }
+  }
 }

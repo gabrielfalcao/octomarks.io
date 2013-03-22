@@ -17,6 +17,11 @@ def join_teaser():
     return render_template('teaser.html')
 
 
+@mod.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+
 @mod.route('/dashboard/')
 def dashboard():
     return render_template('dashboard/main.html')

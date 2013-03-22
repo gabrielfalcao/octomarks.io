@@ -25,7 +25,7 @@ def load_current_user():
 
 @mod.route('/')
 def index():
-    next_page = COOKIE_NAME in session and '.dashboard' or '.join'
+    next_page = COOKIE_NAME in session and '.dashboard' or '.signup'
     return redirect(url_for(next_page))
 
 
@@ -82,6 +82,11 @@ def purchase():
     return render_template('purchase.html')
 
 
+@mod.route('/purchase/thanks')
+def purchase_thanks():
+    return render_template('purchase-thanks.html')
+
+
 @mod.route('/dashboard/')
 @requires_login
 def dashboard():
@@ -97,7 +102,7 @@ def track_competitors():
 @mod.route('/dashboard/create-campaign/')
 @requires_login
 def run_deal():
-    return render_template('dashboard/run-deal.html')
+    return render_template('preview.html')
 
 
 # -- charts --

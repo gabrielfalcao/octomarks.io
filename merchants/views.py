@@ -16,9 +16,11 @@ COOKIE_NAME = 'login-malandro'
 
 @mod.before_request
 def load_current_user():
-    from merchants.models import Merchant
-    g.user = Merchant.query.filter_by(email=session[COOKIE_NAME]).first() \
-        if COOKIE_NAME in session else None
+    g.user = {} if COOKIE_NAME in session else None
+
+    # from merchants.models import Merchant
+    # g.user = Merchant.query.filter_by(email=session[COOKIE_NAME]).first() \
+    #     if COOKIE_NAME in session else None
 
 
 @mod.route('/')
@@ -31,7 +33,7 @@ def index():
 def logout():
     if COOKIE_NAME in session:
         del session[COOKIE_NAME]
-    g.user = None
+    # g.user = None
     return redirect(request.referrer or url_for('.index'))
 
 
@@ -47,7 +49,7 @@ def signup():
     from merchants.app import app
 
     form = SignupForm(csrf_enabled=False)
-    if form.validate_on_submit():
+    if request.method == 'POST':
         session[COOKIE_NAME] = form.email.data
         return redirect(url_for('.dashboard'))
 

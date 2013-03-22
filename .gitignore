@@ -26,3 +26,4 @@ build.log
 /merchants/static/sprites
 /merchants/static/css
 /modules/
+/data/db.sqlite

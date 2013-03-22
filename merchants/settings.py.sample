@@ -2,6 +2,9 @@
 
 from os.path import join, abspath
 
+# Session key, CHANGE IT IF YOU GET TO THE PRODUCTION! :)
+SECRET_KEY = 'P0wned!'
+
 # Database connection URI
 SQLALCHEMY_DATABASE_URI = "sqlite:///../data/db.sqlite"
 

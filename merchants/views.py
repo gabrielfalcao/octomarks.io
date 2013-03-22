@@ -30,7 +30,7 @@ def index():
 def logout():
     if COOKIE_NAME in session:
         del session[COOKIE_NAME]
-    return redirect(request.refferer or url_for('.index'))
+    return redirect(request.referrer or url_for('.index'))
 
 
 @mod.route('/join')

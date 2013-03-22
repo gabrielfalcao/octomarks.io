@@ -20,14 +20,15 @@ class CompetitorTracker(db.Model):
     __tablename__ = 'competitor_tracker'
 
     id = db.Column(db.Integer, primary_key=True)
+    my_id = db.Column(db.Integer)
+    target_id = db.Column(db.Integer)
 
-    def __init__(self, inst):
+    @classmethod
+    def track(self, inst, other):
         pass
 
-    def track(self, other):
-        pass
-
-    def tracking(self):
+    @classmethod
+    def tracking(self, inst):
         return []
 
 

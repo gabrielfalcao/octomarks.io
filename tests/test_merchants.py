@@ -40,10 +40,10 @@ def test_track_competitors():
         email='merchant2@blah.com')
 
     # When one of them try to track the other one
-    CompetitorTracker(merchant1).track(merchant2)
+    CompetitorTracker.track(merchant1, merchant2)
 
     # Then I see that the first merchant is now tracking the second one
-    CompetitorTracker(merchant1).tracking().should.equal([
+    CompetitorTracker.tracking(merchant1).should.equal([
         merchant2,
     ])
 
@@ -57,14 +57,14 @@ def test_untrack_competitors():
     merchant2 = Merchant(
         first_name='Dat business!', zipcode=11249,
         email='merchant2@blah.com')
-    CompetitorTracker(merchant1).track(merchant2)
+    CompetitorTracker.track(merchant1, merchant2)
 
     # When I untrack the second merchant from the first
-    CompetitorTracker(merchant1).untrack(merchant2)
+    CompetitorTracker.untrack(merchant1, merchant2)
 
     # Then I see that the first merchant is not tracking the second one
     # anymore
-    CompetitorTracker(merchant1).tracking().should.be.empty
+    CompetitorTracker.tracking(merchant1).should.be.empty
 
 
 def test_merchant_tags():

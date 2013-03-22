@@ -12,12 +12,14 @@
                         <span class="dropdown-toggle js-dropdown-toggler">
                             <span class="header-nav-item-icon">Admin</span>
                         </span>
+                        {% if g.user is defined %}
                         <ul class="dropdown-menu">
                             <li><a href="{{ url_for('views.dashboard') }}">Dashboard</a></li>
                             <li><a href="{{ url_for('views.track_competitors') }}">Track Competitors</a></li>
                             <li><a href="{{ url_for('views.run_deal') }}">Run a Deal</a></li>
                             <li><a href="{{ url_for('views.logout') }}">Logout</a></li>
                         </ul>
+                        {% endif %}
                     </div>
                 </li>
             </ul>

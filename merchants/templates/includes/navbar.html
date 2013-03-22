@@ -8,7 +8,7 @@
         <div class="header-nav">
             <ul>
                 <li class="header-nav-item header-nav-item-settings">
-                    {% if g.user is defined %}
+                    {% if g.user is not none %}
                     <div class="btn-group dropdown-hover js-dropdown">
                         <span class="dropdown-toggle js-dropdown-toggler">
                             <span class="header-nav-item-icon">Admin</span>

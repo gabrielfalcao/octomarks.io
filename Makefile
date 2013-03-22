@@ -1,7 +1,7 @@
 SETTINGS_FILE="settings.py"
 PYTHONPATH=".:./modules/yipit-static-assets"
 
-run:
+all:
 	@PYTHONPATH=$(PYTHONPATH) ./bin/merchantd
 
 setup: settings modules deps
@@ -31,5 +31,9 @@ test:
 
 shell:
 	@PYTHONPATH=$(PYTHONPATH) ./bin/merchantd shell
+
+
+%:
+	@PYTHONPATH=$(PYTHONPATH) ./bin/merchantd $@
 
 .PHONY: modules

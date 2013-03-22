@@ -16,7 +16,7 @@ COOKIE_NAME = 'login-malandro'
 @mod.before_request
 def load_current_user():
     from merchants.models import Merchant
-    g.user = Merchant.query.filter_by(openid=session[COOKIE_NAME]).first() \
+    g.user = Merchant.query.filter_by(email=session[COOKIE_NAME]).first() \
         if COOKIE_NAME in session else None
 
 
@@ -42,10 +42,21 @@ def join():
 def signup():
     from merchants.forms import SignupForm
     from merchants.models import Merchant
+    from merchants.app import app
 
     form = SignupForm(csrf_enabled=False)
     if form.validate_on_submit():
-        # do something
+        inst = Merchant(
+            business_id=form.business_id.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            email=form.email.data,
+            password=form.password.data,
+        )
+        app.db.session.add(inst)
+        app.db.session.commit()
+
+        session[COOKIE_NAME] = form.email.data
         return redirect(url_for('.dashboard'))
     if form.errors:
         flash(

@@ -5,6 +5,7 @@ from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from merchants.assets import AssetsManager
+from merchants.commands import init_command_manager
 from merchants import views
 
 
@@ -29,7 +30,7 @@ class App(object):
         self.assets.create_bundles()
 
         # Setting up our commands
-        self.commands = Manager(self.web)
+        self.commands = init_command_manager(Manager(self.web))
         self.assets.create_assets_command(self.commands)
 
         # Setting up our database component

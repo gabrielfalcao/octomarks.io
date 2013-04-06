@@ -5,12 +5,7 @@ from flask import config
 # from datetime import datetime
 # from werkzeug import generate_password_hash, check_password_hash
 
-from gbookmarks.app import app
-
-
-db = app.db
-
-metadata = db.MetaData()
+from gbookmarks.db import models, db, metadata, Model
 
 
 def slugify(string):
@@ -38,18 +33,6 @@ user_bookmark = db.Table('gb_user_bookmark', metadata,
     db.Column('user_id', db.Integer, unique=True, nullable=False),
     db.Column('bookmark_id', db.Integer, unique=True, nullable=False),
 )
-
-
-class ORM(type):
-    orm = config.Config(None)
-
-    def __init__(cls, name, bases, attrs):
-        cls.orm[name] = cls
-        super(ORM, cls).__init__(name, bases, attrs)
-
-
-class Model(object):
-    __metaclass__ = ORM
 
 
 class User(Model):

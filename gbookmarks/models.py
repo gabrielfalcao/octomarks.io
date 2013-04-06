@@ -36,11 +36,11 @@ user_bookmark = db.Table('gb_user_bookmark', metadata,
 
 
 class ORM(type):
-    orm = config.Config()
+    orm = config.Config(None)
 
-    def __new__(cls, name, bases, attrs):
+    def __init__(cls, name, bases, attrs):
         cls.orm[name] = cls
-        return super(ORM, cls).__new__(name, bases, attrs)
+        super(ORM, cls).__init__(name, bases, attrs)
 
 
 class Model(object):

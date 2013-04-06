@@ -33,10 +33,10 @@ def prepare_auth():
     g.github = github
 
 
-@mod.teardown_request
-def teardown_request(exception):
-    del g.github
-    del g.user
+# @mod.teardown_request
+# def teardown_request(exception):
+#     del g.github
+#     del g.user
 
 
 @mod.context_processor

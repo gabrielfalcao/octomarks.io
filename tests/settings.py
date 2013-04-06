@@ -1,3 +1,3 @@
-from merchants.settings import *
+from gbookmarks.settings import *
 
 SQLALCHEMY_DATABASE_URI = "sqlite://"

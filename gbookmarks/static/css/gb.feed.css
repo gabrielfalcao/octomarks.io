@@ -1,0 +1,14 @@
+.repo  {
+  padding: 10px 0;
+  margin: 10px auto;
+  border-bottom: 2px dashed #999;
+}
+.repo:hover  {
+  background-color: rgba(200, 200, 255, .3);
+}
+
+.owner {
+  float: right;
+  padding: 5px;
+  font-size: 24px;
+}

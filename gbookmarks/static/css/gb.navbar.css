@@ -1,0 +1,54 @@
+.navbar .navbar-inner {
+  background: transparent;
+
+}
+
+.navbar .navbar-inner .container {
+  padding: 0;
+}
+
+
+.topbar {
+  width: 1200px;
+}
+.logo {
+  display: block;
+  padding: 7px 0 21px 0;
+  font-family: 'Adobe Garamond Pro', 'Adobe Garamond', 'Garamond', 'EB Garamond', serif;
+  color: #1d4f47;
+  font-size: 36px;
+  float: left;
+  margin-left: 0;
+}
+
+.logo:hover {
+  opacity: .9;
+  text-decoration:none;
+}
+
+.menu, .menu-item {
+  font-family: 'Cabin', sans-serif;
+  color: #1d4f47;
+}
+
+.menu {
+  font-size:18px;
+}
+
+.profile.menu {
+  opacity: .6;
+}
+.profile.menu:hover {
+  opacity: 1;
+}
+
+a.profile.menu-item span {
+  display: block;
+  float: left;
+  padding: 7px 8px 0 0;
+}
+.profile.icon {
+  display: block;
+  margin: 0;
+  padding: 0;
+  float: left;

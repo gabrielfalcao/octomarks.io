@@ -1,5 +1,5 @@
-from merchants.app import app
-from merchants.models import Merchant, CompetitorTracker, Category
+from gbookmarks.app import app
+from gbookmarks.models import Merchant, CompetitorTracker, Category
 
 
 def teardown():
@@ -31,7 +31,7 @@ def test_new_merchant():
 
 
 def test_track_competitors():
-    # Given that I have two merchants in my database
+    # Given that I have two gbookmarks in my database
     merchant1 = Merchant(
         first_name='Dat business!', zipcode=11249,
         email='merchant1@blah.com')
@@ -49,7 +49,7 @@ def test_track_competitors():
 
 
 def test_untrack_competitors():
-    # Given that I have two merchants in my database and that the first
+    # Given that I have two gbookmarks in my database and that the first
     # one tracks the other one
     merchant1 = Merchant(
         first_name='Dat business!', zipcode=11249,

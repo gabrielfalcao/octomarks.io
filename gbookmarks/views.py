@@ -3,26 +3,20 @@
 
 import json
 from flask import (
-    Blueprint, request, session, render_template, redirect, url_for, g, flash
+    Blueprint, request, session, render_template, redirect, g, flash
 )
 
 from gbookmarks.api import GithubUser
 from gbookmarks import settings
 
+from flaskext.github import GithubAuth
 
-from flask_oauth import OAuth
 
-
-oauth = OAuth()
-
-github = oauth.remote_app('github',
-                          base_url='https://api.github.com/',
-    authorize_url='https://github.com/login/oauth/authorize',
-    access_token_url='https://github.com/login/oauth/access_token',
-    request_token_url=None,
-    consumer_key=settings.GITHUB_CONSUMER_KEY,
-                          consumer_secret=settings.GITHUB_ACCESS_TOKEN_URL)
-
+github = GithubAuth(
+    client_id=settings.GITHUB_CLIENT_ID,
+    client_secret=settings.GITHUB_CLIENT_SECRET,
+    session_key='user_id'
+)
 
 mod = Blueprint('views', __name__)
 
@@ -44,7 +38,7 @@ def inject_basics():
     return dict(user=g.user, settings=settings)
 
 
-@github.tokengetter
+@github.access_token_getter
 def get_github_token(token=None):
     return session.get('github_token')
 

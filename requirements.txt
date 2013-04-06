@@ -9,3 +9,4 @@ ipython==0.13.1
 requests==1.2.0
 tornado==3.0
 webassets==0.8
+Flask-Github==0.1.3

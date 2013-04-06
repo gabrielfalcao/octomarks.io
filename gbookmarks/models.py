@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 import hashlib
 from flask import config
-from datetime import datetime
-from werkzeug import generate_password_hash, check_password_hash
+# from datetime import datetime
+# from werkzeug import generate_password_hash, check_password_hash
 
 from gbookmarks.app import app
 
@@ -10,6 +11,10 @@ from gbookmarks.app import app
 db = app.db
 
 metadata = db.MetaData()
+
+
+def slugify(string):
+    return re.sub(r'\W+', '-', string)
 
 user = db.Table('gb_user', metadata,
     db.Column('id', db.Integer, primary_key=True),
@@ -60,12 +65,14 @@ class User(Model):
     def __repr__(self):
         return '<User %r, token=%r>' % (self.username, self.gb_token)
 
+
 class Tag(Model):
     table = tag
 
     def __init__(self, name):
         self.name = name.strip()
         self.slug = slugify(self.name)
+
 
 class Bookmark(db.Model):
     table = bookmark
@@ -75,7 +82,6 @@ class Bookmark(db.Model):
 
     def __init__(self, url):
         self.url = url.strip()
-
 
 
 def create_tables(db):

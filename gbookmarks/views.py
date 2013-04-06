@@ -84,11 +84,11 @@ def login():
 
 @mod.route("/")
 def index():
-    # if not session.get('gbuser'):
-    #     return redirect(settings.absurl('login'))
+    if not session.get('gbuser'):
+        url = settings.absurl('login')
+        return redirect(url)
 
-    # repositories = g.user.get_starred_repositories()
-    repositories = []
+    repositories = g.user.get_starred_repositories()
     return render_template('index.html', repositories=repositories, page='starred')
 
 

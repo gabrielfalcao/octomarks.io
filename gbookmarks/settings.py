@@ -50,4 +50,4 @@ else:
 
 SCHEMA = 'http://'
 
-absurl = lambda *path: "{0}{1}{2}".format(SCHEMA, DOMAIN, "/".join(path))
+absurl = lambda *path: "{0}{1}/{2}".format(SCHEMA, DOMAIN, "/".join(path))

@@ -1,1 +1,1 @@
-web: python bin/gbookmarksd
+web: python bin/flaskd

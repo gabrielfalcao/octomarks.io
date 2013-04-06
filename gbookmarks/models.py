@@ -57,11 +57,8 @@ class Tag(Model):
         self.slug = slugify(self.name)
 
 
-class Bookmark(db.Model):
+class Bookmark(Model):
     table = bookmark
-
-    id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String(255))
 
     def __init__(self, url):
         self.url = url.strip()

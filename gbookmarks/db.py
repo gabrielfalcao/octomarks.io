@@ -16,6 +16,7 @@ class ORM(type):
         super(ORM, cls).__init__(name, bases, attrs)
         if name not in ('ORM', 'Model'):
             ORM.orm[name] = cls
+            print name, cls
 
 
 class Model(object):

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from gbookmarks.db import models
-from gbookmarks.models import User, Tag
+from gbookmarks.models import User, Tag, Bookmark
 
 
 def test_can_find_models():
@@ -10,3 +10,4 @@ def test_can_find_models():
 
     models.should.have.key('User').being.equal(User)
     models.should.have.key('Tag').being.equal(Tag)
+    models.should.have.key('Bookmark').being.equal(Bookmark)

@@ -1,1 +1,1 @@
-web: python bin/flaskd
+web: ./bin/flaskd run

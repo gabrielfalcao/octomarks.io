@@ -19,9 +19,13 @@ class Runserver(Command):
         from gbookmarks.app import app
         from gbookmarks import settings
 
-        http_server = HTTPServer(WSGIContainer(app.web))
-        http_server.listen(settings.PORT)
-        IOLoop.instance().start()
+        if settings.DEBUG:
+            return app.web.run(debug=settings.DEBUG)
+
+        elif settings.PRODUCTION:
+            http_server = HTTPServer(WSGIContainer(app.web))
+            http_server.listen(settings.PORT)
+            IOLoop.instance().start()
 
 
 def init_command_manager(manager):

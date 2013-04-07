@@ -63,13 +63,17 @@ class Model(object):
     def to_dict(self):
         return self.__data__.copy()
 
+    @classmethod
+    def get_connection(cls):
+        return db.engine.connect()
+
     @property
     def is_persisted(self):
         return 'id' in self.__data__
 
     @property
     def __conn__(self):
-        return db.engine.connect()
+        return self.get_connection()
 
     def save(self):
         res = self.__conn__.execute(self.table.insert().values(**self.to_dict()))
@@ -83,8 +87,15 @@ class Model(object):
     def initialize(self):
         pass
 
+    def __eq__(self, other):
+        return type(self) == type(other) and self.__data__ == other.__data__
+
 
 class InvalidColumnName(Exception):
+    pass
+
+
+class RecordNotFound(Exception):
     pass
 
 

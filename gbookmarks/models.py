@@ -5,7 +5,7 @@ import hashlib
 # from werkzeug import generate_password_hash, check_password_hash
 from sqlalchemy.sql.expression import desc, select, update, delete, insert
 
-from gbookmarks.db import db, metadata, Model
+from gbookmarks.db import db, metadata, Model, RecordNotFound
 
 
 def slugify(string):
@@ -40,6 +40,19 @@ class User(Model):
             email=data.get('email'),
         )
         return instance.save()
+
+    @classmethod
+    def get_or_create_from_github_user(cls, data):
+        github_id = data.get('id')
+        conn = cls.get_connection()
+        res = conn.execute(cls.table.select().where(
+            User.table.c.github_id == github_id))
+
+        if not res.returns_rows:
+            raise RecordNotFound('User with github_id {0} not found'.format(
+                github_id))
+
+        return cls(**dict(zip(res.keys(), res.fetchone())))
 
 
 class Tag(Model):

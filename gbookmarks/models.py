@@ -4,7 +4,7 @@ import hashlib
 # from datetime import datetime
 # from werkzeug import generate_password_hash, check_password_hash
 
-from gbookmarks.db import db, metadata, Model, RecordNotFound
+from gbookmarks.db import db, metadata, Model
 
 
 def slugify(string):
@@ -38,6 +38,7 @@ class User(Model):
             github_id=data.get('id'),
             gravatar_id=data.get('gravatar_id'),
             email=data.get('email'),
+            github_token=data.get('github_token')
         )
         return instance.save()
 

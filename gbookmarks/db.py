@@ -88,7 +88,7 @@ class Model(object):
         pass
 
     def __eq__(self, other):
-        return type(self) == type(other) and self.__data__ == other.__data__
+        return self.__data__ == other.__data__
 
 
 class InvalidColumnName(Exception):

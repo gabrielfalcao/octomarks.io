@@ -1,7 +1,7 @@
 SETTINGS_FILE="settings.py"
 
 all:
-	@PYTHONPATH=$(PYTHONPATH) ./bin/gbookmarksd
+	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd
 
 setup: settings deps
 
@@ -28,8 +28,8 @@ test: unit, functional
 
 
 shell:
-	@PYTHONPATH=$(PYTHONPATH) ./bin/gbookmarksd shell
+	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd shell
 
 
 %:
-	@PYTHONPATH=$(PYTHONPATH) ./bin/gbookmarksd $@
+	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd $@

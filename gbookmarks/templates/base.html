@@ -20,9 +20,16 @@
   </head>
 
   <body>
-    {% block body %}
-    <div class="container">
+    {% if user %}
+    <div id="profile-menu">
+      <span id="profile-picture">
+        <a href="http://github.com/{{ user.username }}">
+          <img src="https://secure.gravatar.com/avatar/{{ user.gravatar_id }}?s=70" alt="{{ user.username }}" />
+        </a>
+      </span>
+      <p class="username">{{ user.username }}</p>
     </div>
-    {% endblock %}
+    {% endif %}
+    {% block body %}{% endblock %}
   </body>
 </html>

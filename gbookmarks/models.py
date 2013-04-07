@@ -46,7 +46,12 @@ class User(Model):
             email=data.get('email'),
             github_token=data.get('github_token')
         )
-        return instance.save()
+        res = instance.save()
+        print "." * 100
+        print "user created", data, instance
+        print "." * 100
+
+        return res
 
     @classmethod
     def get_or_create_from_github_user(cls, data):

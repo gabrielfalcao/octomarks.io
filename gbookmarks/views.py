@@ -45,8 +45,8 @@ def get_github_token(token=None):
 @mod.before_request
 def prepare_user():
     from gbookmarks.models import User
-    if 'gbuser' in session:
-        g.user = User.get_or_create_from_github_user(session['gbuser'])
+    if 'github_user_data' in session:
+        g.user = User.get_or_create_from_github_user(session['github_user_data'])
 
 
 @mod.route('/.callback')
@@ -71,12 +71,10 @@ def github_callback(resp):
     github_user_data = GithubUser.from_token(token)
 
     github_user_data['github_token'] = token
-    g.user = User.get_or_create_from_github_user(github_user_data)
-    session['gbuser'] = github_user_data
 
-    print "." * 100
-    print "user created", g.user.to_dict()
-    print "." * 100
+    g.user = User.get_or_create_from_github_user(github_user_data)
+    session['github_user_data'] = github_user_data
+
     return redirect(next_url)
 
 
@@ -84,7 +82,13 @@ def github_callback(resp):
 @requires_login
 def save_bookmark(token):
     uri = request.args.get('uri')
-    return json_response(g.user.save_bookmark(uri))
+    return render_template('saved.html', uri=uri)
+
+
+@mod.route('/bookmarklet/gb_<token>.js')
+@requires_login
+def serve_bookmarklet(token):
+    return render_template('bookmarklet.js', github_user_data=session['github_user_data'])
 
 
 @mod.route('/login')

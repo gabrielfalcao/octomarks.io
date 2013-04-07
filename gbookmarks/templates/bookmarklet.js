@@ -1,1 +1,1 @@
-javascript:(function(){location.href='{{ settings.absurl(url_for(".save_bookmark", token=user.gb_token)) }}?uri='+encodeURIComponent(location.href);})();
+alert("Hello {{ github_user_data.name }}");

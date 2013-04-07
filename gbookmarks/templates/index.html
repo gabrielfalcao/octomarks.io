@@ -1,15 +1,6 @@
 {% extends "base.html" %}
 
 {% block body %}
-<div id="profile-menu">
-  <span id="profile-picture">
-    <a href="http://github.com/{{ user.username }}">
-      <img src="https://secure.gravatar.com/avatar/3fa0df5c54f5ac0f8652d992d7d24039?s=70" alt="Gabriel Falcao" />
-    </a>
-  </span>
-  <p class="username">{{ user.username }}</p>
-</div>
-
 <div class="container">
   <div class="row-fluid">
     <div id="logo" class="span12">
@@ -33,6 +24,7 @@
     </div>
   </div>
 
+  {% if user.gb_token %}
   <div class="bookmarklet-container">
     <div class="row-fluid">
       <div class="span5 offset3">
@@ -42,9 +34,10 @@
 
     <div class="row-fluid">
       <div class="span5 offset3">
-        <a class="btn btn-inverse btn-large" href="{% include "bookmarklet.js"%}">grab the bookmarklet</a>
+        <a class="btn btn-inverse btn-large" href="javascript: (function () {var GBKLET=document.createElement('script');GBKLET.setAttribute('src', '{{ settings.absurl(url_for(".serve_bookmarklet", token=user.gb_token)) }}');document.body.appendChild(GBKLET);}());">grab the bookmarklet</a>
       </div>
     </div>
   </div>
+  {% endif %}
 </div>
 {% endblock %}

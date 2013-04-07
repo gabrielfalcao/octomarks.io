@@ -54,3 +54,5 @@ else:
 SCHEMA = 'http://'
 
 absurl = lambda *path: "{0}{1}/{2}".format(SCHEMA, DOMAIN, "/".join(path))
+
+RELEASE = GITHUB_CLIENT_ID

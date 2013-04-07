@@ -46,8 +46,9 @@ def get_github_token(token=None):
 
 @mod.before_request
 def prepare_user():
+    from gbookmarks.models import User
     if 'gbuser' in session:
-        g.user = GithubUser(session['gbuser'], session['github_token'])
+        g.user = User.get_or_create_from_github_user(session['gbuser'])
 
 
 @mod.route('/.callback')
@@ -99,15 +100,4 @@ def index():
         url = settings.absurl('login')
         return redirect(url)
 
-    repositories = g.user.get_starred_repositories()
-    return render_template('index.html', repositories=repositories, page='starred')
-
-
-@mod.route("/watching")
-def watching():
-    if not session.get('gbuser'):
-        return redirect(settings.absurl('login'))
-
-    repositories = g.user.get_watched_repositories()
-
-    return render_template('index.html', repositories=repositories, page='watched')
+    return render_template('index.html')

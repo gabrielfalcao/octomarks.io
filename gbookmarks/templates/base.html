@@ -4,61 +4,19 @@
     <meta charset="utf-8" />
     <title>github bookmarks</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="description" content="The easy and quick way to organize your github favorite projects by categories" />
+    <meta name="author" content="Gabriel Falcão" />
 
-    <link href="/media/css/bootstrap.min.css?v={{ settings.RELEASE }}" rel="stylesheet" />
-    <link href="/media/css/bootstrap-responsive.min.css?v={{ settings.RELEASE }}" rel="stylesheet" />
-    <link href="/media/css/gb.main.css?v={{ settings.RELEASE }}" rel="stylesheet" />
-    <link rel="shortcut icon" href="/media/img/favicon.png?v={{ settings.RELEASE }}" />
-
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/gb.main.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='img/favicon.png') }}" rel="shortcut icon" />
   </head>
 
   <body>
     {% block body %}
     <div class="container">
-      <div class="profile menu span2 pull-right">
-        <a class="profile menu-item pull-right" href="#">
-          <span>gabrielfalcao</span>
-          <img class="profile icon" src="/media/img/profile-icon.png?v={{ settings.RELEASE }}" alt="profile menu" />
-        </a>
-      </div>
-
-      <div class="span2 logo">
-        <a href="http://{{ settings.DOMAIN }}">github bookmarks</a>
-
-      </div>
-      <div class="span3 offset5">
-        <input type="text" name="search" class="search" placeholder="search in the code" />
-      </div>
-
-
     </div>
-
-    <div class="container">
-      <div id="whiteboard">
-        <div class="row-fluid">
-          <div class="span12 project-bar">
-            <div class="project-name">
-              <h1>Your bookmarks</h1>
-            </div>
-            <ul class="project-tabs">
-              <li class="tab well">
-                <a href="#">Categories</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <hr />
-        <div class="row-fluid whiteboard-container">
-          {% block whiteboard_container %}
-          {% end %}
-        </div><!-- .row-fluid -->
-        <script src="/media/js/jquery-1.9.1.min.js?v={{ settings.RELEASE }}"></script>
-        <script src="/media/js/d3.min.js?v={{ settings.RELEASE }}"></script>
-        <script src="/media/js/donut-chart.js?v={{ settings.RELEASE }}"></script>
-      </div>
-    </div>
-    {% end %}
+    {% endblock %}
   </body>
 </html>

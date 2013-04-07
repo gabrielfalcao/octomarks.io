@@ -1,54 +1,21 @@
-.navbar .navbar-inner {
-  background: transparent;
-
+#profile-picture {
+  opacity: .8;
+  border: 3px solid #fff;
+  background-color: #999;
+  moz-border-radius: 50px;
+  webkit-border-radius: 50px;
+  border-radius: 50px;
+  moz-background-clip: padding;
+  webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  moz-box-shadow: 0 10px 10px rgba(41,128,185,.8);
+  webkit-box-shadow: 0 10px 10px rgba(41,128,185,.8);
+  box-shadow: 0 10px 10px rgba(41,128,185,.8);
 }
-
-.navbar .navbar-inner .container {
-  padding: 0;
-}
-
-
-.topbar {
-  width: 1200px;
-}
-.logo {
-  display: block;
-  padding: 7px 0 21px 0;
-  font-family: 'Adobe Garamond Pro', 'Adobe Garamond', 'Garamond', 'EB Garamond', serif;
-  color: #1d4f47;
-  font-size: 36px;
-  float: left;
-  margin-left: 0;
-}
-
-.logo:hover {
-  opacity: .9;
-  text-decoration:none;
-}
-
-.menu, .menu-item {
-  font-family: 'Cabin', sans-serif;
-  color: #1d4f47;
-}
-
-.menu {
-  font-size:18px;
-}
-
-.profile.menu {
-  opacity: .6;
-}
-.profile.menu:hover {
+#profile-picture:hover {
   opacity: 1;
 }
 
-a.profile.menu-item span {
-  display: block;
-  float: left;
-  padding: 7px 8px 0 0;
+#profile-menu .username {
+  margin-right: 3px;
 }
-.profile.icon {
-  display: block;
-  margin: 0;
-  padding: 0;
-  float: left;

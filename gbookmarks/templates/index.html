@@ -34,7 +34,7 @@
 
     <div class="row-fluid">
       <div class="span5 offset3">
-        <a class="btn btn-inverse btn-large" href="javascript: (function () {var GBKLET=document.createElement('script');GBKLET.setAttribute('src', '{{ settings.absurl(url_for(".serve_bookmarklet", token=user.gb_token)) }}');document.body.appendChild(GBKLET);}());">grab the bookmarklet</a>
+        <a class="btn btn-inverse btn-large" href="javascript: (function () {var GBKLET=document.createElement('script');GBKLET.setAttribute('src', '{{ settings.absurl(url_for(".serve_bookmarklet", token=user.gb_token)) }}?' + (new Date()).getTime());document.body.appendChild(GBKLET);}());">grab the bookmarklet</a>
       </div>
     </div>
   </div>

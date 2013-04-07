@@ -96,8 +96,8 @@ def logout():
 
 @mod.route("/")
 def index():
-    if not session.get('gbuser'):
-        url = settings.absurl('login')
-        return redirect(url)
+    # if not session.get('gbuser'):
+    #     url = settings.absurl('login')
+    #     return redirect(url)
 
     return render_template('index.html')

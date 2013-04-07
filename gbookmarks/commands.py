@@ -9,10 +9,17 @@ from flask.ext.script import Command
 
 
 class SyncDB(Command):
+    def __init__(self, destructive=False):
+        self.destructive = destructive
+
     def run(self):
         from gbookmarks.models import db, metadata
 
-        metadata.drop_all(db.engine)
+        if self.destructive:
+            print "Destroying tables under", db.engine
+            metadata.drop_all(db.engine)
+
+        print "Createing tables under", db.engine
         metadata.create_all(db.engine)
 
 
@@ -31,6 +38,7 @@ class Runserver(Command):
 
 
 def init_command_manager(manager):
+    manager.add_command('renewdb', SyncDB(destructive=True))
     manager.add_command('syncdb', SyncDB())
     manager.add_command('run', Runserver())
     return manager

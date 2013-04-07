@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from functools import partial
 from flask import config
 from gbookmarks.app import app
 
@@ -64,6 +64,32 @@ class Model(object):
         return self.__data__.copy()
 
     @classmethod
+    def from_result_proxy(cls, proxy, result):
+        data = dict(zip(proxy.keys(), result))
+        return cls(**data)
+
+    @classmethod
+    def query_by(cls, **kw):
+        conn = db.engine.connect()
+        query = cls.table.select()
+        for field, value in kw.items():
+            query = query.where(getattr(cls.table.c, field) == value)
+
+        return conn.execute(query)
+
+    @classmethod
+    def find_one_by(cls, **kw):
+        proxy = cls.query_by(**kw)
+        return cls.from_result_proxy(proxy, proxy.fetchone())
+
+    @classmethod
+    def find_by(cls, **kw):
+        proxy = cls.query_by(**kw)
+
+        Users = partial(cls.from_result_proxy, proxy)
+        return map(Users, proxy.fetchall())
+
+    @classmethod
     def get_connection(cls):
         return db.engine.connect()
 
@@ -76,7 +102,8 @@ class Model(object):
         return self.get_connection()
 
     def save(self):
-        res = self.__conn__.execute(self.table.insert().values(**self.to_dict()))
+        res = self.__conn__.execute(
+            self.table.insert().values(**self.to_dict()))
         self.__data__['id'] = res.lastrowid
         self.__data__.update(res.last_inserted_params())
         return self

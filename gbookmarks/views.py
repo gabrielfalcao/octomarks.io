@@ -6,8 +6,9 @@ from flask import (
     Blueprint, request, session, render_template, redirect, g, flash
 )
 
-from gbookmarks.api import GithubUser
+
 from gbookmarks import settings
+from gbookmarks.api import GithubUser
 
 from flaskext.github import GithubAuth
 
@@ -52,6 +53,7 @@ def prepare_user():
 @mod.route('/.callback')
 @github.authorized_handler
 def github_callback(resp):
+    from gbookmarks.models import User
     next_url = request.args.get('next') or '/'
     if resp is None:
         print (u'You denied the request to sign in.')
@@ -67,13 +69,29 @@ def github_callback(resp):
     token = resp['access_token']
     session['github_token'] = token
 
-    session['gbuser'] = g.user = GithubUser.from_token(token)
+    github_user_data = GithubUser.from_token(token)
+
+    github_user_data['github_token'] = token
+    g.user = User.get_or_create_from_github_user(github_user_data)
+    session['gbuser'] = github_user_data
+
+    print "." * 100
+    print "user created", g.user.to_dict()
+    print "." * 100
     return redirect(next_url)
 
 
 @mod.route('/login')
 def login():
-    return github.authorize(callback=settings.absurl('.callback'))
+    cb = settings.absurl('.callback')
+    return github.authorize(callback_url=cb)
+
+
+@mod.route('/logout')
+def logout():
+    session.clear()
+    del g.user
+    return render_template('logout.html')
 
 
 @mod.route("/")

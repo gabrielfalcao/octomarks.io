@@ -3,7 +3,6 @@ import re
 import hashlib
 # from datetime import datetime
 # from werkzeug import generate_password_hash, check_password_hash
-from sqlalchemy.sql.expression import desc, select, update, delete, insert
 
 from gbookmarks.db import db, metadata, Model, RecordNotFound
 
@@ -16,6 +15,7 @@ class User(Model):
     table = db.Table('gb_user', metadata,
         db.Column('id', db.Integer, primary_key=True),
         db.Column('github_id', db.Integer, nullable=False, unique=True),
+        db.Column('github_token', db.String(256), nullable=True),
         db.Column('gravatar_id', db.String(40), nullable=False, unique=True),
         db.Column('username', db.String(80), nullable=False, unique=True),
         db.Column('gb_token', db.String(40), nullable=False, unique=True),
@@ -48,11 +48,12 @@ class User(Model):
         res = conn.execute(cls.table.select().where(
             User.table.c.github_id == github_id))
 
-        if not res.returns_rows:
-            raise RecordNotFound('User with github_id {0} not found'.format(
-                github_id))
+        rows = res.fetchone()
+        if not rows:
+            return cls.create_from_github_user(data)
 
-        return cls(**dict(zip(res.keys(), res.fetchone())))
+        result = dict(zip(res.keys(), list(rows)))
+        return cls(**result)
 
 
 class Tag(Model):

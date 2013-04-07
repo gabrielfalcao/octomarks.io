@@ -10,8 +10,10 @@ from flask.ext.script import Command
 
 class SyncDB(Command):
     def run(self):
-        from gbookmarks import models
-        models.db.create_all()
+        from gbookmarks.models import db, metadata
+
+        metadata.drop_all(db.engine)
+        metadata.create_all(db.engine)
 
 
 class Runserver(Command):

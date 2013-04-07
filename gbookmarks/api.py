@@ -51,10 +51,7 @@ class GithubResource(dict):
 
 
 class GithubRepository(GithubResource):
-    def __init__(self, *args, **kw):
-        super(GithubRepository, self).__init__(*args, **kw)
-        import pprint
-        pprint.pprint(self)
+    pass
 
 
 class GithubUser(GithubResource):

@@ -49,7 +49,7 @@ if DEBUG:  # localhost
 else:
     GITHUB_CLIENT_ID = '491daa32a3fffba61846'
     GITHUB_CLIENT_SECRET = '427e42629007fa7227bf1f23a48d216cda904d50'
-    DOMAIN = 'githubbookmarks.com'
+    DOMAIN = 'github-bookmarks.com'
 
 SCHEMA = 'http://'
 

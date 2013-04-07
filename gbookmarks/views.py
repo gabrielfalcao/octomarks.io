@@ -90,7 +90,6 @@ def login():
 @mod.route('/logout')
 def logout():
     session.clear()
-    del g.user
     return render_template('logout.html')
 
 

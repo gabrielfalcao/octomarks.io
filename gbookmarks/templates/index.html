@@ -12,20 +12,38 @@
 
 <div class="container">
   <div class="row-fluid">
-    <div id="logo" class="span4 offset4">
+    <div id="logo" class="span12">
       <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo for github bookmarks" />
     </div>
   </div>
-  <br />
-  <br />
+
+  <div class="row-fluid">
+    <div class="span5 offset3">
+      <h2>Save a bookmark</h2>
+    </div>
+  </div>
   <div class="row-fluid">
     <div class="span5 offset3">
       <input class="classy-input" type="text" name="bookmark_url" placeholder="http://github.com/username/project" />
     </div>
   </div>
   <div class="row-fluid">
-    <div class="span2 offset7">
-      <input type="button" class="btn btn-large" name="action" value="save" disabled="true" />
+    <div class="span8">
+      <input type="submit" id="main-save" class="btn btn-large btn-warning" name="action" value="save" disabled="true" />
+    </div>
+  </div>
+
+  <div class="bookmarklet-container">
+    <div class="row-fluid">
+      <div class="span5 offset3">
+        <h3>or be clever and</h3>
+      </div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="span5 offset3">
+        <a class="btn btn-inverse btn-large" href="{% include "bookmarklet.js"%}">grab the bookmarklet</a>
+      </div>
     </div>
   </div>
 </div>

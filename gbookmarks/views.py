@@ -3,13 +3,13 @@
 
 import json
 from flask import (
-    Blueprint, request, session, render_template, redirect, g, flash
+    Blueprint, request, session, render_template, redirect, g, flash, Response
 )
 
 
 from gbookmarks import settings
 from gbookmarks.api import GithubUser
-
+from gbookmarks.handy.decorators import requires_login
 from flaskext.github import GithubAuth
 
 
@@ -22,16 +22,14 @@ github = GithubAuth(
 mod = Blueprint('views', __name__)
 
 
+def json_response(data):
+    return Response(json.dumps(data, indent=4), mimetype="text/json")
+
+
 @mod.before_request
 def prepare_auth():
     g.user = None
     g.github = github
-
-
-# @mod.teardown_request
-# def teardown_request(exception):
-#     del g.github
-#     del g.user
 
 
 @mod.context_processor
@@ -82,6 +80,13 @@ def github_callback(resp):
     return redirect(next_url)
 
 
+@mod.route('/save/<token>')
+@requires_login
+def save_bookmark(token):
+    uri = request.args.get('uri')
+    return json_response(g.user.save_bookmark(uri))
+
+
 @mod.route('/login')
 def login():
     cb = settings.absurl('.callback')
@@ -96,8 +101,4 @@ def logout():
 
 @mod.route("/")
 def index():
-    # if not session.get('gbuser'):
-    #     url = settings.absurl('login')
-    #     return redirect(url)
-
     return render_template('index.html')

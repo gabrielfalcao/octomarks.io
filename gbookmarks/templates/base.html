@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="The easy and quick way to organize your github favorite projects by categories" />
     <meta name="author" content="Gabriel Falcão" />
-
+    {% block meta %}{% endblock %}
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/gb.main.css') }}" rel="stylesheet" />
@@ -14,8 +14,9 @@
     <link href="{{ url_for('static', filename='css/gb.navbar.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/gb.project-bar.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/gb.feed.css') }}" rel="stylesheet" />
-
     <link href="{{ url_for('static', filename='img/favicon.png') }}" rel="shortcut icon" />
+    {% block css_head %}{% endblock %}
+    {% block js_head %}{% endblock %}
   </head>
 
   <body>

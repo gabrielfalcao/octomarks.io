@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block meta %}
+<meta http-equiv="refresh" content="3;URL='{{ uri }}'">
+{% endblock %}
+{% block body %}
+
+<div class="container">
+  <div class="row-fluid">
+    <div id="logo" class="span12">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo for github bookmarks" />
+    </div>
+  </div>
+</div>
+{% endblock %}

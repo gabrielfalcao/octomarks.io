@@ -31,6 +31,12 @@ class User(Model):
     def __repr__(self):
         return '<User %r, token=%r>' % (self.username, self.gb_token)
 
+    def save_bookmark(self, uri):
+        return {
+            'id': 2,
+            'categories': ['js', 'presentation'],
+        }
+
     @classmethod
     def create_from_github_user(cls, data):
         instance = cls(

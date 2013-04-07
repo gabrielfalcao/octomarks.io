@@ -104,5 +104,6 @@ def logout():
 
 
 @mod.route("/")
+@requires_login
 def index():
     return render_template('index.html')

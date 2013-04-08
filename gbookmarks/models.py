@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 import hashlib
-# from datetime import datetime
+from datetime import datetime
 # from werkzeug import generate_password_hash, check_password_hash
 import logging
 
@@ -14,6 +14,10 @@ def slugify(string):
     return re.sub(r'\W+', '-', string)
 
 
+def now():
+    return datetime.now()
+
+
 class User(Model):
     table = db.Table('gb_user', metadata,
         db.Column('id', db.Integer, primary_key=True),
@@ -23,6 +27,8 @@ class User(Model):
         db.Column('username', db.String(80), nullable=False, unique=True),
         db.Column('gb_token', db.String(40), nullable=False, unique=True),
         db.Column('email', db.String(100), nullable=False, unique=True),
+        db.Column('created_at', db.DateTime, default=now),
+        db.Column('updated_at', db.DateTime, default=now),
     )
 
     def initialize(self):
@@ -71,6 +77,8 @@ class Tag(Model):
         db.Column('id', db.Integer, primary_key=True),
         db.Column('name', db.String(80), nullable=False, unique=True),
         db.Column('slug', db.String(80), nullable=False, unique=True),
+        db.Column('created_at', db.DateTime, default=now),
+        db.Column('updated_at', db.DateTime, default=now),
     )
 
     def preprocess(self, data):
@@ -88,6 +96,8 @@ class Bookmark(Model):
         db.Column('id', db.Integer, primary_key=True),
         db.Column('user_id', db.Integer),
         db.Column('url', db.Text, nullable=False),
+        db.Column('created_at', db.DateTime, default=now),
+        db.Column('updated_at', db.DateTime, default=now),
     )
 
     def add_tag(self, name):

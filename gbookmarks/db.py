@@ -16,7 +16,7 @@ class ORM(type):
         if not hasattr(cls, 'table'):
             return
 
-        cls.__columns__ = {c.name: c.type.python_type
+        cls.__columns__ = {c.name: c.type.copy_value
                            for c in cls.table.columns}
 
         super(ORM, cls).__init__(name, bases, attrs)
@@ -44,6 +44,9 @@ class Model(object):
 
         self.initialize()
 
+    def __repr__(self):
+        return '<{0} id={1}>'.format(self.__class__.__name__, self.id)
+
     def preprocess(self, data):
         return data
 
@@ -59,7 +62,7 @@ class Model(object):
             return super(Model, self).__getattribute__(attr)
 
         if attr in self.__columns__:
-            return self.__data__[attr]
+            return self.__data__.get(attr, None)
 
         return super(Model, self).__getattribute__(attr)
 
@@ -139,6 +142,9 @@ class Model(object):
         pass
 
     def __eq__(self, other):
+        if self.id:
+            return self.id == self.id
+
         return self.__data__ == other.__data__
 
 

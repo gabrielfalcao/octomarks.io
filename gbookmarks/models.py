@@ -35,6 +35,10 @@ class User(Model):
         return '<User %r, token=%r>' % (self.username, self.gb_token)
 
     def save_bookmark(self, uri):
+        # TODO: take project, languages and all the other data that
+        # will be fetched by the view, so you can have more
+        # information.
+
         return Bookmark.create(user_id=self.id, url=uri)
 
     def get_bookmarks(self):

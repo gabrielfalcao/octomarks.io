@@ -1,1 +1,16 @@
-alert("Hello {{ github_user_data.name }}");
+(function(){
+    if (!($ = window.jQuery)) { // typeof jQuery=='undefined' works too
+        script = document.createElement( 'script' );
+        script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js';
+        script.onload=save_bookmark;
+        document.body.appendChild(script);
+    }
+    else {
+        save_bookmark();
+    }
+
+    function save_bookmark() {
+        var URL = encodeURIComponent(location.href);
+        location.href='{{ full_url_for(".save_bookmark", token=user.gb_token) }}?uri='+encodeURIComponent(location.href)+'&time='+(new Date().getTime());
+    }
+})()

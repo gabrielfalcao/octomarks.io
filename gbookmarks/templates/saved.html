@@ -4,11 +4,19 @@
 <meta http-equiv="refresh" content="30;URL='{{ uri }}'">
 {% endblock %}
 {% block body %}
-
 <div class="container">
   <div class="row-fluid">
     <div id="logo" class="span12">
       <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo for github bookmarks" />
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span12">
+      <h2>{{ repository_info.project }} saved!</h2>
+      <h3>you also just made {{ repository_info.owner }} happy with an extra star :)</h3>
+
+      <hr />
+      <h5>We also added the tags {{ ", ".join(tags.keys()) }}</h5>
     </div>
   </div>
 </div>

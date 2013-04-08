@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import re
 import json
 from flask import (
-    Blueprint, request, session, render_template, redirect, g, flash, Response
+    Blueprint, request, session, render_template, redirect, g, flash, Response, url_for
 )
 
 
 from gbookmarks import settings
-from gbookmarks.api import GithubUser
+from gbookmarks.api import GithubUser, GithubEndpoint
 from gbookmarks.handy.decorators import requires_login
 from flaskext.github import GithubAuth
 
@@ -26,6 +26,19 @@ def json_response(data):
     return Response(json.dumps(data, indent=4), mimetype="text/json")
 
 
+class RepositoryURIInfo(object):
+    project = None
+    owner = None
+    regex = re.compile(r'github.com/(?P<owner>[^/]+)/(?P<project>[^/]+)')
+
+    def __init__(self, uri):
+        self.uri = uri
+        self.matched = self.regex.search(uri)
+        if self.matched:
+            self.owner = self.matched.group('owner')
+            self.project = self.matched.group('project')
+
+
 @mod.before_request
 def prepare_auth():
     g.user = None
@@ -34,7 +47,10 @@ def prepare_auth():
 
 @mod.context_processor
 def inject_basics():
-    return dict(user=g.user, settings=settings)
+    def full_url_for(*args, **kw):
+        return settings.absurl(url_for(*args, **kw))
+
+    return dict(user=g.user, settings=settings, RepositoryURIInfo=RepositoryURIInfo, full_url_for=full_url_for)
 
 
 @github.access_token_getter
@@ -81,20 +97,45 @@ def github_callback(resp):
 @mod.route('/save/<token>')
 @requires_login
 def save_bookmark(token):
+    from gbookmarks.models import User
     uri = request.args.get('uri')
-    return render_template('saved.html', uri=uri)
+    info = RepositoryURIInfo(uri)
+    user = User.find_one_by(gb_token=token)
+
+    api = GithubEndpoint(user.github_token)
+    bookmark = user.save_bookmark(uri)
+
+    tags = api.retrieve('/repos/{owner}/{repo}/languages'.format(
+        owner=info.owner,
+        repo=info.project
+    ))
+
+    # saving tags
+    map(bookmark.add_tag, tags)
+
+    # rendering
+    return render_template('saved.html', uri=uri, user=user, repository_info=info, bookmark=bookmark, tags=tags)
 
 
 @mod.route('/bookmarklet/gb_<token>.js')
 @requires_login
 def serve_bookmarklet(token):
-    return render_template('bookmarklet.js', github_user_data=session['github_user_data'])
+    from gbookmarks.models import User
+    user = User.find_one_by(gb_token=token)
+    return render_template('bookmarklet.js', user=user)
 
 
 @mod.route('/login')
 def login():
     cb = settings.absurl('.callback')
     return github.authorize(callback_url=cb)
+
+
+@mod.route('/bookmarks')
+@requires_login
+def bookmarks():
+    bookmarks = g.user.get_bookmarks()
+    return render_template('bookmarks.html', bookmarks=bookmarks)
 
 
 @mod.route('/logout')

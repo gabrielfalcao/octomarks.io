@@ -112,8 +112,7 @@ def save_bookmark(token):
         owner=info.owner,
         repo=info.project
     ))
-
-    if not tags:
+    if 'message' in tags:
         return render_template('invalid.html', uri=uri)
 
     bookmark = user.save_bookmark(uri)

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .base import db_test
-from gbookmarks.models import User
+from .base import db_test, user_test
+from gbookmarks.models import User, Bookmark
 
 
 @db_test
@@ -94,6 +94,20 @@ def test_find_one_by(context):
 
 
 @db_test
+def test_find_one_by_not_exists(context):
+    ("User.find_one_by(**kwargs) should return None if does not exist")
+
+    User.find_one_by(username='octocat').should.be.none
+
+
+@db_test
+def test_find_many_by_not_exists(context):
+    ("User.find_by(**kwargs) should return an empty list if does not exist")
+
+    User.find_by(username='octocat').should.be.empty
+
+
+@db_test
 def test_find_by(context):
     ("User.find_by(**kwargs) should fetch a list of users from the database")
 
@@ -122,3 +136,29 @@ def test_find_by(context):
         original_user1,
         original_user2
     ])
+
+
+@user_test
+def test_save_bookmark(context):
+    ("User#save_bookmark should take a bookmark link and "
+     "return the bookmark")
+
+    bookmark = context.user.save_bookmark(
+        "http://github.com/gabrielfalcao/sure")
+
+    bookmark.should.have.property('id').being.equal(1)
+    bookmark.should.have.property('url').being.equal(
+        "http://github.com/gabrielfalcao/sure")
+
+
+@user_test
+def test_list_bookmark(context):
+    ("User#get_bookmarks should return a list of bookmarks")
+
+    b1 = context.user.save_bookmark(
+        "http://github.com/gabrielfalcao/sure")
+
+    b2 = context.user.save_bookmark(
+        "http://github.com/gabrielfalcao/lettuce")
+
+    context.user.get_bookmarks().should.equal([b1, b2])

@@ -12,3 +12,18 @@ def prepare(context):
     conn.execute(User.table.delete())
 
 db_test = scenario(prepare)
+
+
+def create_user(context):
+    data = {
+        "login": "octocat",
+        "id": 42,
+        "gravatar_id": "somehexcode",
+        "email": "octocat@github.com",
+        "type": "User",
+        "github_token": 'toktok',
+    }
+    context.user = User.create_from_github_user(data)
+
+
+user_test = scenario([prepare, create_user])

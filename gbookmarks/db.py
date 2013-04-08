@@ -63,10 +63,22 @@ class Model(object):
     def to_dict(self):
         return self.__data__.copy()
 
+    def delete(self):
+        return self.__conn__.execute(self.table.delete().where(
+            self.table.c.id == self.id))
+
     @classmethod
     def from_result_proxy(cls, proxy, result):
+        if not result:
+            return None
+
         data = dict(zip(proxy.keys(), result))
         return cls(**data)
+
+    @classmethod
+    def create(cls, **data):
+        instance = cls(**data)
+        return instance.save()
 
     @classmethod
     def query_by(cls, **kw):
@@ -75,7 +87,8 @@ class Model(object):
         for field, value in kw.items():
             query = query.where(getattr(cls.table.c, field) == value)
 
-        return conn.execute(query)
+        proxy = conn.execute(query)
+        return proxy
 
     @classmethod
     def find_one_by(cls, **kw):

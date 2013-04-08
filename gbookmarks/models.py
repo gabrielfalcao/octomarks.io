@@ -3,6 +3,9 @@ import re
 import hashlib
 # from datetime import datetime
 # from werkzeug import generate_password_hash, check_password_hash
+import logging
+
+logger = logging.getLogger(__name__)
 
 from gbookmarks.db import db, metadata, Model
 
@@ -32,40 +35,31 @@ class User(Model):
         return '<User %r, token=%r>' % (self.username, self.gb_token)
 
     def save_bookmark(self, uri):
-        return {
-            'id': 2,
-            'categories': ['js', 'presentation'],
-        }
+        return Bookmark.create(user_id=self.id, url=uri)
+
+    def get_bookmarks(self):
+        return Bookmark.find_by(user_id=self.id)
 
     @classmethod
     def create_from_github_user(cls, data):
-        instance = cls(
+        instance = cls.create(
             username=data.get('login'),
             github_id=data.get('id'),
             gravatar_id=data.get('gravatar_id'),
             email=data.get('email'),
             github_token=data.get('github_token')
         )
-        res = instance.save()
-        print "." * 100
-        print "user created", data, instance
-        print "." * 100
+        logger.info("user %d created: %s", instance.id, instance.email)
 
-        return res
+        return instance
 
     @classmethod
     def get_or_create_from_github_user(cls, data):
-        github_id = data.get('id')
-        conn = cls.get_connection()
-        res = conn.execute(cls.table.select().where(
-            User.table.c.github_id == github_id))
-
-        rows = res.fetchone()
-        if not rows:
+        instance = cls.find_one_by(username=data['login'])
+        if not instance:
             return cls.create_from_github_user(data)
 
-        result = dict(zip(res.keys(), list(rows)))
-        return cls(**result)
+        return instance
 
 
 class Tag(Model):
@@ -83,18 +77,10 @@ class Tag(Model):
 class Bookmark(Model):
     table = db.Table('gb_bookmark', metadata,
         db.Column('id', db.Integer, primary_key=True),
+        db.Column('user_id', db.Integer),
         db.Column('url', db.Text, nullable=False),
     )
 
-    def __init__(self, url):
-        self.url = url.strip()
-
-
-user_bookmark = db.Table('gb_user_bookmark', metadata,
-    db.Column('id', db.Integer, primary_key=True),
-    db.Column('user_id', db.Integer, unique=True, nullable=False),
-    db.Column('bookmark_id', db.Integer, unique=True, nullable=False),
-)
 
 bookmark_tags = db.Table('gb_bookmark_tags', metadata,
     db.Column('id', db.Integer, primary_key=True),

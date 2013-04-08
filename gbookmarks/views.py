@@ -39,6 +39,9 @@ class RepositoryURIInfo(object):
             self.owner = self.matched.group('owner')
             self.project = self.matched.group('project')
 
+    def remount(self):
+        return 'https://github.com/{0}/{1}'.format(self.owner, self.project)
+
 
 @mod.before_request
 def prepare_auth():
@@ -102,6 +105,7 @@ def save_bookmark(token):
     uri = request.args.get('uri')
     info = RepositoryURIInfo(uri)
 
+    uri = info.remount()
     if not info.matched:
         return render_template('invalid.html', uri=uri)
 

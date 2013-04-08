@@ -30,8 +30,15 @@ test: unit, functional
 shell:
 	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd shell
 
+deploy:
+	@git push heroku master
+	@heroku run ./bin/flaskd syncdb
+
 release:
 	@heroku config:set RELEASE=`git rev-parse HEAD`
+
+unleash: deploy release
+	@heroku run ./bin/flaskd renewdb
 
 %:
 	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd $@

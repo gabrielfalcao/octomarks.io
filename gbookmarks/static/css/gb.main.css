@@ -22,7 +22,7 @@
     display: none;
   }
   .footer {
-    position: relative;
+    opacity: .4;
   }
 }
 

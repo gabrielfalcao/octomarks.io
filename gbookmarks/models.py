@@ -45,7 +45,7 @@ class User(Model):
         # will be fetched by the view, so you can have more
         # information.
 
-        return Bookmark.create(user_id=self.id, url=uri)
+        return Bookmark.get_or_create(user_id=self.id, url=uri.strip())
 
     def get_bookmarks(self):
         return Bookmark.find_by(user_id=self.id)

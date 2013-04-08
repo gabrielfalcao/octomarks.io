@@ -164,19 +164,17 @@ def test_save_bookmark(context):
         "http://github.com/gabrielfalcao/sure")
 
 
-# @user_test
-# def test_save_bookmark_with_tags(context):
-#     ("User#save_bookmark with tags should save the tags")
+@user_test
+def test_save_bookmark_multiple_times(context):
+    ("User#save_bookmark with the same uri should save only once")
 
-#     bookmark = context.user.save_bookmark(
-#         "http://github.com/gabrielfalcao/sure",
-#         tags=["testing", "python", "domain specific language"])
+    bookmark1 = context.user.save_bookmark(
+        "http://github.com/gabrielfalcao/sure")
 
-#     bookmark.should.have.property('id').being.equal(1)
-#     bookmark.should.have.property('url').being.equal(
-#         "http://github.com/gabrielfalcao/sure")
+    bookmark2 = context.user.save_bookmark(
+        "http://github.com/gabrielfalcao/sure")
 
-#     bookmark.should.have.property('tags').being.a(list)
-#     bookmark.tags[0].slug.should.equal("testing")
-#     bookmark.tags[1].slug.should.equal("python")
-#     bookmark.tags[2].slug.should.equal("domain-specific-language")
+    bookmark1.should.equal(bookmark2)
+
+    Bookmark.find_by(user_id=context.user.id).should.have.length_of(1)
+    Bookmark.find_by(user_id=context.user.id).should.contain(bookmark1)

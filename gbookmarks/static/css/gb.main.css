@@ -16,13 +16,13 @@
 /* Smartphones (landscape) ----------- */
 @media (max-width: 601px) {
   #logo {
-    margin-top: 40px;
+    margin-top: 80px;
   }
   .bookmarklet-container {
     display: none;
   }
   .footer {
-    display: none;
+    display: inline;
   }
 }
 

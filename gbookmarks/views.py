@@ -108,12 +108,15 @@ def save_bookmark(token):
     user = User.find_one_by(gb_token=token)
 
     api = GithubEndpoint(user.github_token)
-    bookmark = user.save_bookmark(uri)
-
     tags = api.retrieve('/repos/{owner}/{repo}/languages'.format(
         owner=info.owner,
         repo=info.project
     ))
+
+    if not tags:
+        return render_template('invalid.html', uri=uri)
+
+    bookmark = user.save_bookmark(uri)
 
     print api.save('/user/starred/{owner}/{repo}/'.format(
         owner=info.owner,

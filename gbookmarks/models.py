@@ -93,6 +93,10 @@ class Bookmark(Model):
             bookmark_id=self.id,
         )
 
+    @property
+    def tags(self):
+        return [b.tag for b in BookmarkTags.find_by(bookmark_id=self.id)]
+
 
 class BookmarkTags(Model):
     table = db.Table('gb_bookmark_tags', metadata,
@@ -100,3 +104,11 @@ class BookmarkTags(Model):
         db.Column('tag_id', db.Integer, nullable=False),
         db.Column('bookmark_id', db.Integer, nullable=False),
     )
+
+    @property
+    def tag(self):
+        return Tag.find_one_by(id=self.tag_id)
+
+    @property
+    def bookmark(self):
+        return Bookmark.find_one_by(id=self.bookmark_id)

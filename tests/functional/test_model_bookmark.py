@@ -29,3 +29,16 @@ def test_save_bookmark_with_tags(context):
 
     rel1.should.have.property("tag_id").being.equal(t1.id)
     rel1.should.have.property("bookmark_id").being.equal(context.bookmark.id)
+
+
+@bookmark_test
+def test_get_bookmark_tags(context):
+    ("Bookmark#tags should return a list of tags")
+
+    t1, _ = context.bookmark.add_tag("Domain Specific  Language")
+    t2, _ = context.bookmark.add_tag("Python")
+
+    context.bookmark.tags.should.have.length_of(2)
+
+    context.bookmark.tags.should.contain(t1)
+    context.bookmark.tags.should.contain(t2)

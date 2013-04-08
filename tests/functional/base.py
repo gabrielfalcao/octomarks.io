@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from sure import scenario
-from gbookmarks.models import User, db, metadata
+from gbookmarks.models import User, db, metadata, Bookmark
 
 
 def prepare(context):
@@ -26,4 +26,12 @@ def create_user(context):
     context.user = User.create_from_github_user(data)
 
 
+def create_bookmark(context):
+    context.bookmark = Bookmark.create(
+        url="http://github.com/clarete/forbidden_fruit",
+        user_id=1,
+    )
+
+
 user_test = scenario([prepare, create_user])
+bookmark_test = scenario([prepare, create_bookmark])

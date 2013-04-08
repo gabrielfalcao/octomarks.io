@@ -33,7 +33,7 @@ class Model(object):
         module = Model.__module__
         name = Model.__name__
         columns = self.__columns__.keys()
-        self.__data__ = data
+        self.__data__ = self.preprocess(data)
 
         for k, v in data.iteritems():
             if k not in self.__columns__:
@@ -43,6 +43,9 @@ class Model(object):
             setattr(self, k, v)
 
         self.initialize()
+
+    def preprocess(self, data):
+        return data
 
     def __setattr__(self, attr, value):
         data_type = self.__columns__.get(attr, None)
@@ -79,6 +82,14 @@ class Model(object):
     def create(cls, **data):
         instance = cls(**data)
         return instance.save()
+
+    @classmethod
+    def get_or_create(cls, **data):
+        instance = cls.find_one_by(**data)
+        if not instance:
+            instance = cls.create(**data)
+
+        return instance
 
     @classmethod
     def query_by(cls, **kw):

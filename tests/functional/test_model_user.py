@@ -139,6 +139,19 @@ def test_find_by(context):
 
 
 @user_test
+def test_list_bookmark(context):
+    ("User#get_bookmarks should return a list of bookmarks")
+
+    b1 = context.user.save_bookmark(
+        "http://github.com/gabrielfalcao/sure")
+
+    b2 = context.user.save_bookmark(
+        "http://github.com/gabrielfalcao/lettuce")
+
+    context.user.get_bookmarks().should.equal([b1, b2])
+
+
+@user_test
 def test_save_bookmark(context):
     ("User#save_bookmark should take a bookmark link and "
      "return the bookmark")
@@ -151,14 +164,19 @@ def test_save_bookmark(context):
         "http://github.com/gabrielfalcao/sure")
 
 
-@user_test
-def test_list_bookmark(context):
-    ("User#get_bookmarks should return a list of bookmarks")
+# @user_test
+# def test_save_bookmark_with_tags(context):
+#     ("User#save_bookmark with tags should save the tags")
 
-    b1 = context.user.save_bookmark(
-        "http://github.com/gabrielfalcao/sure")
+#     bookmark = context.user.save_bookmark(
+#         "http://github.com/gabrielfalcao/sure",
+#         tags=["testing", "python", "domain specific language"])
 
-    b2 = context.user.save_bookmark(
-        "http://github.com/gabrielfalcao/lettuce")
+#     bookmark.should.have.property('id').being.equal(1)
+#     bookmark.should.have.property('url').being.equal(
+#         "http://github.com/gabrielfalcao/sure")
 
-    context.user.get_bookmarks().should.equal([b1, b2])
+#     bookmark.should.have.property('tags').being.a(list)
+#     bookmark.tags[0].slug.should.equal("testing")
+#     bookmark.tags[1].slug.should.equal("python")
+#     bookmark.tags[2].slug.should.equal("domain-specific-language")

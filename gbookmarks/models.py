@@ -69,9 +69,14 @@ class Tag(Model):
         db.Column('slug', db.String(80), nullable=False, unique=True),
     )
 
-    def __init__(self, name):
-        self.name = name.strip()
-        self.slug = slugify(self.name)
+    def preprocess(self, data):
+        name = data.get('name')
+        if name:
+            cleaned_name = re.sub(r'\s+', ' ', name).lower()
+            data['name'] = cleaned_name
+            data['slug'] = slugify(cleaned_name)
+
+        return data
 
 
 class Bookmark(Model):
@@ -81,9 +86,17 @@ class Bookmark(Model):
         db.Column('url', db.Text, nullable=False),
     )
 
+    def add_tag(self, name):
+        tag = Tag.get_or_create(name=name)
+        return tag, BookmarkTags.get_or_create(
+            tag_id=tag.id,
+            bookmark_id=self.id,
+        )
 
-bookmark_tags = db.Table('gb_bookmark_tags', metadata,
-    db.Column('id', db.Integer, primary_key=True),
-    db.Column('tag_id', db.Integer, unique=True, nullable=False),
-    db.Column('bookmark_id', db.Integer, unique=True, nullable=False),
-)
+
+class BookmarkTags(Model):
+    table = db.Table('gb_bookmark_tags', metadata,
+        db.Column('id', db.Integer, primary_key=True),
+        db.Column('tag_id', db.Integer, nullable=False),
+        db.Column('bookmark_id', db.Integer, nullable=False),
+    )

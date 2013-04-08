@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+  <div class="row-fluid">
+    <div id="logo" class="span12">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo for github bookmarks" />
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span8 offset2">
+      <h1>{{ username }} is not yet on github-bookmarks</h1>
+    </div>
+  </div>
+  <br />
+  <div class="row-fluid">
+    <div class="span8 offset4">
+      <a href="mailto:{{ githubber.email }}?subject={{ "Welcome to github-bookmarks" }}&body={{ "Hey {0},\n Have you checked out github-bookmarks ?\n\nThere you can see how many bookmarks your projects got and organize your favorite repos".format(username) }}" class="btn btn-large btn-warning">Invite him to github bookmarks</a>
+
+      {% if githubber.blog %}
+      or <strong><em><a href="{{ githubber.blog }}">visit his website</a></em></strong>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

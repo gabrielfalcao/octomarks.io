@@ -119,10 +119,6 @@ def save_bookmark(token):
         owner=info.owner,
         repo=info.project
     )), tags
-    print api.retrieve('/user/starred/{owner}/{repo}'.format(
-        owner=info.owner,
-        repo=info.project
-    ))
 
     # saving tags
     map(bookmark.add_tag, tags)
@@ -132,11 +128,10 @@ def save_bookmark(token):
 
 
 @mod.route('/bookmarklet/gb_<token>.js')
-@requires_login
 def serve_bookmarklet(token):
     from gbookmarks.models import User
     user = User.find_one_by(gb_token=token)
-    return render_template('bookmarklet.js', user=user)
+    return Response(render_template('bookmarklet.js', user=user), mimetype="text/javascript")
 
 
 @mod.route('/login')
@@ -145,11 +140,18 @@ def login():
     return github.authorize(callback_url=cb)
 
 
-@mod.route('/bookmarks')
+@mod.route('/<username>/bookmarks')
 @requires_login
-def bookmarks():
-    bookmarks = g.user.get_bookmarks()
-    return render_template('bookmarks.html', bookmarks=bookmarks)
+def bookmarks(username):
+    api = GithubEndpoint(g.user.github_token)
+    from gbookmarks.models import User
+    user = User.find_one_by(username=username)
+
+    bookmarks = None
+    if not user:
+        return render_template('invite.html', username=username, githubber=api.retrieve('/users/{0}'.format(username)))
+    bookmarks = user.get_bookmarks()
+    return render_template('bookmarks.html', bookmarks=bookmarks, user=user, is_self=(user == g.user))
 
 
 @mod.route('/logout')

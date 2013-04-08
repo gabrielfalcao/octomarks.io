@@ -10,7 +10,11 @@
 
   <div class="row-fluid">
     <div class="span12">
+      {% if is_self %}
       <h2>Your bookmarks</h2>
+{% else %}
+      <h2>{{ user.username }}'{{ user.username.endswith("s") and "" or "s" }} bookmarks</h2>
+{% endif %}
       <br />
       <table class="table table-hover">
         <thead>

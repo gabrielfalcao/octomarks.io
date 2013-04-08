@@ -5,11 +5,7 @@
 {% endblock %}
 {% block body %}
 <div class="container">
-  <div class="row-fluid">
-    <div id="logo" class="span12">
-      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo for github bookmarks" />
-    </div>
-  </div>
+  {% include "logo.html" %}
   <div class="row-fluid">
     <div class="span12">
       <h2>{{ repository_info.project }} saved!</h2>

@@ -2,11 +2,7 @@
 
 {% block body %}
 <div class="container">
-  <div class="row-fluid">
-    <div id="logo" class="span12">
-      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo for github bookmarks" />
-    </div>
-  </div>
+  {% include "logo.html" %}
   <div class="row-fluid">
     <div class="span8 offset2">
       <h1>{{ username }} is not yet on github-bookmarks</h1>

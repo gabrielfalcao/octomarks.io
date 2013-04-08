@@ -16,7 +16,8 @@ from flaskext.github import GithubAuth
 github = GithubAuth(
     client_id=settings.GITHUB_CLIENT_ID,
     client_secret=settings.GITHUB_CLIENT_SECRET,
-    session_key='user_id'
+    session_key='user_id',
+    # request_token_params={'scope': 'user,user:email,user:follow,repo,repo:status'}
 )
 
 mod = Blueprint('views', __name__)
@@ -100,12 +101,25 @@ def save_bookmark(token):
     from gbookmarks.models import User
     uri = request.args.get('uri')
     info = RepositoryURIInfo(uri)
+
+    if not info.matched:
+        return render_template('invalid.html', uri=uri)
+
     user = User.find_one_by(gb_token=token)
 
     api = GithubEndpoint(user.github_token)
     bookmark = user.save_bookmark(uri)
 
     tags = api.retrieve('/repos/{owner}/{repo}/languages'.format(
+        owner=info.owner,
+        repo=info.project
+    ))
+
+    print api.save('/user/starred/{owner}/{repo}/'.format(
+        owner=info.owner,
+        repo=info.project
+    )), tags
+    print api.retrieve('/user/starred/{owner}/{repo}'.format(
         owner=info.owner,
         repo=info.project
     ))

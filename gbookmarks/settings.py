@@ -55,4 +55,4 @@ SCHEMA = 'http://'
 
 absurl = lambda *path: "{0}{1}/{2}".format(SCHEMA, DOMAIN, "/".join(path).lstrip('/'))
 
-RELEASE = GITHUB_CLIENT_ID
+RELEASE = os.getenv('RELEASE', unicode(sorted(GITHUB_CLIENT_SECRET + GITHUB_CLIENT_ID))[:10])

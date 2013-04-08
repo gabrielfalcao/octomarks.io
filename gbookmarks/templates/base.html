@@ -7,15 +7,15 @@
     <meta name="description" content="The easy and quick way to organize your github favorite projects by categories" />
     <meta name="author" content="Gabriel Falcão" />
     {% block meta %}{% endblock %}
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/gb.main.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/gb.base-elements.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/gb.navbar.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/gb.project-bar.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/gb.feed.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='img/favicon.png') }}" rel="shortcut icon" />
-    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.9.1.min.js') }}"></script>
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/gb.main.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/gb.base-elements.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/gb.navbar.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/gb.project-bar.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/gb.feed.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='img/favicon.png') }}" rel="shortcut icon" />
+    <script type="text/javascript" src="{{ url_for('static', v=settings.RELEASE, filename='js/jquery-1.9.1.min.js') }}"></script>
     {% block css_head %}{% endblock %}
     {% block js_head %}{% endblock %}
   </head>

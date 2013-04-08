@@ -13,12 +13,20 @@ class GithubEndpoint(object):
         }
 
     def full_url(self, path):
-        return u"/".join([self.base_url, path.lstrip('/')])
+        url = u"/".join([self.base_url, path.lstrip('/')])
+        print url
+        return url
 
     def retrieve(self, path, data=None):
         return requests.get(
             self.full_url(path),
             data=data or {},
+            headers=self.headers,
+        ).json()
+
+    def save(self, path, data=None):
+        return requests.put(
+            self.full_url(path),
             headers=self.headers,
         ).json()
 

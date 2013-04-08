@@ -11,6 +11,6 @@
 
     function save_bookmark() {
         var URL = encodeURIComponent(location.href);
-        location.href='{{ full_url_for(".save_bookmark", token=user.gb_token) }}?uri='+encodeURIComponent(location.href)+'&time='+(new Date().getTime());
+        location.href='{{ full_url_for(".save_bookmark", token=user.gb_token) }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1&time='+(new Date().getTime());
     }
 })()

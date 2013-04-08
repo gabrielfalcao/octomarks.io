@@ -103,6 +103,8 @@ def github_callback(resp):
 def save_bookmark(token):
     from gbookmarks.models import User
     uri = request.args.get('uri')
+    should_redirect = request.args.get('should_redirect')
+
     info = RepositoryURIInfo(uri)
 
     uri = info.remount()
@@ -130,7 +132,7 @@ def save_bookmark(token):
     map(bookmark.add_tag, tags)
 
     # rendering
-    return render_template('saved.html', uri=uri, user=user, repository_info=info, bookmark=bookmark, tags=tags)
+    return render_template('saved.html', uri=uri, user=user, repository_info=info, bookmark=bookmark, tags=tags, should_redirect=should_redirect)
 
 
 @mod.route('/bookmarklet/gb_<token>.js')

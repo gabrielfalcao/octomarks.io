@@ -13,8 +13,10 @@
       <h2>{{ repository_info.project }} saved!</h2>
       <h3>you also just made {{ repository_info.owner }} happy with an extra star :)</h3>
 
+      {% if tags %}
       <hr />
       <h5>We also added the tags {{ ", ".join(tags.keys()) }}</h5>
+      {% endif %}
     </div>
   </div>
 </div>

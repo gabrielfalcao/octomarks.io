@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block user %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  {% include "logo.html" %}
+  <div class="row-fluid">
+    <div class="span12">
+      <h1>Server Error</h1>
+      <h2>We did something wrong in our side, please try again later</h2>
+      <hr />
+
+      <p>
+        <em>This error has been reported</em>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

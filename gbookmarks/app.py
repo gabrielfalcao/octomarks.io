@@ -3,7 +3,7 @@
 import os
 import sys
 
-from flask import Flask
+from flask import Flask, render_template
 from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -46,8 +46,13 @@ class App(object):
 
         # Setting logging
 
-        for logger in [self.web.logger, getLogger('sqlalchemy')]:
+        for logger in [self.web.logger, getLogger('sqlalchemy'), getLogger('gbookmarks.models')]:
             logger.addHandler(StreamHandler(sys.stderr))
+
+        @self.web.errorhandler(500)
+        def internal_error(exception):
+            self.web.logger.exception(exception)
+            return render_template('500.html'), 500
 
     @classmethod
     def from_env(cls):

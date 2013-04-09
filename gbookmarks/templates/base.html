@@ -21,6 +21,7 @@
   </head>
 
   <body>
+    {% block user %}
     {% if user %}
     <div id="profile-menu">
       <a href="{{ full_url_for(".bookmarks", username=user.username) }}">
@@ -31,6 +32,7 @@
       </a>
     </div>
     {% endif %}
+    {% endblock %}
     {% block body %}{% endblock %}
 
     <footer class="footer">

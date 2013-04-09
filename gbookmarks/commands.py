@@ -19,7 +19,7 @@ class SyncDB(Command):
             print "Destroying tables under", db.engine
             metadata.drop_all(db.engine)
 
-        print "Createing tables under", db.engine
+        print "Creating tables under", db.engine
         metadata.create_all(db.engine)
 
 

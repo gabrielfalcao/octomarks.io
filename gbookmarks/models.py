@@ -7,7 +7,7 @@ from datetime import datetime
 # from werkzeug import generate_password_hash, check_password_hash
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('gbookmarks.models')
 
 from gbookmarks.db import db, metadata, Model
 

@@ -22,12 +22,12 @@
         </thead>
         <tbody>
            {% for bookmark in bookmarks %}
-          <tr>
+          <tr data-tags="{{ bookmark.tags_as_json().replace('"', "'")|safe }}">
             <td><a href="{{ bookmark.url }}" class="btn-btn-inverse">{{ RepositoryURIInfo(bookmark.url).project }}</a></td>
             <td><a href="https://github.com/{{ RepositoryURIInfo(bookmark.url).owner }}" class="btn-btn-inverse">{{ RepositoryURIInfo(bookmark.url).owner }}</a></td>
             <td>
               {% for tag in bookmark.tags %}
-              <span class="badge badge-{{ loop.cycle('info', 'success', 'primary', 'warning', 'error', 'inverse') }}">{{ tag.name }}</span>
+              <span class="badge badge-{{ loop.cycle('info', 'success', 'inverse', 'warning', 'important', 'primary') }}">{{ tag.name }}</span>
               {% endfor %}
             </td>
           </tr>

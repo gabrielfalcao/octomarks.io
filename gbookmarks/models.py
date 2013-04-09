@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
+import ejson as json
+import ejson.serializers
 import hashlib
 from datetime import datetime
 # from werkzeug import generate_password_hash, check_password_hash
@@ -110,6 +112,9 @@ class Bookmark(Model):
     @property
     def tags(self):
         return [b.tag for b in BookmarkTags.find_by(bookmark_id=self.id)]
+
+    def tags_as_json(self):
+        return json.dumps([t.to_dict() for t in self.tags])
 
 
 class BookmarkTags(Model):

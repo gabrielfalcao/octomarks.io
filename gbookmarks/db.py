@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import ejson as json
 from functools import partial
 from flask import config
 from gbookmarks.app import app
@@ -56,6 +57,12 @@ class Model(object):
             self.__data__[attr] = data_type(value)
 
         return super(Model, self).__setattr__(attr, value)
+
+    def to_dict(self):
+        return self.__data__.copy()
+
+    def to_json(self):
+        return json.dumps(self.to_dict())
 
     def __getattr__(self, attr):
         if attr.startswith('__'):

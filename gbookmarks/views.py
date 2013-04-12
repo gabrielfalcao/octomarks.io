@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import re
 import ejson as json
 from functools import partial
 from flask import (
@@ -10,6 +9,7 @@ from flask import (
 
 from gbookmarks import settings
 from gbookmarks.api import GithubUser, GithubEndpoint, GithubRepository
+from gbookmarks.core import RepoInfo
 from gbookmarks.handy.decorators import requires_login
 from flaskext.github import GithubAuth
 
@@ -30,22 +30,6 @@ def json_response(data):
 
 def error_json_response(message):
     return json_response({'success': False, 'error': {'message': message}})
-
-
-class RepositoryURIInfo(object):
-    project = None
-    owner = None
-    regex = re.compile(r'github.com/(?P<owner>[^/]+)/(?P<project>[^/]+)')
-
-    def __init__(self, uri):
-        self.uri = uri
-        self.matched = self.regex.search(uri)
-        if self.matched:
-            self.owner = self.matched.group('owner')
-            self.project = self.matched.group('project')
-
-    def remount(self):
-        return 'https://github.com/{0}/{1}'.format(self.owner, self.project)
 
 
 @mod.before_request
@@ -73,7 +57,7 @@ def inject_basics():
         exclude_ids = {t.id for t in exclude_tags}
         return map(pick, all_ids.difference(exclude_ids))
 
-    return dict(user=g.user, settings=settings, RepositoryURIInfo=RepositoryURIInfo, full_url_for=full_url_for, remaining_tags_for=get_remaining_tags)
+    return dict(user=g.user, settings=settings, RepoInfo=RepoInfo, full_url_for=full_url_for, remaining_tags_for=get_remaining_tags)
 
 
 @github.access_token_getter
@@ -124,7 +108,7 @@ def save_bookmark(token):
     uri = request.args.get('uri')
     should_redirect = request.args.get('should_redirect')
 
-    info = RepositoryURIInfo(uri)
+    info = RepoInfo(uri)
 
     uri = info.remount()
     if not info.matched:
@@ -220,7 +204,7 @@ def edit_bookmark(bookmark_id):
 
     repository = GithubRepository.from_token(g.user.github_token)
     bk = Bookmark.find_one_by(id=bookmark_id, user_id=g.user.id)
-    info = RepositoryURIInfo(bk.url)
+    info = RepoInfo(bk.url)
 
     readme = repository.get_readme(info.owner, info.project)
 

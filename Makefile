@@ -17,7 +17,7 @@ clean:
 
 test-kind:
 	@GBOOKMARKS_SETTINGS_MODULE="tests.settings" PYTHONPATH="$(PYTHONPATH)" \
-		nosetests --stop --verbosity=2 -s tests/$(kind)
+		nosetests --logging-clear-handlers --stop --verbosity=2 -s tests/$(kind)
 
 unit:
 	@make test-kind kind=unit

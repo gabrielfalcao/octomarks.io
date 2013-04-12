@@ -10,6 +10,7 @@ import logging
 logger = logging.getLogger('gbookmarks.models')
 
 from gbookmarks.db import db, metadata, Model
+from gbookmarks.core import RepoInfo
 
 
 def slugify(string):
@@ -46,8 +47,9 @@ class User(Model):
         # TODO: take project, languages and all the other data that
         # will be fetched by the view, so you can have more
         # information.
-
-        return Bookmark.get_or_create(user_id=self.id, url=uri.strip())
+        info = RepoInfo(uri.strip())
+        if info:
+            return Bookmark.get_or_create(user_id=self.id, url=info.remount())
 
     def get_bookmarks(self):
         return Bookmark.find_by(user_id=self.id)
@@ -102,6 +104,10 @@ class Bookmark(Model):
         db.Column('created_at', db.DateTime, default=now),
         db.Column('updated_at', db.DateTime, default=now),
     )
+    regexes = [
+        re.compile(r'github.com/(?P<owner>[^/]+)/(?P<project>[^/]+)'),
+        re.compile(r'(?P<owner>[^.]+).github.io/(?P<project>[^/]+)'),
+    ]
 
     def add_tag(self, name):
         tag = Tag.get_or_create(name=name.strip())

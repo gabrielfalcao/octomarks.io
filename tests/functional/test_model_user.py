@@ -165,6 +165,19 @@ def test_save_bookmark(context):
 
 
 @user_test
+def test_save_bookmark_page(context):
+    ("User#save_bookmark should take a bookmark link and "
+     "return the bookmark")
+
+    bookmark = context.user.save_bookmark(
+        "gabrielfalcao.github.io/sure")
+
+    bookmark.should.have.property('id').being.equal(1)
+    bookmark.should.have.property('url').being.equal(
+        "http://github.com/gabrielfalcao/sure")
+
+
+@user_test
 def test_save_bookmark_multiple_times(context):
     ("User#save_bookmark with the same uri should save only once")
 

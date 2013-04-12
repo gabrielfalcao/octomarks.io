@@ -140,10 +140,17 @@ class Model(object):
         return self.get_connection()
 
     def save(self):
-        res = self.__conn__.execute(
-            self.table.insert().values(**self.to_dict()))
-        self.__data__['id'] = res.lastrowid
-        self.__data__.update(res.last_inserted_params())
+        mid = self.__data__.get('id', None)
+        if not mid:
+            res = self.__conn__.execute(
+                self.table.insert().values(**self.to_dict()))
+            self.__data__['id'] = res.lastrowid
+            self.__data__.update(res.last_inserted_params())
+        else:
+            res = self.__conn__.execute(
+                self.table.update().values(**self.to_dict()).where(self.table.c.id == mid))
+            self.__data__.update(res.last_updated_params())
+
         return self
 
     def get(self, name, fallback=None):

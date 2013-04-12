@@ -1,22 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>github bookmarks</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="github bookmarks in the cloud, accessible from anywhere with internet access" />
-    <meta name="keywords" content="github, bookmarks, bookmarklet, chrome, cloud, categories." />
-    <meta name="author" content="Gabriel Falcão" />
+{% extends "base.html" %}
 
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/gb.main.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='img/favicon.png') }}" rel="shortcut icon" />
-  </head>
+{% block user %}
 
-  <body>
-    {% block body %}
-    <h1>Bye</h1>
-    {% endblock %}
-  </body>
-</html>
+{% endblock %}
+{% block body %}
+<div class="container">
+  {% include "logo.html" %}
+  <div class="row-fluid">
+    <div class="span12" style="text-align:center;margin-top: 100px;">
+      <h1>Bye :)</h1>
+    </div>
+  </div>
+</div>
+{% endblock %}

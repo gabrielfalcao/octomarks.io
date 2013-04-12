@@ -33,7 +33,12 @@
         </span>
         <p class="username">{{ user.username }}</p>
       </a>
+      <div class="options">
+        <a href="{{ full_url_for(".bookmarks", username=user.username) }}">(your bookmarks)</a>
+        <a href="{{ full_url_for(".logout") }}">(logout)</a>
+      </div>
     </div>
+
     {% endif %}
     {% endblock %}
     {% block body %}{% endblock %}

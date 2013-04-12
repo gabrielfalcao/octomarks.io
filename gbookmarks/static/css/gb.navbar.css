@@ -39,3 +39,11 @@
   display: block;
   padding: 4px;
 }
+
+#profile-menu .options {
+  position: absolute;
+  top: 48px;
+  right: 0px;
+  margin-right: 85px;
+  font-size: 14px;
+}

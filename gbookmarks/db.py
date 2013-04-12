@@ -73,9 +73,6 @@ class Model(object):
 
         return super(Model, self).__getattribute__(attr)
 
-    def to_dict(self):
-        return self.__data__.copy()
-
     def delete(self):
         return self.__conn__.execute(self.table.delete().where(
             self.table.c.id == self.id))
@@ -102,13 +99,13 @@ class Model(object):
         return instance
 
     @classmethod
-    def query_by(cls, **kw):
+    def query_by(cls, order_by=None, **kw):
         conn = db.engine.connect()
         query = cls.table.select()
         for field, value in kw.items():
             query = query.where(getattr(cls.table.c, field) == value)
 
-        proxy = conn.execute(query)
+        proxy = conn.execute(query.order_by(db.desc(getattr(cls.table.c, order_by or 'id'))))
         return proxy
 
     @classmethod

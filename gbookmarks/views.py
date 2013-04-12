@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import re
 import ejson as json
-
+from functools import partial
 from flask import (
     Blueprint, request, session, render_template, redirect, g, flash, Response, url_for
 )
@@ -226,6 +226,23 @@ def edit_bookmark(bookmark_id):
 
     return render_template('edit-bookmark.html',
                            bookmark=bk, info=info, readme=readme)
+
+
+@mod.route('/.cleanup')
+def cleanup():
+    from gbookmarks.models import Tag, BookmarkTags, db
+    conn = Tag.get_connection()
+
+    res = conn.execute(Tag.table.select().where(Tag.table.c.id.notin_(db.select([BookmarkTags.table.c.tag_id]))))
+
+    Tags = partial(Tag.from_result_proxy, res)
+
+    deleted_tags = []
+    for tag in map(Tags, res.fetchall()):
+        deleted_tags.append(tag.to_json())
+        tag.delete()
+
+    return json_response({'deleted_tags': deleted_tags})
 
 
 @mod.route('/logout')

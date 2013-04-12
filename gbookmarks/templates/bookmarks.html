@@ -89,7 +89,7 @@
         var $option = $(this);
         tags.push($option.text().trim());
       });
-      if (e.keyCode === 13) {
+      if (e.keyCode < 20) {
         var new_tag = $self.val().trim();
         var should_create = new_tag.length > 0;
         var should_update = new_tag.length === 0;

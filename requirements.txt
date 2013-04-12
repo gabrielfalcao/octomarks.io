@@ -12,3 +12,4 @@ webassets==0.8
 Flask-Github==0.1.3
 ejson==0.1.3
 requests-cache==0.3.0
+markdown2==2.1.0

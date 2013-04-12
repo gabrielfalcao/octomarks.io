@@ -54,11 +54,12 @@ class User(Model):
 
     @classmethod
     def create_from_github_user(cls, data):
+        login = data.get('login')
         instance = cls.create(
-            username=data.get('login'),
+            username=login,
             github_id=data.get('id'),
             gravatar_id=data.get('gravatar_id'),
-            email=data.get('email'),
+            email=data.get('email', "{0}@github-bookmarks.com".format(login)),
             github_token=data.get('github_token')
         )
         logger.info("user %d created: %s", instance.id, instance.email)

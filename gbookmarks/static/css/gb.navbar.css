@@ -12,8 +12,51 @@
   -webkit-box-shadow: inset 0 2px 2px rgba(52,73,94,.74);
   box-shadow: inset 0 2px 2px rgba(52,73,94,.74);
 }
+@keyframes rotatepic {
+  0% {
+      transform: rotate(3deg);
+      -moz-transform: rotate(3deg);
+      -webkit-transform: rotate(3deg);
+      opacity: .85;
+  }
+  50% {
+      transform: rotate(-3deg);
+      -moz-transform: rotate(-3deg);
+      -webkit-transform: rotate(-3deg);
+      opacity: .8;
+  }
+  100% {
+      transform: rotate(3deg);
+      -moz-transform: rotate(3deg);
+      -webkit-transform: rotate(3deg);
+      opacity: .85;
+  }
+}
+@-webkit-keyframes rotatepic
+{
+  0% {
+      transform: rotate(3deg);
+      -moz-transform: rotate(3deg);
+      -webkit-transform: rotate(3deg);
+      opacity: .85;
+  }
+  50% {
+      transform: rotate(-3deg);
+      -moz-transform: rotate(-3deg);
+      -webkit-transform: rotate(-3deg);
+      opacity: .8;
+  }
+  100% {
+      transform: rotate(3deg);
+      -moz-transform: rotate(3deg);
+      -webkit-transform: rotate(3deg);
+      opacity: .85;
+  }
+}
 
 #profile-picture img:hover {
+  animation: rotatepic 200ms infinite ease-in-out;
+  -webkit-animation: rotatepic 200ms infinite ease-in-out;
   opacity: .8;
 }
 

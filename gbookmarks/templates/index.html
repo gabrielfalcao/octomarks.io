@@ -36,10 +36,12 @@
     </div>
   </div>
   {% endif %}
-  {% if user.gb_token == "REMOVEME" %}
-    <a class="btn btn-success btn-large" href="javascript: (function () {var GBKLET=document.createElement('script');GBKLET.setAttribute('src', '{{ full_url_for(".serve_bookmarklet", token=user.gb_token) }}?' + (new Date()).getTime());document.body.appendChild(GBKLET);}());">save github favorite</a>
-  {% endif %}
+    <div class="row-fluid">
+      <div class="span6 offset3">
 
+    <a class="btn btn-success btn-large" href="javascript: (function () {var GBKLET=document.createElement('script');GBKLET.setAttribute('src', '{{ full_url_for(".serve_bookmarklet", token=user.gb_token) }}?' + (new Date()).getTime());document.body.appendChild(GBKLET);}());">save github favorite</a>
+    </div>
+    </div>
 </div>
 
 <script type="text/javascript">

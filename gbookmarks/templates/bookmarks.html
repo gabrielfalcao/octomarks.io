@@ -12,23 +12,38 @@
       <h2>{{ user.username }}'{{ user.username.endswith("s") and "" or "s" }} bookmarks</h2>
 {% endif %}
       <br />
-      <table class="table table-hover">
+      <table class="table table-stripped">
         <thead>
           <tr>
-            <th>project</th>
             <th>owner</th>
+            <th>project</th>
             <th>tags</th>
           </tr>
         </thead>
         <tbody>
            {% for bookmark in bookmarks %}
+             {% set owner = RepositoryURIInfo(bookmark.url).owner %}
+             {% set project = RepositoryURIInfo(bookmark.url).project %}
           <tr data-tags="{{ bookmark.tags_as_json().replace('"', "'")|safe }}">
-            <td><a href="{{ bookmark.url }}" class="btn-btn-inverse">{{ RepositoryURIInfo(bookmark.url).project }}</a></td>
-            <td><a href="https://github.com/{{ RepositoryURIInfo(bookmark.url).owner }}" class="btn-btn-inverse">{{ RepositoryURIInfo(bookmark.url).owner }}</a></td>
             <td>
-              {% for tag in bookmark.tags %}
-              <span class="badge badge-{{ loop.cycle('info', 'success', 'inverse', 'warning', 'important', 'primary') }}">{{ tag.name }}</span>
-              {% endfor %}
+              <a href="{{ bookmark.url }}">{{ project }}</a>
+            </td>
+            <td>
+              <a href="{{ bookmark.url }}">{{ owner }}</a>
+            </td>
+            <td>
+              {% if is_self %}
+                  <form id="tags-{{ bookmark.id }}" data-bookmark-id="{{ bookmark.id }}" data-save-url="{{ url_for(".ajax_add_tags", bookmark_id=bookmark.id) }}" method="post">
+                      <select data-no-results-text="Type \"Enter\" to create " data-placeholder="Choose or create tags for {{ owner }}/{{ project }}" style="width:350px;" multiple class="chzn-select tags">
+                        {% for tag in bookmark.tags %}<option value="{{ tag.name }}" selected="selected">{{ tag.name }}</option>{% endfor %}
+                        {% for tag in remaining_tags_for(bookmark.tags) %}<option value="{{ tag.name }}">{{ tag.name }}</option>{% endfor %}
+                      </select>
+                  </form>
+              {% else %}
+                  {% for tag in bookmark.tags %}
+                  <span class="badge badge-{{ loop.cycle('info', 'success', 'inverse', 'warning', 'important', 'primary') }}">{{ tag.name }}</span>
+                  {% endfor %}
+              {% endif %}
             </td>
           </tr>
            {% endfor %}
@@ -42,15 +57,51 @@
 
   <script type="text/javascript">
   (function($){
-    $("#main-save").on("click", function(){
-      location.href='{{ full_url_for(".save_bookmark", token=user.gb_token) }}?uri=' + encodeURIComponent($("#uri").val());
-    });
-    $("#uri").on("keyup", function(){
-      var text = $(this).val().trim();
-      if (text.length > 0) {
-        $("#main-save").removeAttr("disabled");
-      } else {
-        $("#main-save").attr("disabled", "disabled");
+    $(".tags").chosen();
+    function save_tags(save_url, bookmark_id, tags) {
+      $.ajax({
+            url: save_url,
+            type: "POST",
+            data: JSON.stringify({
+                bookmark_id: bookmark_id,
+                tags: tags
+            }),
+            dataType: "json",
+            contentType: "application/json",
+            success: function(data) {
+                console.log("GOT", data);
+            },
+            error: function(){
+              console.log("ERROR", arguments);
+            }
+        });
+    }
+    $(".chzn-choices .search-field input[type=text]").on('keydown', function(e){
+      var $self = $(this);
+      var $form = $self.parents("form");
+      var $select = $form.find("select");
+      var tags = [];
+      var bookmark_id = parseInt($self.parents("form").data("bookmark-id"), 10);
+      var save_url = $self.parents("form").data("save-url");
+
+      $select.find("option:selected").each(function(){
+        var $option = $(this);
+        tags.push($option.text().trim());
+      });
+      if (e.keyCode === 13) {
+        var new_tag = $self.val().trim();
+        var should_create = new_tag.length > 0;
+        var should_update = new_tag.length === 0;
+
+        if (should_create) {
+          var new_option = $(['<option value="', new_tag, '" selected="true">', new_tag, '</option>'].join(''));
+          console.log(new_option.text());
+          console.log($select);
+          $select.append(new_option);
+          $select.trigger("liszt:updated");
+        } else {
+          save_tags(save_url, bookmark_id, tags);
+        }
       }
     });
   })(window.jQuery);

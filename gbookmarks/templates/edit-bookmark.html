@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+  {% include "logo.html" %}
+
+  <div class="row-fluid">
+    <div class="span12">
+      <h2>Editing {{ info.owner }}/{{ info.project }}</h2>
+      <br />
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span6">
+      <form action="{{ url_for('.edit_bookmark', bookmark_id=bookmark.id) }}" method="post">
+        <fieldset>
+          <legend>Tags</legend>
+          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chzn-select chzn-rtl" id="tags">
+            {% for tag in bookmark.tags %}<option value="{{ tag.id }}" selected="selected">{{ tag.name }}</option>{% endfor %}
+          </select>
+        </fieldset>
+      </form>
+
+    </div>
+
+    <div id="readme" class="span6">
+      {{ readme|safe }}
+    </div>
+  </div>
+
+
+
+
+  <script type="text/javascript">
+  (function($){
+    $("#tags").chosen();
+    $("#main-save").on("click", function(){
+      location.href='{{ full_url_for(".save_bookmark", token=user.gb_token) }}?uri=' + encodeURIComponent($("#uri").val());
+    });
+    $("#uri").on("keyup", function(){
+      var text = $(this).val().trim();
+      if (text.length > 0) {
+        $("#main-save").removeAttr("disabled");
+      } else {
+        $("#main-save").attr("disabled", "disabled");
+      }
+    });
+  })(window.jQuery);
+  </script>
+{% endblock %}

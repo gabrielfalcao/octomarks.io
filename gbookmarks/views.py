@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import re
-import json
+import ejson as json
+
 from flask import (
     Blueprint, request, session, render_template, redirect, g, flash, Response, url_for
 )
 
 
 from gbookmarks import settings
-from gbookmarks.api import GithubUser, GithubEndpoint
+from gbookmarks.api import GithubUser, GithubEndpoint, GithubRepository
 from gbookmarks.handy.decorators import requires_login
 from flaskext.github import GithubAuth
 
@@ -24,7 +25,7 @@ mod = Blueprint('views', __name__)
 
 
 def json_response(data):
-    return Response(json.dumps(data, indent=4), mimetype="text/json")
+    return Response(json.dumps(data), mimetype="text/json")
 
 
 class RepositoryURIInfo(object):
@@ -51,10 +52,24 @@ def prepare_auth():
 
 @mod.context_processor
 def inject_basics():
+    from gbookmarks.models import Tag
+
     def full_url_for(*args, **kw):
         return settings.absurl(url_for(*args, **kw))
 
-    return dict(user=g.user, settings=settings, RepositoryURIInfo=RepositoryURIInfo, full_url_for=full_url_for)
+    all_tags = Tag.all()
+    all_ids = {t.id for t in all_tags}
+
+    def pick(tag_id):
+        for t in all_tags:
+            if t.id == tag_id:
+                return t
+
+    def get_remaining_tags(exclude_tags):
+        exclude_ids = {t.id for t in exclude_tags}
+        return map(pick, all_ids.difference(exclude_ids))
+
+    return dict(user=g.user, settings=settings, RepositoryURIInfo=RepositoryURIInfo, full_url_for=full_url_for, remaining_tags_for=get_remaining_tags)
 
 
 @github.access_token_getter
@@ -88,7 +103,7 @@ def github_callback(resp):
     token = resp['access_token']
     session['github_token'] = token
 
-    github_user_data = GithubUser.from_token(token)
+    github_user_data = GithubUser.fetch_info(token)
 
     github_user_data['github_token'] = token
 
@@ -160,6 +175,39 @@ def bookmarks(username):
         return render_template('invite.html', username=username, githubber=api.retrieve('/users/{0}'.format(username)))
     bookmarks = user.get_bookmarks()
     return render_template('bookmarks.html', bookmarks=bookmarks, user=user, is_self=(user == g.user))
+
+
+@mod.route('/a/<bookmark_id>/tags', methods=['POST'])
+@requires_login
+def ajax_add_tags(bookmark_id):
+    from gbookmarks.models import Bookmark
+    if 'json' not in request.headers['content-type']:
+        return json_response({'success': False, 'error': {'message': "Content type must be json"}})
+
+    tag_names = request.json.get('tags', [])
+    bk = Bookmark.find_one_by(id=bookmark_id, user_id=g.user.id)
+
+    for tag in bk.tags:
+        if tag.name not in tag_names:
+            bk.remove_tag(tag)
+
+    tags = [t[0].to_dict() for t in map(bk.add_tag, tag_names)]
+    return json_response({'success': True, 'tags': tags})
+
+
+@mod.route('/bookmark/<bookmark_id>/edit')
+@requires_login
+def edit_bookmark(bookmark_id):
+    from gbookmarks.models import Bookmark
+
+    repository = GithubRepository.from_token(g.user.github_token)
+    bk = Bookmark.find_one_by(id=bookmark_id, user_id=g.user.id)
+    info = RepositoryURIInfo(bk.url)
+
+    readme = repository.get_readme(info.owner, info.project)
+
+    return render_template('edit-bookmark.html',
+                           bookmark=bk, info=info, readme=readme)
 
 
 @mod.route('/logout')

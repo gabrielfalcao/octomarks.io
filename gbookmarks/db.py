@@ -124,6 +124,10 @@ class Model(object):
         return map(Users, proxy.fetchall())
 
     @classmethod
+    def all(cls):
+        return cls.find_by()
+
+    @classmethod
     def get_connection(cls):
         return db.engine.connect()
 

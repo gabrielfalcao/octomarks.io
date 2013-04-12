@@ -103,7 +103,7 @@ class Bookmark(Model):
     )
 
     def add_tag(self, name):
-        tag = Tag.get_or_create(name=name)
+        tag = Tag.get_or_create(name=name.strip())
         return tag, BookmarkTags.get_or_create(
             tag_id=tag.id,
             bookmark_id=self.id,
@@ -115,6 +115,11 @@ class Bookmark(Model):
 
     def tags_as_json(self):
         return json.dumps([t.to_dict() for t in self.tags])
+
+    def remove_tag(self, tag):
+        bookmark_tag = BookmarkTags.find_one_by(tag_id=tag.id, bookmark_id=self.id)
+        if bookmark_tag:
+            bookmark_tag.delete()
 
 
 class BookmarkTags(Model):

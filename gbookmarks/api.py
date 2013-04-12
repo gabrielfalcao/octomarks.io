@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import requests
-import requests_cache
 import markdown2
-
-requests_cache.install_cache()
 
 
 class GithubEndpoint(object):

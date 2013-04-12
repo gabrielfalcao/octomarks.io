@@ -8,6 +8,10 @@
   margin-right: -20px;
 }
 
+#main-save:hover {
+    transform: rotate(15deg);
+    animation: 3s colorcycle infinite alternate;
+}
 #logo {
   margin: 0 0 80px 0;
   text-align: center;

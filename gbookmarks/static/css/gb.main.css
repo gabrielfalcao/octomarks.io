@@ -70,7 +70,8 @@
 #readme h6 {font-size: 14px;}
 
 
-.chzn-choices {
+tr .chzn-container-multi ul.chzn-choices {
   background-image: none;
-  background: red;
+  border: 0;
+  background-color: #eff4f6;
 }

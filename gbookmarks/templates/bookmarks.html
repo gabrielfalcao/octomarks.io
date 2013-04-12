@@ -24,7 +24,7 @@
            {% for bookmark in bookmarks %}
              {% set owner = RepositoryURIInfo(bookmark.url).owner %}
              {% set project = RepositoryURIInfo(bookmark.url).project %}
-          <tr data-tags="{{ bookmark.tags_as_json().replace('"', "'")|safe }}">
+          <tr id="bookmark-row-{{ bookmark.id }}">
             <td>
               <a href="{{ bookmark.url }}">{{ project }}</a>
             </td>
@@ -70,6 +70,7 @@
             contentType: "application/json",
             success: function(data) {
                 console.log("GOT", data);
+                $("#bookmark-row-" + bookmark_id).find("ul.chzn-choices").effect("highlight", {}, 1500);
             },
             error: function(){
               console.log("ERROR", arguments);

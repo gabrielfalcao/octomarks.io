@@ -27,3 +27,4 @@ build.log
 /merchants/static/css
 /modules/
 /data/db.sqlite
+cache.sqlite

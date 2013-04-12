@@ -28,6 +28,10 @@ def json_response(data):
     return Response(json.dumps(data), mimetype="text/json")
 
 
+def error_json_response(message):
+    return json_response({'success': False, 'error': {'message': message}})
+
+
 class RepositoryURIInfo(object):
     project = None
     owner = None
@@ -193,6 +197,20 @@ def ajax_add_tags(bookmark_id):
 
     tags = [t[0].to_dict() for t in map(bk.add_tag, tag_names)]
     return json_response({'success': True, 'tags': tags})
+
+
+@mod.route('/a/<bookmark_id>/delete', methods=['POST'])
+@requires_login
+def ajax_delete_bookmark(bookmark_id):
+    from gbookmarks.models import Bookmark
+    if 'json' not in request.headers['content-type']:
+        return json_response({'success': False, 'error': {'message': "Content type must be json"}})
+
+    bk = Bookmark.find_one_by(id=bookmark_id, user_id=g.user.id)
+    if bk:
+        bk.delete()
+        return error_json_response('Bookmark {0} does not exist'.format(bookmark_id))
+    return json_response({'success': True, 'deleted_object': bk.to_dict()})
 
 
 @mod.route('/bookmark/<bookmark_id>/edit')

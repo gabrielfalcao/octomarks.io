@@ -18,6 +18,7 @@
             <th>owner</th>
             <th>project</th>
             <th>tags</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +46,9 @@
                   {% endfor %}
               {% endif %}
             </td>
+            <td>
+              <a id="delete-bookmark-{{ bookmark.id }}" data-bookmark-name="{{ owner }}/{{ project }}" data-bookmark-id="{{ bookmark.id }}" data-delete-url="{{ url_for('.ajax_delete_bookmark', bookmark_id=bookmark.id) }}" class="delete-bookmark btn btn-warning" href="#delete-bookmark-{{ bookmark.id }}">Delete</a>
+            </td>
           </tr>
            {% endfor %}
         </tbody>
@@ -56,27 +60,54 @@
 
 
   <script type="text/javascript">
+  if (!window.console) {
+    window.console = {log: function(){}};
+  }
   (function($){
     $(".tags").chosen();
     function save_tags(save_url, bookmark_id, tags) {
       $.ajax({
-            url: save_url,
-            type: "POST",
-            data: JSON.stringify({
-                bookmark_id: bookmark_id,
-                tags: tags
-            }),
-            dataType: "json",
-            contentType: "application/json",
-            success: function(data) {
-                console.log("GOT", data);
-                $("#bookmark-row-" + bookmark_id).find("ul.chzn-choices").effect("highlight", {}, 1500);
-            },
-            error: function(){
-              console.log("ERROR", arguments);
-            }
-        });
+        url: save_url,
+        type: "POST",
+        data: JSON.stringify({
+          bookmark_id: bookmark_id,
+          tags: tags
+        }),
+        dataType: "json",
+        contentType: "application/json",
+        success: function(data) {
+          console.log("GOT", data);
+          $("#bookmark-row-" + bookmark_id).find("ul.chzn-choices").effect("highlight", {}, 1500);
+        },
+        error: function(){
+          console.log("ERROR", arguments);
+        }
+      });
     }
+    $(".delete-bookmark").on('click', function(e){
+      var $self = $(this);
+      var delete_url = $self.data("delete-url");
+      var bookmark_id = $self.data("bookmark-id");
+      var bookmark_name = $self.data("bookmark-name");
+      if (confirm("Are you sure you want to delete " + bookmark_name + " from your bookmarks ?")) {
+        $.ajax({
+          url: delete_url,
+          type: "POST",
+          dataType: "json",
+          contentType: "application/json",
+          success: function(data) {
+            $self.attr("disabled", "true");
+            $("#bookmark-row-" + bookmark_id).css("opacity", ".5").effect("highlight", 1000, function(){
+                $(this).remove();
+              });
+          },
+          error: function(){
+            console.log("ERROR", arguments);
+          }
+        });
+      }
+      return e.preventDefault();
+    });
     $(".chzn-choices .search-field input[type=text]").on('keydown', function(e){
       var $self = $(this);
       var $form = $self.parents("form");

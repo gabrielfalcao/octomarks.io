@@ -1,23 +1,44 @@
 {% extends "base.html" %}
 
-{% block meta %}
-{% if should_redirect %}
-<meta http-equiv="refresh" content="3;URL='{{ uri }}'">
-{% endif %}
-{% endblock %}
 {% block body %}
-<div class="container">
+<div class="container repository">
   {% include "logo.html" %}
-  <div class="row-fluid">
-    <div class="span12">
-      <h2>{{ repository_info.project }} saved!</h2>
-      <h3>you also just made {{ repository_info.owner }} happy with an extra star :)</h3>
 
-      {% if tags %}
-      <hr />
-      <h5>We also added the tags {{ ", ".join(tags.keys()) }}</h5>
-      {% endif %}
+  <div class="row-fluid">
+    <div class="span4 title">
+      <img class="owner" src="{{ repository.owner.avatar_url }}" alt="{{ repository.owner.login }}" />
+      <h2>{{ repository.name }}</h2>
+      <a href="http://github.com/{{ repository.name }}"><h5>by {{ repository.owner.login }}</h5></a>
+      <br />
+    </div>
+    <a href="{{ repository.html_url }}">
+        <div class="span2 offset6 github-handle">
+          <h3>github</h3>
+          <img src="{{ url_for('static', v=settings.RELEASE, filename='img/octocat-icon-48.png') }}" class="" alt="" />
+        </div>
+    </a>
+  </div>
+  <div class="row-fluid">
+    <div id="readme" class="span7">
+      {{ readme|safe }}
+    </div>
+    <div class="span5">
+
+      <p>
+        <h1>{{ repository.watchers_count }} stars</h1>
+        <h1>{{ repository.forks_count }} forks</h1>
+      </p>
+        <hr />
+        <p>
+        <h1>{{ repository.open_issues }} open issues</h1>
+        </p>
+        <hr />
+        <p>
+          <h2>Access</h2>
+          <pre>git clone {{ repository.clone_url }}</pre>
+          <pre>git clone {{ repository.git_url }}</pre>
+          <pre>git clone {{ repository.ssh_url }}</pre>
+        </p>
     </div>
   </div>
-</div>
 {% endblock %}

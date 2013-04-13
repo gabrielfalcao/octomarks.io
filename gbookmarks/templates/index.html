@@ -18,6 +18,7 @@
       <input type="button" id="main-save" class="btn btn-large btn-warning" name="action" value="save" disabled="true" />
     </div>
   </div>
+
   {% if True == False %}
   <div class="bookmarklet-container">
     <br />
@@ -26,29 +27,67 @@
       <div class="span6 offset3">
         <input type="button" class="btn btn-large" value="btn btn-large" />
         <input type="button" class="btn" value="btn" />
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span6 offset3">
         <input type="button" class="btn btn-large btn-success" value="btn-success" />
         <input type="button" class="btn btn-success" value="btn-success" />
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span6 offset3">
         <input type="button" class="btn btn-large btn-warning" value="btn-warning" />
         <input type="button" class="btn btn-warning" value="btn-warning" />
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span6 offset3">
+        <input type="button" class="btn btn-large btn-error" value="btn-error" />
+        <input type="button" class="btn btn-error" value="btn-error" />
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span6 offset3">
         <input type="button" class="btn btn-large btn-primary" value="btn-primary" />
         <input type="button" class="btn btn-primary" value="btn-primary" />
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span6 offset3">
+        <input type="button" class="btn btn-large btn-inverse" value="btn-inverse" />
+        <input type="button" class="btn btn-inverse" value="btn-inverse" />
       </div>
     </div>
   </div>
   {% endif %}
     <div class="row-fluid">
       <div class="span6 offset3">
+             {% set bookmarklet_url = full_url_for(".save_bookmark", token=user.gb_token) %}
 
-    <a class="btn btn-success btn-large" href="javascript: (function () {var GBKLET=document.createElement('script');GBKLET.setAttribute('src', '{{ full_url_for(".serve_bookmarklet", token=user.gb_token) }}?' + (new Date()).getTime());document.body.appendChild(GBKLET);}());">save github favorite</a>
+    <a class="btn btn-success btn-large" href="javascript: (function () { location.href='{{ bookmarklet_url }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1'}());">save github favorite</a>
     </div>
     </div>
 </div>
 
 <script type="text/javascript">
 (function($){
-  $("#main-save").on("click", function(){
-    location.href='{{ settings.absurl(url_for(".save_bookmark", token=user.gb_token)) }}?uri=' + encodeURIComponent($("#uri").val());
+  function save_bookmark(){
+    var entered_uri = $("#uri").val();
+
+    if (!/([\w_-]+[.])?github.(com|io)[/][^/]+/.exec(entered_uri)){
+
+      return;
+    }
+    $("#uri").addClass("shake");
+    location.href='{{ settings.absurl(url_for(".save_bookmark", token=user.gb_token)) }}?uri=' + encodeURIComponent(entered_uri);
+  }
+  $("#uri").on("keydown", function(e){
+    if (e.keyCode === 13) {
+      save_bookmark();
+    }
   });
+  $("#main-save").on("click", save_bookmark);
 
   function enable_save(){
     var text = $(this).val().trim();

@@ -1,0 +1,28 @@
+{
+  "name": "GitHub Bookmarks",
+  "version": "1.0",
+  "description": "Save your favorite github projects online.",
+  "icons": {
+    "48": "logo48.png",
+    "128": "logo128.png"
+  },
+  "manifest_version": 2,
+  "web_accessible_resources": [
+      "script.js"
+  ],
+  "background": {
+      "scripts": ["background.js"]
+  },
+  "permissions": [
+      "tabs",
+      "bookmarks",
+      "https://github.com/"
+  ],
+  "content_scripts": [
+    {
+        "matches": ["*://github.com/*/*"],
+        "exclude_globs": ["*.com/blog*", "*.com/explore*", "*.com/settings*", "*.com/inbox*", "*.com/repositories*", "*.com/popular*"],
+        "js": ["script.js"]
+    }
+  ]
+}

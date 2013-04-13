@@ -29,7 +29,7 @@
     <div id="profile-menu">
       <a href="{{ full_url_for(".bookmarks", username=user.username) }}">
         <span id="profile-picture">
-          <img src="https://secure.gravatar.com/avatar/{{ user.gravatar_id }}?s=70" alt="{{ user.username }}" />
+          <img src="https://secure.gravatar.com/avatar/{{ user.gravatar_id }}?s=70" alt="{{ user.username }}" width="70" height="70"/>
         </span>
         <p class="username">{{ user.username }}</p>
       </a>

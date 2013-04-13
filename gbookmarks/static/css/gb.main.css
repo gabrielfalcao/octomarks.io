@@ -17,6 +17,42 @@
   text-align: center;
 }
 
+@-webkit-keyframes scaleXpic
+{
+  0% {
+      transform: scaleX(.7);
+      -moz-transform: scaleX(.7) ;
+      -webkit-transform: scaleX(.7) ;
+      top: 200px;
+      right: 200px;
+      opacity: .5;
+  }
+  50% {
+      transform: scaleX(.5);
+      -moz-transform: scaleX(.5);
+      -webkit-transform: scaleX(.5);
+      top: 20px;
+      right: 20px;
+      opacity: .2;
+  }
+  100% {
+      transform: scaleX(.1);
+      -moz-transform: scaleX(.1);
+      -webkit-transform: scaleX(.1);
+      opacity: .85;
+      top: -100000px;
+      right: -100000px;
+  }
+}
+
+.shake {
+  position: absolute;
+transform-style: preserve-3d;
+  animation: scaleXpic 600ms ease-in-out;
+  -webkit-animation: scaleXpic 600ms ease-in-out;
+  opacity: .8;
+}
+
 /* Smartphones (landscape) ----------- */
 @media (max-width: 601px) {
   #logo {
@@ -78,4 +114,47 @@ tr .chzn-container-multi ul.chzn-choices {
   background-image: none;
   border: 0;
   background-color: #eff4f6;
+}
+
+.repository .github-handle {
+  color: #333;
+  background-color: #FFF;
+  text-align: center;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+
+}
+.repository .github-handle *{
+  display: inline;
+}
+.repository .github-handle h3{
+  font-weight: 400;
+  margin: 0 10px 5px 0;
+}
+.repository .github-handle:hover{
+  background-color: #CEF;
+}
+
+.repository pre {
+  font-size: 14px;
+  overflow-x: scroll;
+  width: 100%;
+}
+
+.repository .title img.owner {
+  float: left;
+}
+
+.repository .title h2 {
+  margin: 25px 0 0 0;
+  font-weight: 400;
+}
+
+.repository .title h5 {
+  margin:0;
+  padding: 0;
 }

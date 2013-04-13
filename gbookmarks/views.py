@@ -24,8 +24,8 @@ github = GithubAuth(
 mod = Blueprint('views', __name__)
 
 
-def json_response(data):
-    return Response(json.dumps(data), mimetype="text/json")
+def json_response(data, status=200):
+    return Response(json.dumps(data), mimetype="text/json", status=str(status))
 
 
 def error_json_response(message):
@@ -125,17 +125,16 @@ def save_bookmark(token):
         return render_template('invalid.html', uri=uri)
 
     bookmark = user.save_bookmark(uri)
+    repository_fetcher = GithubRepository.from_token(user.github_token)
 
-    print api.save('/user/starred/{owner}/{repo}/'.format(
-        owner=info.owner,
-        repo=info.project
-    )), tags
+    readme = repository_fetcher.get_readme(info.owner, info.project)
+    project = repository_fetcher.get(info.owner, info.project)
 
     # saving tags
     map(bookmark.add_tag, tags)
 
     # rendering
-    return render_template('saved.html', uri=uri, user=user, repository_info=info, bookmark=bookmark, tags=tags, should_redirect=should_redirect)
+    return render_template('saved.html', uri=uri, user=user, readme=readme, repository=project, bookmark=bookmark, tags=tags, should_redirect=should_redirect)
 
 
 @mod.route('/bookmarklet/gb_<token>.js')

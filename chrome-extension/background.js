@@ -1,4 +1,4 @@
-var favorites_folder = false;
+var bookmarks_folder = false;
 
 chrome.bookmarks.getSubTree('2', function(bookmarks){
   // Check we have bookmarks
@@ -7,19 +7,19 @@ chrome.bookmarks.getSubTree('2', function(bookmarks){
     // Get reference to 'Other Bookmarks' folder
     // Aka the non-bookmarks bar folder
     other_bookmarks = bookmarks[0];
-    // Find 'GitHub Favorites' folder
+    // Find 'GitHub Bookmarks' folder
     for (b in other_bookmarks.children) {
-      if (other_bookmarks.children[b].title === 'GitHub Favorites') {
-        favorites_folder = other_bookmarks.children[b];
+      if (other_bookmarks.children[b].title === 'GitHub Bookmarks') {
+        bookmarks_folder = other_bookmarks.children[b];
       }
     }
     // Create folder if it doesn't exist
-    if (!favorites_folder) {
+    if (!bookmarks_folder) {
       chrome.bookmarks.create({
         'parentId': other_bookmarks.id,
-        'title': 'GitHub Favorites'
+        'title': 'GitHub Bookmarks'
       }, function(new_bookmark) {
-        favorites_folder = new_bookmark;
+        bookmarks_folder = new_bookmark;
       });
     }
   }
@@ -30,27 +30,27 @@ chrome.bookmarks.getSubTree('2', function(bookmarks){
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
     
-    if (request.query === 'isFavorite') {
-      // Find if current tab is already favorited
+    if (request.query === 'isBookmark') {
+      // Find if current tab is already bookmarkd
       chrome.bookmarks.search(request.url, function(bookmarks) {
-        var is_favorite = false, bookmark = false, parent_folder_title = false;
+        var is_bookmark = false, bookmark = false, parent_folder_title = false;
         // If the array's greater than 0 than it's a bookmark
         if (bookmarks.length) {
-          is_favorite = true;
+          is_bookmark = true;
           // For now just send back the first result
           bookmark = bookmarks[0];
         }
-        function isFavoriteResponse(parent_folder_title) {
+        function isBookmarkResponse(parent_folder_title) {
           sendResponse({
-            is_favorite: is_favorite,
+            is_bookmark: is_bookmark,
             bookmark: bookmark,
             parent_folder_title: parent_folder_title ? parent_folder_title[0].title : parent_folder_title
           });
         }
-        if (is_favorite) {
-          chrome.bookmarks.get(bookmark.parentId, isFavoriteResponse);
+        if (is_bookmark) {
+          chrome.bookmarks.get(bookmark.parentId, isBookmarkResponse);
         } else {
-          isFavoriteResponse();
+          isBookmarkResponse();
         }
       });
     }
@@ -60,19 +60,19 @@ chrome.extension.onRequest.addListener(
       if (request.id) {
         chrome.bookmarks.remove(request.id, function() {
           sendResponse({
-            is_favorite: false
+            is_bookmark: false
           });
         });
       } else {
         chrome.bookmarks.create({
-          'parentId': favorites_folder.id,
+          'parentId': bookmarks_folder.id,
           'title': request.title,
           'url': request.url
         }, function(bookmark) {
           sendResponse({
-            is_favorite: true,
+            is_bookmark: true,
             bookmark: bookmark,
-            parent_folder_title: favorites_folder.title
+            parent_folder_title: bookmarks_folder.title
           });
         });
       }

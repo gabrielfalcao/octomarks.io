@@ -27,3 +27,10 @@ class RepoInfo(object):
 
     def remount(self):
         return 'http://github.com/{0}/{1}'.format(self.owner, self.project)
+
+    def to_dict(self):
+        return dict(
+            owner=self.owner,
+            project=self.project,
+            url=self.remount()
+        )

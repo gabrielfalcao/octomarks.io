@@ -61,3 +61,6 @@ class GithubRepository(Resource):
 
         readme = reply['content'].decode(reply['encoding'])
         return markdown2.markdown(readme)
+
+    def get(self, owner, project):
+        return self.endpoint.retrieve('/repos/{0}/{1}'.format(owner, project))

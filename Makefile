@@ -35,6 +35,12 @@ deploy:
 	@heroku run "/app/.heroku/python/bin/alembic -c alembic.prod.ini upgrade head"
 	@make release
 
+migrate-back:
+	@heroku run "/app/.heroku/python/bin/alembic -c alembic.prod.ini downgrade base"
+
+migrate-forward:
+	@heroku run "/app/.heroku/python/bin/alembic -c alembic.prod.ini upgrade head"
+
 release:
 	@heroku config:set RELEASE=`git rev-parse HEAD`
 

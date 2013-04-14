@@ -25,24 +25,27 @@
            {% for bookmark in bookmarks %}
              {% set owner = RepoInfo(bookmark.url).owner %}
              {% set project = RepoInfo(bookmark.url).project %}
+             {% set gb_url = url_for('.show_bookmark', owner=owner, project=project) %}
           <tr id="bookmark-row-{{ bookmark.id }}">
-            <td>
-              <a href="{{ bookmark.url }}">{{ project }}</a>
-            </td>
-            <td>
-              <a href="{{ bookmark.url }}">{{ owner }}</a>
-            </td>
+            <a href="{{ gb_url }}">
+              <td>
+              {{ project }}
+              </td>
+              <td>
+              {{ bookmark.url }}">{{ owner }}
+              </td>
+            </a>
             <td>
               {% if is_self %}
-                  <form id="tags-{{ bookmark.id }}" data-bookmark-id="{{ bookmark.id }}" data-save-url="{{ url_for(".ajax_add_tags", bookmark_id=bookmark.id) }}" method="post">
-                      <select data-no-results-text="Type \"Enter\" to create " data-placeholder="Choose or create tags for {{ owner }}/{{ project }}" style="width:350px;" multiple class="chzn-select tags">
+              <form id="tags-{{ bookmark.id }}" data-bookmark-id="{{ bookmark.id }}" data-save-url="{{ url_for(".ajax_add_tags", bookmark_id=bookmark.id) }}" method="post">
+                <select data-no-results-text="Type \"Enter\" to create " data-placeholder="Choose or create tags for {{ owner }}/{{ project }}" style="width:350px;" multiple class="chzn-select tags">
                         {% for tag in bookmark.tags %}<option value="{{ tag.name }}" selected="selected">{{ tag.name }}</option>{% endfor %}
                         {% for tag in remaining_tags_for(bookmark.tags) %}<option value="{{ tag.name }}">{{ tag.name }}</option>{% endfor %}
-                      </select>
-                  </form>
+                </select>
+              </form>
               {% else %}
                   {% for tag in bookmark.tags %}
-                  <span class="badge badge-{{ loop.cycle('info', 'success', 'inverse', 'warning', 'important', 'primary') }}">{{ tag.name }}</span>
+              <span class="badge badge-{{ loop.cycle('info', 'success', 'inverse', 'warning', 'important', 'primary') }}">{{ tag.name }}</span>
                   {% endfor %}
               {% endif %}
             </td>
@@ -98,8 +101,8 @@
           success: function(data) {
             $self.attr("disabled", "true");
             $("#bookmark-row-" + bookmark_id).css("opacity", ".5").effect("highlight", 1000, function(){
-                $(this).remove();
-              });
+              $(this).remove();
+            });
           },
           error: function(){
             console.log("ERROR", arguments);

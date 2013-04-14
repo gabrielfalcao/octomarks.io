@@ -16,10 +16,8 @@ from alembic import op
 def upgrade():
     op.drop_constraint('url', 'gb_http_cache', 'unique')
     op.drop_constraint('token', 'gb_http_cache', 'unique')
-    op.create_unique_constraint('url_token', 'gb_http_cache', ["url", "token"])
 
 
 def downgrade():
-    op.drop_constraint('url_token', 'gb_http_cache', 'unique')
     op.create_unique_constraint("url", "gb_http_cache", ["url"])
     op.create_unique_constraint("token", "gb_http_cache", ["token"])

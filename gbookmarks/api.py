@@ -11,14 +11,16 @@ class GithubEndpoint(object):
     base_url = u'https://api.github.com'
 
     def __init__(self, token, cache=None, public=False):
+        from gbookmarks.models import HttpCache
         self.history = []
         self.token = token
-        self.cache = cache
+        self.cache = cache or HttpCache
+
         self.public = public
         self.headers = {
             'authorization': 'token {0}'.format(token),
             'X-GitHub-Media-Type: github.beta': 'github.beta'
-            }
+        }
         self.log = logging.getLogger('gbookmarks.api')
 
     @property
@@ -30,24 +32,20 @@ class GithubEndpoint(object):
         return url
 
     def find_cache_object(self, url):
-        from gbookmarks.models import HttpCache
         if self.public:
-            return HttpCache.find_one_by(url=url)
+            return self.cache.find_one_by(url=url)
         else:
-            return HttpCache.find_one_by(url=url, token=self.token)
+            return self.cache.find_one_by(url=url, token=self.token)
 
     def get_or_create_cache_object(self, url):
-        from gbookmarks.models import HttpCache
-
         kw = dict(url=url)
 
         if self.public:
-            return HttpCache.get_or_create(**kw)
+            return self.cache.get_or_create(**kw)
         else:
-            return HttpCache.get_or_create(token=self.token, **kw)
+            return self.cache.get_or_create(token=self.token, **kw)
 
     def get_from_cache(self, path, headers, data=None):
-        from gbookmarks.models import HttpCache
         url = self.full_url(path)
 
         cached = self.find_cache_object(url)
@@ -58,7 +56,7 @@ class GithubEndpoint(object):
         now = datetime.now()
         elapsed = now - cached.updated_at
 
-        if elapsed.total_seconds() > HttpCache.TIMEOUT:
+        if elapsed.total_seconds() > self.cache.TIMEOUT:
             return {}
 
         data = cached.to_cache_dict()

@@ -129,7 +129,7 @@ def save_bookmark(token):
 
 
 def get_repository_data(owner_name, project):
-    repository_fetcher = GithubRepository.from_token(g.user.github_token)
+    repository_fetcher = GithubRepository(GithubEndpoint(g.user.github_token), public=True)
 
     readme = None
     repository = repository_fetcher.get(owner_name, project)

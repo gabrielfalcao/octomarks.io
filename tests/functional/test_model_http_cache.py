@@ -19,7 +19,7 @@ def test_get_from_cache(context):
                            body='{"login": "gabrielfalcao"}',
                            content_type="application/json")
 
-    api = GithubEndpoint('SOMETOKEN', cache=True)
+    api = GithubEndpoint('SOMETOKEN')
     data = api.retrieve("/user")
     data.should.have.key("login").being.equal("gabrielfalcao")
 
@@ -50,7 +50,7 @@ def test_get_from_cache_twice(context):
                            body='{"login": "gabrielfalcao"}',
                            content_type="application/json")
 
-    api = GithubEndpoint('SOMETOKEN', cache=True)
+    api = GithubEndpoint('SOMETOKEN')
     with freeze_time("2013-04-14 00:00:00"):
         first = api.retrieve("/user")
 
@@ -73,7 +73,7 @@ def test_get_from_cache_twice_after_timeout(context):
         ]
     )
 
-    api = GithubEndpoint('SOMETOKEN', cache=True)
+    api = GithubEndpoint('SOMETOKEN')
     with freeze_time("2013-04-14 00:00:00"):
         first = api.retrieve("/user")
 
@@ -99,8 +99,8 @@ def test_get_from_cache_twice_different_tokens(context):
         ]
     )
 
-    api1 = GithubEndpoint('SOMETOKEN', cache=True)
-    api2 = GithubEndpoint('GANESH', cache=True)
+    api1 = GithubEndpoint('SOMETOKEN')
+    api2 = GithubEndpoint('GANESH')
 
     first = api1.retrieve("/user")
     last = api2.retrieve("/user")
@@ -122,8 +122,8 @@ def test_get_from_cache_twice_different_tokens_but_public(context):
         ]
     )
 
-    api1 = GithubEndpoint('SOMETOKEN', cache=True, public=True)
-    api2 = GithubEndpoint('GANESH', cache=True, public=True)
+    api1 = GithubEndpoint('SOMETOKEN', public=True)
+    api2 = GithubEndpoint('GANESH', public=True)
 
     first = api1.retrieve("/user")
     last = api2.retrieve("/user")

@@ -12,7 +12,7 @@ down_revision = ${repr(down_revision)}
 
 from datetime import datetime
 from alembic import op
-import sqlalchemy as sa
+import sqlalchemy as db
 ${imports if imports else ""}
 
 

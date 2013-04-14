@@ -4,6 +4,7 @@ import ejson
 import logging
 import requests
 import markdown2
+from datetime import datetime
 
 
 class GithubEndpoint(object):
@@ -16,7 +17,7 @@ class GithubEndpoint(object):
         self.headers = {
             'authorization': 'token {0}'.format(token),
             'X-GitHub-Media-Type: github.beta': 'github.beta'
-        }
+            }
         self.log = logging.getLogger('gbookmarks.api')
 
     @property
@@ -25,17 +26,24 @@ class GithubEndpoint(object):
 
     def full_url(self, path):
         url = u"/".join([self.base_url, path.lstrip('/')])
-        print url
         return url
 
-    def get_from_cache(self, url, headers, data=None):
+    def get_from_cache(self, path, headers, data=None):
         from gbookmarks.models import HttpCache
+        url = self.full_url(path)
 
         cached = HttpCache.find_one_by(url=url)
+
         if not cached:
             return {}
 
-        data = cached.to_dict()
+        now = datetime.now()
+        elapsed = now - cached.updated_at
+
+        if elapsed.total_seconds() > HttpCache.TIMEOUT:
+            return {}
+
+        data = cached.to_cache_dict()
         data['request_data'] = data
         data['request_headers'] = headers
         return data
@@ -69,10 +77,20 @@ class GithubEndpoint(object):
         }
 
     def retrieve(self, path, data=None):
+        from gbookmarks.models import HttpCache
         headers = self.headers
         response = self.get_from_cache(path, headers, data)
         if not response:
             response = self.get_from_web(path, headers, data)
+
+            cached = HttpCache.get_or_create(
+                url=response['url'],
+                token=self.token)
+
+            cached.content = response['response_data']
+            cached.headers = ejson.dumps(response['response_headers'])
+            cached.status_code = response['status_code']
+            cached.save()
 
         self.history.append(response)
         return self.json(response)

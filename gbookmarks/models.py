@@ -152,15 +152,16 @@ class HttpCache(Model):
         db.Column('url', db.Unicode(length=200), nullable=False, unique=True),
         db.Column('token', db.String(length=200), nullable=False, unique=True),
         db.Column('content', db.UnicodeText, nullable=False),
+        db.Column('headers', db.UnicodeText, nullable=False),
         db.Column('status_code', db.Integer, nullable=False),
         db.Column('updated_at', db.DateTime, default=now)
     )
 
-    def to_dict(self):
+    def to_cache_dict(self):
         return {
             'url': self.url,
-            'response_headers': ejson.loads(self.headers),
-            'response_data': self.response,
+            'response_data': self.content,
+            'response_headers': ejson.loads(self.headers or "{}"),
             'cached': True,
             'status_code': self.status_code,
         }

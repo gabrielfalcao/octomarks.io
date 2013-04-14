@@ -106,9 +106,11 @@ def github_callback(resp):
 def save_bookmark(token):
     from gbookmarks.models import User
     uri = request.args.get('uri')
-    should_redirect = request.args.get('should_redirect')
 
     info = RepoInfo(uri)
+
+    owner = info.owner
+    project = info.project
 
     uri = info.remount()
     if not info.matched:
@@ -116,25 +118,46 @@ def save_bookmark(token):
 
     user = User.find_one_by(gb_token=token)
 
-    api = GithubEndpoint(user.github_token)
-    tags = api.retrieve('/repos/{owner}/{repo}/languages'.format(
-        owner=info.owner,
-        repo=info.project
-    ))
-    if 'message' in tags:
-        return render_template('invalid.html', uri=uri)
-
     bookmark = user.save_bookmark(uri)
-    repository_fetcher = GithubRepository.from_token(user.github_token)
 
-    readme = repository_fetcher.get_readme(info.owner, info.project)
-    project = repository_fetcher.get(info.owner, info.project)
+    context = get_repository_data(owner, project)
 
-    # saving tags
-    map(bookmark.add_tag, tags)
+    if not context.get('success'):
+        return render_template('saved.error.html', info=info, bookmark=bookmark)
 
-    # rendering
-    return render_template('saved.html', uri=uri, user=user, readme=readme, repository=project, bookmark=bookmark, tags=tags, should_redirect=should_redirect)
+    return redirect(url_for('.show_bookmark', owner=owner, project=project))
+
+
+def get_repository_data(owner_name, project):
+    repository_fetcher = GithubRepository.from_token(g.user.github_token)
+
+    readme = None
+    repository = repository_fetcher.get(owner_name, project)
+    owner = None
+    tags = []
+
+    if repository:
+        readme = repository_fetcher.get_readme(owner_name, project)
+        tags = repository_fetcher.get_languages(owner_name, project)
+        owner = repository_fetcher.get_owner(owner_name)
+
+    return {
+        'success': readme is not None,
+        'readme': readme,
+        'project': project,
+        'repository': repository,
+        'owner': owner,
+        'project': project,
+        'tags': tags,
+    }
+
+
+@mod.route('/<owner>/<project>')
+@requires_login
+def show_bookmark(owner, project):
+
+    context = get_repository_data(owner, project)
+    return render_template('show-bookmark.html', **context)
 
 
 @mod.route('/bookmarklet/gb_<token>.js')

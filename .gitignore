@@ -28,3 +28,7 @@ build.log
 /modules/
 /data/db.sqlite
 cache.sqlite
+#*
+.#*
+#.*
+*#*

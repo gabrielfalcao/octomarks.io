@@ -10,7 +10,11 @@
   </div>
   <div class="row-fluid">
     <div class="span5 offset3">
+      <div class="uri-wrapper">
+        <span id="uri-message">sddsds</span>
       <input id="uri" class="classy-input" type="text" name="bookmark_url" placeholder="paste a github page or repository url here..." />
+      </div>
+
     </div>
   </div>
   <div class="row-fluid">
@@ -65,7 +69,7 @@
       <div class="span6 offset3">
              {% set bookmarklet_url = full_url_for(".save_bookmark", token=user.gb_token) %}
 
-    <a class="btn btn-success btn-large" href="javascript: (function () { location.href='{{ bookmarklet_url }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1'}());">save github favorite</a>
+{#    <a class="btn btn-success btn-large" href="javascript: (function () { location.href='{{ bookmarklet_url }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1'}());">save github favorite</a> #}
     </div>
     </div>
 </div>
@@ -76,7 +80,12 @@
     var entered_uri = $("#uri").val();
 
     if (!/([\w_-]+[.])?github.(com|io)[/][^/]+/.exec(entered_uri)){
-
+      $("#uri-message").text("Invalid github URL").addClass("show-up");
+      $("#logo").addClass("shake");
+      $("#uri").effect("highlight", 3000, function(){
+        $("#uri-message").removeClass("show-up").addClass("opaque");
+        $("#logo").removeClass("shake");
+      });
       return;
     }
     $("#uri").addClass("shake");

@@ -32,13 +32,11 @@ shell:
 
 deploy:
 	@git push heroku master
-	@heroku run ./bin/flaskd syncdb
+	@heroku alembic -c alembic.prod.ini upgrade head
+	@make release
 
 release:
 	@heroku config:set RELEASE=`git rev-parse HEAD`
-
-unleash: deploy release
-	@heroku run ./bin/flaskd renewdb
 
 %:
 	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd $@

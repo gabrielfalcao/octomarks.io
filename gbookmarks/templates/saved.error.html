@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container repository">
+  {% include "logo.html" %}
+
+  <div class="row-fluid">
+    <div class="span5 offset4">
+      <h2>{{ info.owner }} / {{ info.project }} saved!</h2>
+      <br />
+    </div>
+  </div>
+  <br />
+  <div class="row-fluid">
+    <a href="{{ info.remount() }}">
+      <div class="span5 offset4">
+        <img src="{{ url_for('static', v=settings.RELEASE, filename='img/octocat-icon-48.png') }}" class="" alt="" />
+        redirecting to github page...
+        <script type="text/javascript">(function(){
+          setTimeout(function(){
+            location.href = "{{ info.remount() }}";
+          }, 2000);
+        })();</script>
+      </div>
+    </a>
+  </div>
+{% endblock %}

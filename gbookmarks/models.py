@@ -143,3 +143,32 @@ class BookmarkTags(Model):
     @property
     def bookmark(self):
         return Bookmark.find_one_by(id=self.bookmark_id)
+
+
+class HttpCache(Model):
+    TIMEOUT = 10800
+    table = db.Table('gb_http_cache', metadata,
+        db.Column('id', db.Integer, primary_key=True),
+        db.Column('url', db.Unicode(length=200), nullable=False, unique=True),
+        db.Column('token', db.String(length=200), nullable=False, unique=True),
+        db.Column('content', db.UnicodeText, nullable=False),
+        db.Column('status_code', db.Integer, nullable=False),
+        db.Column('updated_at', db.DateTime, default=now)
+    )
+
+    def to_dict(self):
+        return {
+            'url': self.url,
+            'response_headers': ejson.loads(self.headers),
+            'response_data': self.response,
+            'cached': True,
+            'status_code': self.status_code,
+        }
+
+    @classmethod
+    def get(cls, key):
+        return {}
+
+    @classmethod
+    def set(cls, key, value):
+        return {}

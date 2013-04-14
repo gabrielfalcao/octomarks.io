@@ -46,7 +46,7 @@ class App(object):
 
         # Setting logging
 
-        for logger in [self.web.logger, getLogger('sqlalchemy'), getLogger('gbookmarks.models')]:
+        for logger in [self.web.logger, getLogger('sqlalchemy'), getLogger('gbookmarks.models'), getLogger('gbookmarks.api')]:
             logger.addHandler(StreamHandler(sys.stderr))
 
         @self.web.errorhandler(500)

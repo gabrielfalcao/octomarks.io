@@ -11,15 +11,15 @@
   <div class="row-fluid">
     <div class="span5 offset3">
       <div class="uri-wrapper">
-        <span id="uri-message">sddsds</span>
-      <input id="uri" class="classy-input" type="text" name="bookmark_url" placeholder="paste a github page or repository url here..." />
+        <span id="uri-message" {% if error %}class="opaque"{% endif %}>{% if error  %}{{ error }}{% endif %}</span>
+        <input id="uri" class="classy-input" type="text" name="bookmark_url" placeholder="paste a github page or repository url here..." {% if uri %}value="{{ uri }}"{% endif %}/>
       </div>
 
     </div>
   </div>
   <div class="row-fluid">
     <div class="span8">
-      <input type="button" id="main-save" class="btn btn-large btn-warning" name="action" value="save" disabled="true" />
+      <input type="button" id="main-save" class="btn btn-large btn-warning" name="action" value="save" {% if not uri %}disabled="true" {% endif %}/>
     </div>
   </div>
 

@@ -116,33 +116,39 @@ def save_bookmark(token):
     if not info.matched:
         return render_template('invalid.html', uri=uri)
 
+    context = get_repository_data(owner, project)
+    repository_exists = bool(context.get('success'))
+
+    if not repository_exists:
+        return render_template('index.html', uri=uri, error="Invalid github project")
+
     user = User.find_one_by(gb_token=token)
 
     bookmark = user.save_bookmark(uri)
 
-    context = get_repository_data(owner, project)
-
-    if not context.get('success'):
-        return render_template('saved.error.html', info=info, bookmark=bookmark)
+    owner_data = context['owner']
+    if not owner_data or 'message' in owner_data:
+        return render_template('saved.error.html',
+                               info=info, bookmark=bookmark)
 
     return redirect(url_for('.show_bookmark', owner=owner, project=project))
 
 
 def get_repository_data(owner_name, project):
-    repository_fetcher = GithubRepository(GithubEndpoint(g.user.github_token), public=True)
+    repository_fetcher = GithubRepository(GithubEndpoint(g.user.github_token, public=True))
 
-    readme = None
+    readme = ''
     repository = repository_fetcher.get(owner_name, project)
-    owner = None
+    owner = {}
     tags = []
 
-    if repository:
+    if repository and 'message' not in repository:
         readme = repository_fetcher.get_readme(owner_name, project)
         tags = repository_fetcher.get_languages(owner_name, project)
         owner = repository_fetcher.get_owner(owner_name)
 
     return {
-        'success': readme is not None,
+        'success': bool(readme),
         'readme': readme,
         'project': project,
         'repository': repository,

@@ -12,9 +12,8 @@
   margin-right: -20px;
 }
 
-#uri-wrapper {
-  height:0;
-  overflow: hidden;
+.uri-wrapper {
+
 }
 
 #uri-message {
@@ -22,10 +21,9 @@
   font-weight: 400;
   font-size: 18px;
   font-family: Cabin;
-  margin: 0 0 5px 0;
   padding: 8px 12px;
   width: 100%;
-  line-height: 1em;
+  line-height: 2em;
   display: block;
   background-color: #FFF0BB;
   opacity: 0;
@@ -124,8 +122,9 @@
   -webkit-animation: show-up 3000ms ease-in-out;
 }
 
-.opaque {
+#uri-message.opaque, .opaque {
   opacity: 1;
+  display: block;
 }
 /* Smartphones (landscape) ----------- */
 @media (max-width: 601px) {
@@ -167,9 +166,11 @@
   font-size: 16px;
 }
 #readme code, #readme pre {
+  font-size: 14px;
   font-family: "Monaco", monospace;
   color: #666;
   background-color: #fff2b2;
+  max-width: 670px;
 }
 
 #readme h1, #readme h2, #readme h3, #readme h4, #readme h5, #readme h6 {

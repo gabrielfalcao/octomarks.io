@@ -10,10 +10,11 @@ from datetime import datetime
 class GithubEndpoint(object):
     base_url = u'https://api.github.com'
 
-    def __init__(self, token, cache=None):
+    def __init__(self, token, cache=None, public=False):
         self.history = []
         self.token = token
         self.cache = cache
+        self.public = public
         self.headers = {
             'authorization': 'token {0}'.format(token),
             'X-GitHub-Media-Type: github.beta': 'github.beta'
@@ -28,11 +29,28 @@ class GithubEndpoint(object):
         url = u"/".join([self.base_url, path.lstrip('/')])
         return url
 
+    def find_cache_object(self, url):
+        from gbookmarks.models import HttpCache
+        if self.public:
+            return HttpCache.find_one_by(url=url)
+        else:
+            return HttpCache.find_one_by(url=url, token=self.token)
+
+    def get_or_create_cache_object(self, url):
+        from gbookmarks.models import HttpCache
+
+        kw = dict(url=url)
+
+        if self.public:
+            return HttpCache.get_or_create(**kw)
+        else:
+            return HttpCache.get_or_create(token=self.token, **kw)
+
     def get_from_cache(self, path, headers, data=None):
         from gbookmarks.models import HttpCache
         url = self.full_url(path)
 
-        cached = HttpCache.find_one_by(url=url, token=self.token)
+        cached = self.find_cache_object(url)
 
         if not cached:
             return {}
@@ -77,16 +95,12 @@ class GithubEndpoint(object):
         }
 
     def retrieve(self, path, data=None):
-        from gbookmarks.models import HttpCache
         headers = self.headers
         response = self.get_from_cache(path, headers, data)
         if not response:
             response = self.get_from_web(path, headers, data)
 
-            cached = HttpCache.get_or_create(
-                url=response['url'],
-                token=self.token)
-
+            cached = self.get_or_create_cache_object(response['url'])
             cached.content = response['response_data']
             cached.headers = ejson.dumps(response['response_headers'])
             cached.status_code = response['status_code']

@@ -106,3 +106,26 @@ def test_get_from_cache_twice_different_tokens(context):
     last = api2.retrieve("/user")
 
     first.should_not.equal(last)
+
+
+@db_test
+@httprettified
+@freeze_time("2013-04-14 00:00:00")
+def test_get_from_cache_twice_different_tokens_but_public(context):
+    ("Retrieving a url with cache twice, with different tokens but public should get from cache")
+    HTTPretty.register_uri(
+        HTTPretty.GET,
+        "https://api.github.com/user",
+        responses=[
+            HTTPretty.Response(body='{"version": "1"}', status=201),
+            HTTPretty.Response(body='{"version": "2"}', status=202),
+        ]
+    )
+
+    api1 = GithubEndpoint('SOMETOKEN', cache=True, public=True)
+    api2 = GithubEndpoint('GANESH', cache=True, public=True)
+
+    first = api1.retrieve("/user")
+    last = api2.retrieve("/user")
+
+    first.should.equal(last)

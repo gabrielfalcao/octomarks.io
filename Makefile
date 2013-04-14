@@ -36,7 +36,7 @@ deploy:
 	@make release
 
 migrate-back:
-	@heroku run "/app/.heroku/python/bin/alembic -c alembic.prod.ini downgrade base"
+	@heroku run "/app/.heroku/python/bin/alembic -c alembic.prod.ini downgrade -1"
 
 migrate-forward:
 	@heroku run "/app/.heroku/python/bin/alembic -c alembic.prod.ini upgrade head"

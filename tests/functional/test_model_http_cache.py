@@ -81,3 +81,5 @@ def test_get_from_cache_twice_after_timeout(context):
         last = api.retrieve("/user")
 
     first.should_not.equal(last)
+
+    HttpCache.all().should.have.length_of(1)

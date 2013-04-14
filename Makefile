@@ -32,7 +32,7 @@ shell:
 
 deploy:
 	@git push heroku master
-	@heroku alembic -c alembic.prod.ini upgrade head
+	@heroku run alembic -c alembic.prod.ini upgrade head
 	@make release
 
 release:

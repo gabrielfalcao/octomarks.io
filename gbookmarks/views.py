@@ -267,7 +267,18 @@ def logout():
     return render_template('logout.html')
 
 
+def get_ranking_data():
+    from gbookmarks.models import Bookmark
+    top_bookmarks = Bookmark.all()
+    return {
+        'top_bookmarks': top_bookmarks,
+    }
+
+
 @mod.route("/")
-@requires_login
 def index():
-    return render_template('index.html')
+    if g.user:
+        return render_template('index.html')
+    else:
+        ranking_data = get_ranking_data()
+        return render_template('index.anon.html', **ranking_data)

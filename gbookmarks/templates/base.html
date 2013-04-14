@@ -38,7 +38,12 @@
         <a href="{{ full_url_for(".logout") }}">(logout)</a>
       </div>
     </div>
-
+    {% else %}
+    <div id="profile-menu">
+      <a href="{{ full_url_for(".login") }}">
+        <p class="username">sign in with github</p>
+      </a>
+    </div>
     {% endif %}
     {% endblock %}
     {% block body %}{% endblock %}

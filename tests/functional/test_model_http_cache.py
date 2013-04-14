@@ -83,3 +83,26 @@ def test_get_from_cache_twice_after_timeout(context):
     first.should_not.equal(last)
 
     HttpCache.all().should.have.length_of(1)
+
+
+@db_test
+@httprettified
+@freeze_time("2013-04-14 00:00:00")
+def test_get_from_cache_twice_different_tokens(context):
+    ("Retrieving a url with cache twice but with different tokens should result in different results")
+    HTTPretty.register_uri(
+        HTTPretty.GET,
+        "https://api.github.com/user",
+        responses=[
+            HTTPretty.Response(body='{"version": "1"}', status=201),
+            HTTPretty.Response(body='{"version": "2"}', status=202),
+        ]
+    )
+
+    api1 = GithubEndpoint('SOMETOKEN', cache=True)
+    api2 = GithubEndpoint('GANESH', cache=True)
+
+    first = api1.retrieve("/user")
+    last = api2.retrieve("/user")
+
+    first.should_not.equal(last)

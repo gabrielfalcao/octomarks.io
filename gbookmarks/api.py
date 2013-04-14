@@ -32,7 +32,7 @@ class GithubEndpoint(object):
         from gbookmarks.models import HttpCache
         url = self.full_url(path)
 
-        cached = HttpCache.find_one_by(url=url)
+        cached = HttpCache.find_one_by(url=url, token=self.token)
 
         if not cached:
             return {}

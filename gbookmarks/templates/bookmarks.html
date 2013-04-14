@@ -27,14 +27,12 @@
              {% set project = RepoInfo(bookmark.url).project %}
              {% set gb_url = url_for('.show_bookmark', owner=owner, project=project) %}
           <tr id="bookmark-row-{{ bookmark.id }}">
-            <a href="{{ gb_url }}">
-              <td>
-              {{ project }}
-              </td>
-              <td>
-              {{ bookmark.url }}">{{ owner }}
-              </td>
-            </a>
+            <td>
+              <a href="{{ gb_url }}">{{ project }}</a>
+            </td>
+            <td>
+              <a href="{{ gb_url }}">{{ bookmark.url }}">{{ owner }}</a>
+            </td>
             <td>
               {% if is_self %}
               <form id="tags-{{ bookmark.id }}" data-bookmark-id="{{ bookmark.id }}" data-save-url="{{ url_for(".ajax_add_tags", bookmark_id=bookmark.id) }}" method="post">

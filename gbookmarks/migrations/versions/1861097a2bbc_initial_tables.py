@@ -53,4 +53,7 @@ def upgrade():
 
 
 def downgrade():
-    pass
+    op.drop_table('gb_user')
+    op.drop_table('gb_tag')
+    op.drop_table('gb_bookmark')
+    op.drop_table('gb_bookmark_tags')

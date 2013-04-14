@@ -20,5 +20,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_column('gb_http_cache',
-                   db.Column('headers', db.UnicodeText, nullable=False))
+    op.drop_column('gb_http_cache', 'headers')

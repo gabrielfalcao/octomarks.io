@@ -64,10 +64,10 @@ class User(Model):
 
     def import_starred_as_bookmarks(self):
         repos = self.api.get_starred(self.username)
-        if not isinstance(repos, list):
-            logger.warning("Could not get starred repos for %s:\n%s", self.username, repr(repos))
-
-        return map(self.save_repo_as_bookmark, repos)
+        try:
+            return map(self.save_repo_as_bookmark, repos)
+        except Exception:
+            logger.exception("Could not get starred repos for %s:\n%s", self.username, repr(repos))
 
     @classmethod
     def create_from_github_user(cls, data):

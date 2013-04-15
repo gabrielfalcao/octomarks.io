@@ -59,10 +59,14 @@ class GithubEndpoint(object):
         if elapsed.total_seconds() > self.cache.TIMEOUT:
             return {}
 
-        data = cached.to_cache_dict()
-        data['request_data'] = data
-        data['request_headers'] = headers
-        return data
+        d = cached.to_cache_dict()
+        try:
+            ejson.loads(d['response_data'])
+        except ValueError:
+            self.log.exception('Truncated cache data')
+            return {}
+
+        return d
 
     def get_from_web(self, path, headers, data=None):
         url = self.full_url(path)
@@ -132,6 +136,9 @@ class GithubUser(Resource):
     def fetch_info(cls, token):
         instance = cls.from_token(token)
         return instance.endpoint.retrieve('/user')
+
+    def get_starred(self, username):
+        return self.endpoint.retrieve('/users/{0}/starred'.format(username))
 
 
 class GithubRepository(Resource):

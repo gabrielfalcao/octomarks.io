@@ -35,10 +35,12 @@ class User(Model):
     )
 
     def initialize(self):
+        from gbookmarks.api import GithubUser
         sha = hashlib.sha1()
         sha.update("github-bookmarks:")
         sha.update(self.username)
         self.gb_token = sha.hexdigest()
+        self.api = GithubUser.from_token(self.github_token)
 
     def __repr__(self):
         return '<User %r, token=%r>' % (self.username, self.gb_token)
@@ -49,10 +51,20 @@ class User(Model):
         # information.
         info = RepoInfo(uri.strip())
         if info:
-            return Bookmark.get_or_create(user_id=self.id, url=info.remount())
+            bk = Bookmark.get_or_create(user_id=self.id, url=info.remount())
+            tags = self.api.endpoint.retrieve('/repos/{0}/{1}/languages'.format(info.owner, info.project))
+            tags = map(bk.add_tag, tags)
+            return bk
 
     def get_bookmarks(self):
         return Bookmark.find_by(user_id=self.id)
+
+    def save_repo_as_bookmark(self, repo):
+        return self.save_bookmark(repo['html_url'])
+
+    def import_starred_as_bookmarks(self):
+        repos = self.api.get_starred(self.username)
+        return map(self.save_repo_as_bookmark, repos)
 
     @classmethod
     def create_from_github_user(cls, data):
@@ -65,7 +77,6 @@ class User(Model):
             github_token=data.get('github_token')
         )
         logger.info("user %d created: %s", instance.id, instance.email)
-
         return instance
 
     @classmethod
@@ -74,6 +85,7 @@ class User(Model):
         if not instance:
             return cls.create_from_github_user(data)
 
+        instance.import_starred_as_bookmarks()
         return instance
 
 

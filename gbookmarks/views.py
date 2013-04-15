@@ -259,10 +259,6 @@ def cleanup():
 
 @mod.route('/logout')
 def logout():
-    if g.user and not g.user.github_token.startswith('disabled:'):
-        g.user.github_token = 'disabled:{0}'.format(g.user.github_token)
-        g.user.save()
-
     session.clear()
     return render_template('logout.html')
 

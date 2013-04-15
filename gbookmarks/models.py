@@ -110,14 +110,15 @@ class Bookmark(Model):
     ]
 
     @classmethod
-    def get_most_bookmarked(cls):
+    def get_most_bookmarked(cls, limit=5):
         field = cls.table.c
         q = (db.select([
             field.url,
             db.func.count('*')
         ])
             .group_by(field.url)
-            .order_by(db.desc(db.func.count('*'))))
+            .order_by(db.desc(db.func.count('*')))
+            .limit(limit))
 
         conn = cls.get_connection()
         res = conn.execute(q)

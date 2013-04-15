@@ -109,6 +109,20 @@ class Bookmark(Model):
         re.compile(r'(?P<owner>[^.]+).github.io/(?P<project>[^/]+)'),
     ]
 
+    @classmethod
+    def get_most_bookmarked(cls):
+        field = cls.table.c
+        q = (db.select([
+            field.url,
+            db.func.count('*')
+        ])
+            .group_by(field.url)
+            .order_by(db.desc(db.func.count('*'))))
+
+        conn = cls.get_connection()
+        res = conn.execute(q)
+        return [(RepoInfo(url), count) for url, count in res.fetchall()]
+
     def add_tag(self, name):
         tag = Tag.get_or_create(name=name.strip())
         return tag, BookmarkTags.get_or_create(

@@ -60,11 +60,13 @@ class User(Model):
         return Bookmark.find_by(user_id=self.id)
 
     def save_repo_as_bookmark(self, repo):
-        print repo
         return self.save_bookmark(repo['html_url'])
 
     def import_starred_as_bookmarks(self):
         repos = self.api.get_starred(self.username)
+        if not isinstance(repos, list):
+            logger.warning("Could not get starred repos for %s:\n%s", self.username, repr(repos))
+
         return map(self.save_repo_as_bookmark, repos)
 
     @classmethod

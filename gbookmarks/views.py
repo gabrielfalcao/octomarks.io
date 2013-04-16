@@ -40,10 +40,15 @@ def prepare_auth():
 
 @mod.context_processor
 def inject_basics():
+    import time
+    started = time.time()
     from gbookmarks.models import Tag
 
     def full_url_for(*args, **kw):
         return settings.absurl(url_for(*args, **kw))
+
+    def mailtoify(string):
+        return string.replace(' ', '%20').replace('\n', '%0D%0A')
 
     all_tags = Tag.all()
     all_ids = {t.id for t in all_tags}
@@ -57,7 +62,10 @@ def inject_basics():
         exclude_ids = {t.id for t in exclude_tags}
         return map(pick, all_ids.difference(exclude_ids))
 
-    return dict(user=g.user, settings=settings, RepoInfo=RepoInfo, full_url_for=full_url_for, remaining_tags_for=get_remaining_tags)
+    finished = time.time()
+
+    print "Context created within %ds" % (finished - started)
+    return dict(user=g.user, settings=settings, RepoInfo=RepoInfo, full_url_for=full_url_for, remaining_tags_for=get_remaining_tags, mailtoify=mailtoify)
 
 
 @github.access_token_getter
@@ -105,10 +113,12 @@ def github_callback(resp):
 @requires_login
 def save_bookmark(token):
     from gbookmarks.models import User
-    uri = request.args.get('uri')
+    original_uri = request.args.get('uri')
     should_redirect = request.args.get('should_redirect')
 
-    info = RepoInfo(uri)
+    user = User.find_one_by(gb_token=token)
+
+    info = RepoInfo(original_uri)
 
     owner = info.owner
     project = info.project
@@ -121,18 +131,18 @@ def save_bookmark(token):
 
         return render_template('invalid.html', uri=uri)
 
+    if should_redirect:
+        user.save_bookmark(original_uri)
+        return redirect(uri)
+
     context = get_repository_data(owner, project)
     repository_exists = bool(context.get('success'))
+
+    bookmark = user.save_bookmark(original_uri)
 
     if not repository_exists:
         return render_template('index.html', uri=uri, error="Invalid github project")
 
-    user = User.find_one_by(gb_token=token)
-
-    bookmark = user.save_bookmark(uri)
-
-    if should_redirect:
-        return redirect(uri)
     owner_data = context['owner']
     if not owner_data or 'message' in owner_data:
         return render_template('saved.error.html',
@@ -195,7 +205,7 @@ def bookmarks(username):
 
     bookmarks = None
     if not user:
-        return render_template('invite.html', username=username, githubber=api.retrieve('/users/{0}'.format(username)))
+        return render_template('invite.html', user=user, is_self=(user == g.user), username=username, githubber=api.retrieve('/users/{0}'.format(username)))
     bookmarks = user.get_bookmarks()
     return render_template('bookmarks.html', bookmarks=bookmarks, user=user, is_self=(user == g.user))
 

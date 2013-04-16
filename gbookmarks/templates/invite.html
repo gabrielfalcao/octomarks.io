@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 
 {% block body %}
+<style type="text/css" media="screen">
+.span12 {
+  text-align: center;
+}
+</style>
 <div class="container">
   {% include "logo.html" %}
   <div class="row-fluid">
-    <div class="span8 offset2">
+    <div class="span12">
       <h1>{{ username }} is not yet on github-bookmarks</h1>
     </div>
   </div>
   <br />
   <div class="row-fluid">
-    <div class="span8 offset4">
-      <a target="_blank" href="mailto:{{ githubber.email }}?subject={{ "Welcome to github-bookmarks" }}&body={{ "Hey {0},\n Have you checked out github-bookmarks ?\n\n There you can see how many bookmarks your projects got and organize your favorite repos".format(username) }}" class="btn btn-large btn-warning">Invite him to github bookmarks</a>
+    <div class="span12">
+      <a target="_blank" href="mailto:{{ githubber.email }}?subject={{ "{0}, welcome to github-bookmarks".format(githubber.username) }}&body={{ mailtoify("Hi {0},\nHave you checked out github-bookmarks ?\n\nIt's a simple website for bookmarking github projects, organize and find them by tags.\n\nhttp://github-bookmarks.com/\n\nCheers,\n{1}".format(username, user.username)) }}" class="btn btn-large btn-warning">Invite him to github bookmarks</a>
 
       {% if githubber.blog %}
       or <strong><em><a target="_blank" href="{{ githubber.blog }}">visit his website</a></em></strong>

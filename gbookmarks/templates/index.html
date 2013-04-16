@@ -67,9 +67,11 @@
   {% endif %}
     <div class="row-fluid">
       <div class="span6 offset3">
-             {% set bookmarklet_url = full_url_for(".save_bookmark", token=user.gb_token) %}
+        {% set bookmarklet_url = full_url_for(".save_bookmark", token=user.gb_token) %}
 
-{#    <a class="btn btn-success btn-large" href="javascript: (function () { location.href='{{ bookmarklet_url }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1'}());">save github favorite</a> #}
+        {% if user.username == "gabrielfalcao" %}
+        <a class="btn btn-success btn-large" href="javascript: (function () { location.href='{{ bookmarklet_url }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1'}());">save github favorite</a>
+        {% endif %}
     </div>
     </div>
 </div>

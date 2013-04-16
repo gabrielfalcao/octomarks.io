@@ -106,6 +106,7 @@ def github_callback(resp):
 def save_bookmark(token):
     from gbookmarks.models import User
     uri = request.args.get('uri')
+    should_redirect = request.args.get('should_redirect')
 
     info = RepoInfo(uri)
 
@@ -113,6 +114,8 @@ def save_bookmark(token):
     project = info.project
 
     uri = info.remount()
+    import ipdb;ipdb.set_trace()
+
     if not info.matched:
         return render_template('invalid.html', uri=uri)
 
@@ -126,6 +129,8 @@ def save_bookmark(token):
 
     bookmark = user.save_bookmark(uri)
 
+    if should_redirect:
+        return redirect(uri)
     owner_data = context['owner']
     if not owner_data or 'message' in owner_data:
         return render_template('saved.error.html',

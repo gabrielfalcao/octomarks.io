@@ -114,9 +114,11 @@ def save_bookmark(token):
     project = info.project
 
     uri = info.remount()
-    import ipdb;ipdb.set_trace()
 
     if not info.matched:
+        if should_redirect:
+            return redirect(uri)
+
         return render_template('invalid.html', uri=uri)
 
     context = get_repository_data(owner, project)

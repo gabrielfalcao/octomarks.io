@@ -37,7 +37,7 @@ class User(Model):
     def initialize(self):
         from octomarks.api import GithubUser
         sha = hashlib.sha1()
-        sha.update("github-bookmarks:")
+        sha.update("octomarks:")
         sha.update(self.username)
         self.gb_token = sha.hexdigest()
         self.api = GithubUser.from_token(self.github_token)
@@ -76,7 +76,7 @@ class User(Model):
             username=login,
             github_id=data.get('id'),
             gravatar_id=data.get('gravatar_id'),
-            email=data.get('email', "{0}@github-bookmarks.com".format(login)),
+            email=data.get('email', "{0}@octomarks.com".format(login)),
             github_token=data.get('github_token')
         )
         logger.info("user %d created: %s", instance.id, instance.email)

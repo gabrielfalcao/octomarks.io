@@ -10,13 +10,13 @@
   {% include "logo.html" %}
   <div class="row-fluid">
     <div class="span12">
-      <h1>{{ username }} is not yet on github-bookmarks</h1>
+      <h1>{{ username }} is not yet on octomarks</h1>
     </div>
   </div>
   <br />
   <div class="row-fluid">
     <div class="span12">
-      <a target="_blank" href="mailto:{{ githubber.email }}?subject={{ "{0}, welcome to github-bookmarks".format(githubber.username) }}&body={{ mailtoify("Hi {0},\nHave you checked out github-bookmarks ?\n\nIt's a simple website for bookmarking github projects, organize and find them by tags.\n\nhttp://github-bookmarks.com/\n\nCheers,\n{1}".format(username, user.username)) }}" class="btn btn-large btn-warning">Invite him to github bookmarks</a>
+      <a target="_blank" href="mailto:{{ githubber.email }}?subject={{ "{0}, welcome to octomarks".format(githubber.username) }}&body={{ mailtoify("Hi {0},\nHave you checked out octomarks ?\n\nIt's a simple website for bookmarking github projects, organize and find them by tags.\n\nhttp://octomarks.com/\n\nCheers,\n{1}".format(username, user.username)) }}" class="btn btn-large btn-warning">Invite him to github bookmarks</a>
 
       {% if githubber.blog %}
       or <strong><em><a target="_blank" href="{{ githubber.blog }}">visit his website</a></em></strong>

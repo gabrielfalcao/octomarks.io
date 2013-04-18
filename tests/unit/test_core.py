@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from gbookmarks.core import RepoInfo
+from octomarks.core import RepoInfo
 
 
 def test_repository_info_matches_project():

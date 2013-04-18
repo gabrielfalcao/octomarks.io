@@ -6,7 +6,7 @@ all:
 setup: settings deps
 
 settings:
-	@cd gbookmarks && \
+	@cd octomarks && \
 		[ -e $(SETTINGS_FILE) ] || ln -s $(SETTINGS_FILE).sample $(SETTINGS_FILE)
 
 deps:
@@ -16,7 +16,7 @@ clean:
 	find . -name *.pyc -delete
 
 test-kind:
-	@GBOOKMARKS_SETTINGS_MODULE="tests.settings" PYTHONPATH="$(PYTHONPATH)" \
+	@OCTOMARKS_SETTINGS_MODULE="tests.settings" PYTHONPATH="$(PYTHONPATH)" \
 		nosetests --logging-clear-handlers --stop --verbosity=2 -s tests/$(kind)
 
 unit:

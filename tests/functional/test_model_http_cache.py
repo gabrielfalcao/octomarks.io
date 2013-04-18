@@ -6,8 +6,8 @@ from datetime import datetime
 from freezegun import freeze_time
 from httpretty import HTTPretty, httprettified
 
-from gbookmarks.api import GithubEndpoint
-from gbookmarks.models import HttpCache
+from octomarks.api import GithubEndpoint
+from octomarks.models import HttpCache
 
 
 @db_test

@@ -1,3 +1,3 @@
-from gbookmarks.settings import *
+from octomarks.settings import *
 
 SQLALCHEMY_DATABASE_URI = "sqlite://"

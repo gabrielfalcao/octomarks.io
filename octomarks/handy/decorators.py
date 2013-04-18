@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from functools import wraps
-from gbookmarks import settings
+from octomarks import settings
 from flask import redirect, session
 
 

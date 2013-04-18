@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8; -*-
-from gbookmarks.app import app
+from octomarks.app import app
 
 if __name__ == "__main__":
     app.commands.run()

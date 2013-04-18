@@ -9,9 +9,9 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 from logging import getLogger, StreamHandler
 
-from gbookmarks.assets import AssetsManager
-from gbookmarks.commands import init_command_manager
-from gbookmarks import views
+from octomarks.assets import AssetsManager
+from octomarks.commands import init_command_manager
+from octomarks import views
 
 
 __all__ = 'app',
@@ -24,7 +24,7 @@ class App(object):
     the static assets, etc.
     """
 
-    def __init__(self, settings_path='gbookmarks.settings'):
+    def __init__(self, settings_path='octomarks.settings'):
         self.web = Flask(__name__)
 
         # Loading our settings
@@ -46,7 +46,7 @@ class App(object):
 
         # Setting logging
 
-        for logger in [self.web.logger, getLogger('sqlalchemy'), getLogger('gbookmarks.models'), getLogger('gbookmarks.api')]:
+        for logger in [self.web.logger, getLogger('sqlalchemy'), getLogger('octomarks.models'), getLogger('octomarks.api')]:
             logger.addHandler(StreamHandler(sys.stderr))
 
         @self.web.errorhandler(500)
@@ -59,8 +59,8 @@ class App(object):
         """Return an instance of `App` fed with settings from the env.
         """
         smodule = os.environ.get(
-            'MERCHANTS_SETTINGS_MODULE',
-            'gbookmarks.settings'
+            'OCTOMARKS_SETTINGS_MODULE',
+            'octomarks.settings'
         )
         return cls(smodule)
 

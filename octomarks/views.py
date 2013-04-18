@@ -7,10 +7,10 @@ from flask import (
 )
 
 
-from gbookmarks import settings
-from gbookmarks.api import GithubUser, GithubEndpoint, GithubRepository
-from gbookmarks.core import RepoInfo
-from gbookmarks.handy.decorators import requires_login
+from octomarks import settings
+from octomarks.api import GithubUser, GithubEndpoint, GithubRepository
+from octomarks.core import RepoInfo
+from octomarks.handy.decorators import requires_login
 from flaskext.github import GithubAuth
 
 
@@ -42,7 +42,7 @@ def prepare_auth():
 def inject_basics():
     import time
     started = time.time()
-    from gbookmarks.models import Tag
+    from octomarks.models import Tag
 
     def full_url_for(*args, **kw):
         return settings.absurl(url_for(*args, **kw))
@@ -75,7 +75,7 @@ def get_github_token(token=None):
 
 @mod.before_request
 def prepare_user():
-    from gbookmarks.models import User
+    from octomarks.models import User
     if 'github_user_data' in session:
         g.user = User.get_or_create_from_github_user(session['github_user_data'])
 
@@ -83,7 +83,7 @@ def prepare_user():
 @mod.route('/.callback')
 @github.authorized_handler
 def github_callback(resp):
-    from gbookmarks.models import User
+    from octomarks.models import User
     next_url = request.args.get('next') or '/'
     if resp is None:
         print (u'You denied the request to sign in.')
@@ -112,7 +112,7 @@ def github_callback(resp):
 @mod.route('/save/<token>')
 @requires_login
 def save_bookmark(token):
-    from gbookmarks.models import User
+    from octomarks.models import User
     original_uri = request.args.get('uri')
     should_redirect = request.args.get('should_redirect')
 
@@ -185,7 +185,7 @@ def show_bookmark(owner, project):
 
 @mod.route('/bookmarklet/gb_<token>.js')
 def serve_bookmarklet(token):
-    from gbookmarks.models import User
+    from octomarks.models import User
     user = User.find_one_by(gb_token=token)
     return Response(render_template('bookmarklet.js', user=user), mimetype="text/javascript")
 
@@ -200,7 +200,7 @@ def login():
 @requires_login
 def bookmarks(username):
     api = GithubEndpoint(g.user.github_token)
-    from gbookmarks.models import User
+    from octomarks.models import User
     user = User.find_one_by(username=username)
 
     bookmarks = None
@@ -213,7 +213,7 @@ def bookmarks(username):
 @mod.route('/a/<bookmark_id>/tags', methods=['POST'])
 @requires_login
 def ajax_add_tags(bookmark_id):
-    from gbookmarks.models import Bookmark
+    from octomarks.models import Bookmark
     if 'json' not in request.headers['content-type']:
         return json_response({'success': False, 'error': {'message': "Content type must be json"}})
 
@@ -231,7 +231,7 @@ def ajax_add_tags(bookmark_id):
 @mod.route('/a/<bookmark_id>/delete', methods=['POST'])
 @requires_login
 def ajax_delete_bookmark(bookmark_id):
-    from gbookmarks.models import Bookmark
+    from octomarks.models import Bookmark
     if 'json' not in request.headers['content-type']:
         return json_response({'success': False, 'error': {'message': "Content type must be json"}})
 
@@ -245,7 +245,7 @@ def ajax_delete_bookmark(bookmark_id):
 @mod.route('/bookmark/<bookmark_id>/edit')
 @requires_login
 def edit_bookmark(bookmark_id):
-    from gbookmarks.models import Bookmark
+    from octomarks.models import Bookmark
 
     repository = GithubRepository.from_token(g.user.github_token)
     bk = Bookmark.find_one_by(id=bookmark_id, user_id=g.user.id)
@@ -259,7 +259,7 @@ def edit_bookmark(bookmark_id):
 
 @mod.route('/.cleanup')
 def cleanup():
-    from gbookmarks.models import Tag, BookmarkTags, db
+    from octomarks.models import Tag, BookmarkTags, db
     conn = Tag.get_connection()
 
     res = conn.execute(Tag.table.select().where(Tag.table.c.id.notin_(db.select([BookmarkTags.table.c.tag_id]))))
@@ -282,7 +282,7 @@ def logout():
 
 @mod.route("/")
 def index():
-    from gbookmarks.models import Bookmark
+    from octomarks.models import Bookmark
     if g.user:
         return render_template('index.html')
     else:

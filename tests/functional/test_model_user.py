@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from .base import db_test, user_test
-from gbookmarks.models import User, Bookmark
+from octomarks.models import User, Bookmark
 
 
 @db_test

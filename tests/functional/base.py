@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from sure import scenario
-from gbookmarks.models import User, db, metadata, Bookmark
+from octomarks.models import User, db, metadata, Bookmark
 
 
 def prepare(context):

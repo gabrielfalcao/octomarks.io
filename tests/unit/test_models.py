@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from gbookmarks.db import models
-from gbookmarks.models import User, Tag, Bookmark
+from octomarks.db import models
+from octomarks.models import User, Tag, Bookmark
 
 
 def test_can_find_models():

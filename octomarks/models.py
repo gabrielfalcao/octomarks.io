@@ -7,10 +7,10 @@ from datetime import datetime
 # from werkzeug import generate_password_hash, check_password_hash
 import logging
 
-logger = logging.getLogger('gbookmarks.models')
+logger = logging.getLogger('octomarks.models')
 
-from gbookmarks.db import db, metadata, Model
-from gbookmarks.core import RepoInfo
+from octomarks.db import db, metadata, Model
+from octomarks.core import RepoInfo
 
 
 def slugify(string):
@@ -35,7 +35,7 @@ class User(Model):
     )
 
     def initialize(self):
-        from gbookmarks.api import GithubUser
+        from octomarks.api import GithubUser
         sha = hashlib.sha1()
         sha.update("github-bookmarks:")
         sha.update(self.username)

@@ -11,7 +11,7 @@ class GithubEndpoint(object):
     base_url = u'https://api.github.com'
 
     def __init__(self, token, cache=None, public=False):
-        from gbookmarks.models import HttpCache
+        from octomarks.models import HttpCache
         self.history = []
         self.token = token
         self.cache = cache or HttpCache
@@ -21,7 +21,7 @@ class GithubEndpoint(object):
             'authorization': 'token {0}'.format(token),
             'X-GitHub-Media-Type: github.beta': 'github.beta'
         }
-        self.log = logging.getLogger('gbookmarks.api')
+        self.log = logging.getLogger('octomarks.api')
 
     @property
     def last_response(self):

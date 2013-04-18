@@ -2,7 +2,7 @@
 import ejson as json
 from functools import partial
 from flask import config
-from gbookmarks.app import app
+from octomarks.app import app
 
 
 db = app.db

@@ -1,18 +1,47 @@
-# github bookmarks
+# Octomarks
 
 It's a bookmark app for github projects
 
+## Deploying
 
-Feature: create a bookmark
+1. Push to heroku and update the release hash
 
-Given I login to github bookmarks
-And I'm provided with a textbox to paste a github project url
-When I type in the github project url
-Then it gets saved in my bookmarks
+```console
+make deploy
+```
+
+2. Run the migrations
+
+```console
+make migrate-forward
+```
+
+## Hacking
+
+1. Install dependencies:
+
+```console
+pip install -r development.txt
+```
+
+2. Run the server
+
+```console
+make run
+```
+
+3. Run tests
+
+```console
+make unit functional
+```
 
 
-# Please show me the new libraries from people I already favorited libraries
+# TODO:
 
-# A button to import all the repos you already starred
+* Please show me the new libraries from people I already favorited
+  libraries
 
-# Show suggestions for projects you already liked
+* A button to import all the repos you already starred
+
+* Show suggestions for projects you already liked

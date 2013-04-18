@@ -13,7 +13,7 @@ class SyncDB(Command):
         self.destructive = destructive
 
     def run(self):
-        from gbookmarks.models import db, metadata
+        from octomarks.models import db, metadata
 
         if self.destructive:
             print "Destroying tables under", db.engine
@@ -25,8 +25,8 @@ class SyncDB(Command):
 
 class Runserver(Command):
     def run(self):
-        from gbookmarks.app import app
-        from gbookmarks import settings
+        from octomarks.app import app
+        from octomarks import settings
 
         if settings.DEBUG:
             return app.web.run(debug=settings.DEBUG)

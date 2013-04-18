@@ -45,3 +45,5 @@ make unit functional
 * A button to import all the repos you already starred
 
 * Show suggestions for projects you already liked
+
+* allow people to add others peoples bookmarks as their owns (bookmark it too btn)

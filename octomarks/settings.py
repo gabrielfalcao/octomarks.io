@@ -13,7 +13,7 @@ PRODUCTION = not DEBUG
 SECRET_KEY = 'P4wned!'
 
 # Database connection URI
-DATABASE = 'mysql://octomarks:b00k@BABY@mysql.gabrielfalcao.com/octomarks'
+DATABASE = 'mysql://gbookmarks:b00k@BABY@mysql.gabrielfalcao.com/gbookmarks'
 
 if not PRODUCTION:
     DATABASE = 'mysql://root@localhost/gb'

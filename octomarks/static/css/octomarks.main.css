@@ -1,0 +1,353 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic);
+@import url(http://fonts.googleapis.com/css?family=Muli:300,400,300italic,400italic);
+
+.vcard {
+  display: none;
+}
+body.octomarks {
+  font-family: Lato;
+  font-weight: 700;
+  background: #f0efeb;
+  color: #666;
+}
+
+a:hover {
+  text-decoration:none;
+  color: #334767;
+}
+.octomarks .navbar {
+  position:relative;
+  margin-top:0px;
+  margin-bottom: 80px;
+}
+
+.octomarks .navbar.navbar-stashed {
+  margin-top: -40px;
+  margin-bottom: 40px;
+}
+.octomarks .navbar.navbar-stashed .profile {
+  opacity: 0;
+}
+
+.octomarks .navbar .navbar-inner {
+  position:relative;
+}
+
+.octomarks .navbar .navbar-handle-container {
+  position:relative;
+  float: left;
+  margin: 0;
+  padding: 0;
+  background:red;
+  height:51px;
+}
+.octomarks .navbar .navbar-handle {
+  display: inline-block;
+  position:absolute;
+  background-image: url(http://f.cl.ly/items/3m0z2u3g3x2G2Q1m1t0o/navbar-pull-down-handle.png);
+  background-repeat: no-repeat;
+  width: 48px;
+  height:28px;
+  background-position: 0 -3px;
+  bottom: -27px;
+  left: 18px;
+}
+
+.octomarks .navbar-inner, .octomarks .navbar-inner * {
+  color: white;
+  text-shadow: none;
+  font-size: 16px;
+    font-weight: 300;
+}
+
+.octomarks .navbar-inner p {
+  font-weight: 100;
+}
+
+
+.octomarks .navbar-inner {
+-webkit-border-radius: 0px;
+-moz-border-radius: 0px;
+-o-border-radius: 0px;
+border-radius: 0px;
+border: 0px;
+  text-shadow: 0;
+	border: 1px solid #336;
+	background: #9f9fc6;
+	-moz-box-shadow: inset 0 0 1px 0 #d8d8ff;
+	-webkit-box-shadow: inset 0 0 1px 0 #d8d8ff;
+	box-shadow: inset 0 0 1px 0 #d8d8ff;
+  height: 50px;
+}
+
+.octomarks .navbar-inner ul.nav li {
+  margin-top: 6px;
+  text-shadow: none;
+  margin:0;
+  padding: 0;
+}
+.octomarks .navbar-inner ul.nav li a {
+  background: transparent;
+  text-shadow: none;
+  margin: 0;
+  padding: 14px 20px 14px 20px;
+  color: #FFF;
+}
+
+.octomarks .navbar-inner ul.nav li.active a {
+  background: rgba(255, 255, 247, .1);
+}
+
+.octomarks .project-logo {
+	width: 270px;
+ height: 60px;
+	border: 1px solid #334767;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	background-color: #6389c6;
+	-moz-box-shadow: -2px 6px 17px rgba(112,112,110,.3), inset 0 0 1px 0 #d8e7ff;
+	-webkit-box-shadow: -2px 6px 17px rgba(112,112,110,.3), inset 0 0 1px 0 #d8e7ff;
+	box-shadow: -2px 6px 17px rgba(112,112,110,.3), inset 0 0 1px 0 #d8e7ff;
+ color: #fff;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+
+.octomarks .project-logo-container {
+  width: 270px;
+}
+.octomarks .project-logo-container p {
+  float: right;
+  font-size: 18px;
+  font-weight: 300;
+  margin-top: 8px;
+}
+
+
+.octomarks .project-logo * {
+  float: left;
+}
+
+.octomarks .project-logo h1 {
+  font-size: 36px;
+  font-weight: 400;
+  margin: 0;
+  margin: 10px 0 0 8px;
+}
+
+.octomarks .project-logo p {
+ position: absolute;
+  margin:0;
+  padding: 0;
+ right: 10px;
+  bottom: 4px;
+}
+
+.test {
+  background: white;
+  height: 30px;
+}
+
+.octomarks .project-doc {
+  margin-top: 40px;
+}
+
+.octomarks .project-doc .project-doc-index {
+
+}
+.octomarks .code-area {
+    overflow-x: auto;
+	min-width: 870px;
+	min-height: 400px;
+	max-height: 700px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	background-color: rgba(255,255,255,.4);
+	-moz-box-shadow: inset 0 1px 2px rgba(102,102,102,.75);
+	-webkit-box-shadow: inset 0 1px 2px rgba(102,102,102,.75);
+	box-shadow: inset 0 1px 2px rgba(102,102,102,.75);
+ padding: 20px 0 0 20px;
+  margin-bottom: 50px;
+}
+
+
+.octomarks .nav.nav-stacked {
+
+}
+
+.octomarks .nav.nav-stacked li {
+  padding: 0;
+  margin: 0;
+}
+.octomarks .nav.nav-stacked li a {
+  border: 0;
+  -webkit-border-radius: 0px;
+-moz-border-radius: 0px;
+-o-border-radius: 0px;
+border-radius: 0px;
+  padding: 0;
+  margin: 0;
+}
+.octomarks .nav.nav-stacked li.sub a {
+  padding-left: 10px;
+}
+
+.octomarks .nav.nav-stacked li h2, .octomarks .nav.nav-stacked li h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.octomarks .nav.nav-stacked li h2 {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.octomarks .nav.nav-stacked li h3 {
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.octomarks .github-btn {
+	width: 134px;
+	height: 24px;
+  text-align:center;
+  padding: 8px 18px;
+  display:inline-block;
+  font-family: Muli;
+  font-size: 24px;
+  font-weight:400;
+  color: #fff;
+	border: 1px solid #25634f;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	background-color: #75998d;
+	-moz-box-shadow: 0 7px 6px rgba(100,74,36,.37), inset 0 0 0 1px rgba(168,205,193,.5);
+	-webkit-box-shadow: 0 7px 6px rgba(100,74,36,.37), inset 0 0 0 1px rgba(168,205,193,.5);
+	box-shadow: 0 7px 6px rgba(100,74,36,.37), inset 0 0 0 1px rgba(168,205,193,.5);
+}
+
+.octomarks .github-btn img {
+  float:left;
+  margin-top: -4px;
+}
+.octomarks .search-container {
+  padding-top: 10px;
+}
+.octomarks .search-box {
+  margin: 0;
+	width: 288px;
+	height: 30px;
+  padding: 0 0 0 10px;
+	border: 1px solid #9292ba;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	background-color: #f7f7ff;
+	-moz-box-shadow: inset 0 0 2px 0 #d8d8ff;
+	-webkit-box-shadow: inset 0 0 2px 0 #d8d8ff;
+	box-shadow: inset 0 0 2px 0 #d8d8ff;
+}
+
+.octomarks .search-btn {
+  background-image: url(http://f.cl.ly/items/280a3O103j3L331u0O0b/lupa.png);
+  background-repeat: no-repeat;
+  background-position: 10px 6px;
+  padding-right: 24px;
+	color: #fff;
+	font-family: "Lato";
+	font-size: 18px;
+text-align: right;
+    margin:0;
+	width: 100px;
+	height: 32px;
+	border: 1px solid #66c;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	background-color: #9f9fc7;
+}
+
+.octomarks .search-btn:hover {
+	-moz-box-shadow: 0 7px 6px rgba(100,74,36,.37);
+	-webkit-box-shadow: 0 7px 6px rgba(100,74,36,.37);
+	box-shadow: 0 7px 6px rgba(100,74,36,.37);
+}
+
+.octomarks .search-btn:active {
+
+  margin-bottom: -4px;
+	border: 1px solid #66c;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	background-color: #9f9fc7;
+	-moz-box-shadow: 0 6px 6px rgba(57,36,100,.28);
+	-webkit-box-shadow: 0 6px 6px rgba(57,36,100,.28);
+	box-shadow: 0 6px 6px rgba(57,36,100,.28);
+}
+
+.octomarks .profile-pic-container,
+.octomarks .profile-pic-container img {
+	width: 40px;
+	height: 40px;
+  float: left;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	background-color: #edeff2;
+	-moz-box-shadow: inset 0 1px 1px #333365;
+	-webkit-box-shadow: inset 0 1px 1px #333365;
+	box-shadow: inset 0 1px 1px #333365;
+}
+
+.octomarks .profile {
+  float: right;
+  margin:0;
+}
+
+.octomarks .profile-pic-container {
+  margin: 4px 0 0 0;
+}
+
+.octomarks img.profile-pic {
+  margin: 0;
+}
+
+.octomarks .profile-username, .octomarks .profile-login {
+  float: left;
+  color: #fff;
+  margin: 12px 0 0 0;
+  font-weight: 300;
+  font-style:italic;
+  font-size:18px;
+}
+
+octomarks .profile-username {
+  margin: 12px 8px 0 0;
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>github bookmarks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="The easy and quick way to organize your github favorite projects by categories" />
+    <meta name="author" content="Gabriel Falcão" />
+    {% block meta %}{% endblock %}
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/octomarks.main.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='img/favicon.png') }}" rel="shortcut icon" />
+    <script type="text/javascript" src="{{ url_for('static', v=settings.RELEASE, filename='js/jquery-1.9.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', v=settings.RELEASE, filename='js/jquery-ui-1.10.2.custom.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', v=settings.RELEASE, filename='chosen/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', v=settings.RELEASE, filename='js/octomarks.js') }}"></script>
+    {% block css_head %}{% endblock %}
+    {% block js_head %}{% endblock %}
+  </head>
+
+
+  <body class="octomarks">
+        <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="navbar-handle-container">
+            <a href="#pull-down" class="navbar-handle"></a>
+          </div>
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">
+            <img src="http://f.cl.ly/items/0w393i1I2N400n1n1L3G/octomarks.png" alt="octomarks.io"/>
+          </a>
+          <div class="nav-collapse collapse">
+          {% block user %}
+            <div class="profile">
+            {% if user %}
+              <a href="{{ full_url_for(".bookmarks", username=user.username) }}">
+                <p class="profile-username">{{ user.username }}</p>
+                <div class="profile-pic-container">
+                  <img class="profile-pic" src="https://secure.gravatar.com/avatar/{{ user.gravatar_id }}?s=40" />
+                </div>
+              </a>
+            {% else %}
+              <a href="{{ full_url_for(".login") }}">
+                <p class="profile-login">sign in with github</p>
+              </a>
+
+            {% endif %}
+            </div>
+          {% endblock %}
+            {% if user %}
+            <ul class="nav">
+              <li><a href="#explore">Explore</a></li>
+              <li><a href="#search">Search</a></li>
+              <li><a href="#ranking">Ranking</a></li>
+              <li><a href="#friends">Friends</a></li>
+            </ul>
+            {% endif %}
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    {% block body %}{% endblock %}
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-1277640-16', 'octomarks.com');
+    ga('send', 'pageview');
+
+    </script>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 # -*- coding: utf-8; mode: python -*-
 import os
+from uuid import uuid4
 from os.path import join, abspath
 
 LOCAL_PORT = 5000
@@ -55,4 +56,4 @@ SCHEMA = 'http://'
 
 absurl = lambda *path: "{0}{1}/{2}".format(SCHEMA, DOMAIN, "/".join(path).lstrip('/'))
 
-RELEASE = os.getenv('RELEASE', unicode(sorted(GITHUB_CLIENT_SECRET + GITHUB_CLIENT_ID))[:10])
+RELEASE = os.getenv('RELEASE', uuid4().hex)

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "octobase.html" %}
 
 {% block body %}
 <div class="vcard">
@@ -17,48 +17,62 @@
     <div class="note">{{ owner.bio }}</div>
   </span>
 </div>
-
-<div class="container repository">
-  {% include "logo.html" %}
-
-  <div class="row-fluid">
-    <div class="span4 title">
-      <img class="owner" src="{{ repository.owner.avatar_url }}" alt="{{ repository.owner.login }}" />
-      <h2>{{ repository.name }}</h2>
-      <div class="vcard">
-        <a class="url fn" href="http://tantek.com/">Tantek Çelik</a>
-      </div>
-      <a href="http://github.com/{{ repository.name }}"><h5>by {{ repository.owner.login }}</h5></a>
-      <br />
-    </div>
-    <a href="{{ repository.html_url }}">
-        <div class="span2 offset6 github-handle">
-          <h3>github</h3>
-          <img src="{{ url_for('static', v=settings.RELEASE, filename='img/octocat-icon-48.png') }}" class="" alt="" />
+    <div class="container">
+      <div class="row-fluid">
+        <div class="span4">
+          <div class="project-logo-container">
+            <div class="project-logo">
+              <h1>{{ repository.name }}</h1>
+              <p class="version">{{ repository.last_version }}</p>
+            </div>
+            <p class="project-owner">
+              by {{ repository.owner.login }}
+            </p>
+          </div><!--.project-logo-container-->
+        </div><!--.span4-->
+        <div class="span5 offset1 search-container">
+          <input type="text" placeholder="search in {{ repository.name }} docs" class="search-box"/>
+          <input type="button" value="docs" class="search-btn" />
         </div>
-    </a>
-  </div>
-  <div class="row-fluid">
-    <div id="readme" class="span7">
-      {{ readme|safe }}
+        <div class="span2">
+          <a href="{{ repository.html_url }}" class="github-btn"><img src="{{ url_for('static', v=settings.RELEASE, filename='img/octocat-mini-white.png') }}" />github</a>
+        </div>
+      </div>
     </div>
-    <div class="span5">
 
-      <p>
-        <h1>{{ repository.watchers_count }} stars</h1>
-        <h1>{{ repository.forks_count }} forks</h1>
-      </p>
-        <hr />
-        <p>
-        <h1>{{ repository.open_issues }} open issues</h1>
-        </p>
-        <hr />
-        <p>
-          <h2>Access</h2>
-          <pre>git clone {{ repository.clone_url }}</pre>
-          <pre>git clone {{ repository.git_url }}</pre>
-          <pre>git clone {{ repository.ssh_url }}</pre>
-        </p>
+    <div class="container project-doc">
+      <div class="row-fluid">
+        <div class="span3 project-doc-index">
+          <ul class="nav nav-tabs nav-stacked">
+              <li>
+                <a href="#"><h2>In a nutshell</h2></a>
+              </li>
+              <li>
+                <a href="#"><h2>Tutorial</h2></a>
+              </li>
+              <li class="sub">
+                <a href="#"><h3>The decorator</h3></a>
+              </li>
+              <li class="sub">
+                <a href="#"><h3>Expecting a status code</h3></a>
+              </li>
+              <li class="sub">
+                <a href="#"><h3>Expecting a response body</h3></a>
+              </li>
+              <li class="sub">
+                <a href="#"><h3>Rotating responses</h3></a>
+              </li>
+              <li class="sub">
+                <a href="#"><h3>Streaming responses</h3></a>
+              </li>
+              <li class="sub active">
+                <a href="#"><h3>Dynamic responses</h3></a>
+              </li>
+          </ul>
+        </div>
+        <div class="span8">
+          <article class="code-area">{{ readme|safe }}</article>
+        </div>
+      </div>
     </div>
-  </div>
 {% endblock %}

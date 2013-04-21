@@ -20,10 +20,21 @@
       {% endfor %}
     </div>
     <div class="span6">
+      {% if not user %}
       <h4>Got a github account?</h4>
       <a href="{{ full_url_for(".login") }}">
         <p class="username">sign in now and start saving your favorite projects</p>
       </a>
+      {% else %}
+         <h4>The button below is a bookmarklet just for you</h4>
+         <p>Drag it onto your bookmarks bar, next time you are on a
+         github repository or project page, click on the button and it
+         will be saved as your bookmark.</p>
+        {% set bookmarklet_url = full_url_for(".save_bookmark", token=user.gb_token) %}
+
+        <a class="btn btn-success btn-large" href="javascript: (function () { location.href='{{ bookmarklet_url }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1'}());">octomark it</a>
+
+{% endif %}
     </div>
   </div>
   <div class="row-fluid">

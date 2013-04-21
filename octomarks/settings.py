@@ -10,9 +10,6 @@ PORT = os.getenv('PORT', LOCAL_PORT)
 DEBUG = PORT is LOCAL_PORT
 PRODUCTION = not DEBUG
 
-# Session key, CHANGE IT IF YOU GET TO THE PRODUCTION! :)
-SECRET_KEY = 'P4wned!'
-
 # Database connection URI
 DATABASE = 'mysql://gbookmarks:b00k@BABY@mysql.gabrielfalcao.com/gbookmarks'
 
@@ -57,3 +54,5 @@ SCHEMA = 'http://'
 absurl = lambda *path: "{0}{1}/{2}".format(SCHEMA, DOMAIN, "/".join(path).lstrip('/'))
 
 RELEASE = os.getenv('RELEASE', uuid4().hex)
+# Session key, CHANGE IT IF YOU GET TO THE PRODUCTION! :)
+SECRET_KEY = RELEASE + '%F&G*&H(*ds3657d468f57g68h'

@@ -85,10 +85,15 @@ class User(Model):
     @classmethod
     def get_or_create_from_github_user(cls, data):
         instance = cls.find_one_by(username=data['login'])
-        if not instance:
-            return cls.create_from_github_user(data)
 
-        instance.import_starred_as_bookmarks()
+        if not instance:
+            instance = cls.create_from_github_user(data)
+            instance.import_starred_as_bookmarks()
+        else:
+            instance.github_token = data.get('github_token')
+            instance.email = data.get('email', instance.email)
+            instance.save()
+
         return instance
 
 

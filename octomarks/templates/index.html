@@ -72,44 +72,4 @@
     </div>
 </div>
 
-<script type="text/javascript">
-(function($){
-  function save_bookmark(){
-    var entered_uri = $("#uri").val();
-
-    if (!/([\w_-]+[.])?github.(com|io)[/][^/]+/.exec(entered_uri)){
-      $("#uri-message").text("Invalid github URL").addClass("show-up");
-      $("#logo").addClass("shake");
-      $("#uri").effect("highlight", 3000, function(){
-        $("#uri-message").removeClass("show-up").addClass("opaque");
-        $("#logo").removeClass("shake");
-      });
-      return;
-    }
-    $("#uri").addClass("shake");
-    location.href='{{ settings.absurl(url_for(".save_bookmark", token=user.gb_token)) }}?uri=' + encodeURIComponent(entered_uri);
-  }
-  $("#uri").on("keydown", function(e){
-    if (e.keyCode === 13) {
-      save_bookmark();
-    }
-  });
-  $("#main-save").on("click", save_bookmark);
-
-  function enable_save(){
-    var text = $(this).val().trim();
-    if (text.length > 0) {
-      $("#main-save").removeAttr("disabled");
-    } else {
-      $("#main-save").attr("disabled", "disabled");
-    }
-  }
-
-  $("#uri").on("keyup", enable_save);
-  $("#uri").on("keydown", enable_save);
-  $("#uri").on("mouseup", enable_save);
-  $("#uri").on("mousedown", enable_save);
-
-})(window.jQuery);
-</script>
 {% endblock %}

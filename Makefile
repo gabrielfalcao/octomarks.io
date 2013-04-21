@@ -31,7 +31,7 @@ shell:
 	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd shell
 
 deploy:
-	@git push heroku master
+	@git push --force heroku master
 	@heroku run "/app/.heroku/python/bin/alembic -c alembic.prod.ini upgrade head"
 	@make release
 

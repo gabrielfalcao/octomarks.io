@@ -34,7 +34,12 @@ def error_json_response(message):
 
 @mod.before_request
 def prepare_auth():
-    g.user = None
+    from octomarks.models import User
+    if 'github_user_data' not in session:
+        g.user = None
+    else:
+        g.user = User.get_or_create_from_github_user(session['github_user_data'])
+
     g.github = github
 
 
@@ -67,6 +72,7 @@ def tag_context(**dictionary):
     dictionary.update({
         'remaining_tags_for': get_remaining_tags,
     })
+    return dictionary
 
 
 @github.access_token_getter
@@ -188,7 +194,6 @@ def login():
 
 
 @mod.route('/<username>/bookmarks')
-@requires_login
 def bookmarks(username):
     api = GithubEndpoint(g.user.github_token)
     from octomarks.models import User
@@ -277,13 +282,14 @@ def cleanup():
 @mod.route('/logout')
 def logout():
     session.clear()
+    g.user = None
     return render_template('logout.html')
 
 
 @mod.route("/")
 def index():
     if g.user:
-        return redirect(url_for('.bookmarks'))
+        return redirect(url_for('.bookmarks', username=g.user.username))
 
     return redirect(url_for('.ranking'))
 

@@ -3,10 +3,36 @@
 
 {% block body %}
 <div class="container">
+  {% if is_self %}
+  <div class="row-fluid">
+    <div class="span12">
+      <h2>Saving your bookmarks</h2>
+    </div>
+    <div class="span5">
+      <h3>Use the bookmarklet below</h3>
+      <div class="well">
+        {% set bookmarklet_url = full_url_for(".save_bookmark", token=user.gb_token) %}
+
+        <a class="btn btn-success btn-large" href="javascript: (function () { location.href='{{ bookmarklet_url }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1'}());">save github favorite</a>
+
+      </div>
+    </div>
+    <div class="span5">
+      <h3>Just paste a github link below:</h3>
+      <div class="well">
+        <div class="uri-wrapper">
+          <span id="uri-message" {% if error %}class="opaque"{% endif %}>{% if error  %}{{ error }}{% endif %}</span>
+          <input id="uri" class="classy-input" type="text" name="bookmark_url" placeholder="paste a github page or repository url here..." {% if uri %}value="{{ uri }}"{% endif %}/>
+        </div>
+        <input type="button" id="main-save" class="btn btn-large btn-warning" name="action" value="save" {% if not uri %}disabled="true" {% endif %}/>
+      </div>
+    </div>
+  </div>
+  {% endif %}
   <div class="row-fluid">
     <div class="span12">
       {% if is_self %}
-      <h2>Your bookmarks</h2>
+        <h2>Your bookmarks</h2>
 {% else %}
       <h2>{{ user.username }}'{{ user.username.endswith("s") and "" or "s" }} bookmarks</h2>
 {% endif %}
@@ -138,4 +164,47 @@
     });
   })(window.jQuery);
   </script>
+
+  {% if is_self %}
+<script type="text/javascript">
+(function($){
+  function save_bookmark(){
+    var entered_uri = $("#uri").val();
+
+    if (!/([\w_-]+[.])?github.(com|io)[/][^/]+/.exec(entered_uri)){
+      $("#uri-message").text("Invalid github URL").addClass("show-up");
+      $("#logo").addClass("shake");
+      $("#uri").effect("highlight", 3000, function(){
+        $("#uri-message").removeClass("show-up").addClass("opaque");
+        $("#logo").removeClass("shake");
+      });
+      return;
+    }
+    $("#uri").addClass("shake");
+    location.href='{{ settings.absurl(url_for(".save_bookmark", token=user.gb_token)) }}?uri=' + encodeURIComponent(entered_uri);
+  }
+  $("#uri").on("keydown", function(e){
+    if (e.keyCode === 13) {
+      save_bookmark();
+    }
+  });
+  $("#main-save").on("click", save_bookmark);
+
+  function enable_save(){
+    var text = $(this).val().trim();
+    if (text.length > 0) {
+      $("#main-save").removeAttr("disabled");
+    } else {
+      $("#main-save").attr("disabled", "disabled");
+    }
+  }
+
+  $("#uri").on("keyup", enable_save);
+  $("#uri").on("keydown", enable_save);
+  $("#uri").on("mouseup", enable_save);
+  $("#uri").on("mousedown", enable_save);
+
+})(window.jQuery);
+</script>
+  {% endif %}
 {% endblock %}

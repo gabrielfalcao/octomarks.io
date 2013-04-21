@@ -1,9 +1,8 @@
-{% extends "base.html" %}
+{% extends "octobase.html" %}
+{% block navbar_classes %}navbar-no-pull{% endblock %}
 
 {% block body %}
 <div class="container">
-  {% include "logo.html" %}
-
   <div class="row-fluid">
     <div class="span12">
       {% if is_self %}

@@ -29,7 +29,7 @@ class Runserver(Command):
         from octomarks import settings
 
         if settings.DEBUG:
-            return app.web.run(debug=settings.DEBUG)
+            return app.web.run(debug=True)
 
         elif settings.PRODUCTION:
             http_server = HTTPServer(WSGIContainer(app.web))

@@ -1,17 +1,24 @@
-{% extends "base.html" %}
+{% extends "octobase.html" %}
 
 {% block user %}
 {% endblock %}
 
 {% block body %}
-<div class="container">
-  {% include "logo.html" %}
+<div class="container"  style="text-align:center">
   <div class="row-fluid">
     <div class="span12">
       <h1>Server Error</h1>
-      <h2>We did something wrong in our side, please try again later</h2>
-      <hr />
-
+      <br />
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span12">
+      <h3>There is something wrong in our side, please try again later</h3>
+    </div>
+  </div>
+  <hr />
+  <div class="row-fluid">
+    <div class="span3 offset8">
       <p>
         <em>This error has been reported</em>
       </p>

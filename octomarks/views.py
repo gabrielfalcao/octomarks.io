@@ -9,7 +9,7 @@ from flask import (
 
 from octomarks import settings
 from octomarks.api import GithubUser, GithubEndpoint, GithubRepository
-from octomarks.core import RepoInfo
+from octomarks.core import RepoInfo, mailtoify, full_url_for
 from octomarks.handy.decorators import requires_login
 from flaskext.github import GithubAuth
 
@@ -40,44 +40,38 @@ def prepare_auth():
 
 @mod.context_processor
 def inject_basics():
-    import time
-    started = time.time()
+    return dict(
+        user=g.user,
+        settings=settings,
+        RepoInfo=RepoInfo,
+        full_url_for=full_url_for,
+        mailtoify=mailtoify,
+    )
+
+
+def tag_context(**dictionary):
     from octomarks.models import Tag
 
-    def full_url_for(*args, **kw):
-        return settings.absurl(url_for(*args, **kw))
-
-    def mailtoify(string):
-        return string.replace(' ', '%20').replace('\n', '%0D%0A')
-
-    all_tags = Tag.all()
-    all_ids = {t.id for t in all_tags}
-
-    def pick(tag_id):
-        for t in all_tags:
-            if t.id == tag_id:
-                return t
-
     def get_remaining_tags(exclude_tags):
+        all_tags = Tag.all()
+        all_ids = {t.id for t in all_tags}
+
+        def pick(tag_id):
+            for t in all_tags:
+                if t.id == tag_id:
+                    return t
+
         exclude_ids = {t.id for t in exclude_tags}
         return map(pick, all_ids.difference(exclude_ids))
 
-    finished = time.time()
-
-    print "Context created within %ds" % (finished - started)
-    return dict(user=g.user, settings=settings, RepoInfo=RepoInfo, full_url_for=full_url_for, remaining_tags_for=get_remaining_tags, mailtoify=mailtoify)
+    dictionary.update({
+        'remaining_tags_for': get_remaining_tags,
+    })
 
 
 @github.access_token_getter
 def get_github_token(token=None):
     return session.get('github_token')
-
-
-@mod.before_request
-def prepare_user():
-    from octomarks.models import User
-    if 'github_user_data' in session:
-        g.user = User.get_or_create_from_github_user(session['github_user_data'])
 
 
 @mod.route('/.callback')
@@ -93,7 +87,6 @@ def github_callback(resp):
 
     if error:
         flash(error)
-        print error
         return json.dumps(error)
 
     token = resp['access_token']
@@ -176,9 +169,7 @@ def get_repository_data(owner_name, project):
 
 
 @mod.route('/<owner>/<project>')
-@requires_login
 def show_bookmark(owner, project):
-
     context = get_repository_data(owner, project)
     return render_template('show-bookmark.html', **context)
 
@@ -205,9 +196,18 @@ def bookmarks(username):
 
     bookmarks = None
     if not user:
-        return render_template('invite.html', user=user, is_self=(user == g.user), username=username, githubber=api.retrieve('/users/{0}'.format(username)))
+        return render_template(
+            'invite.html',
+            user=user,
+            is_self=(user == g.user),
+            username=username,
+            githubber=api.retrieve('/users/{0}'.format(username)))
+
     bookmarks = user.get_bookmarks()
-    return render_template('bookmarks.html', bookmarks=bookmarks, user=user, is_self=(user == g.user))
+    return render_template('bookmarks.html', **tag_context(
+        bookmarks=bookmarks,
+        user=user,
+        is_self=(user == g.user)))
 
 
 @mod.route('/a/<bookmark_id>/tags', methods=['POST'])
@@ -282,9 +282,26 @@ def logout():
 
 @mod.route("/")
 def index():
-    from octomarks.models import Bookmark
     if g.user:
-        return render_template('index.html')
-    else:
-        ranking = Bookmark.get_most_bookmarked()
-        return render_template('index.anon.html', ranking=ranking)
+        return redirect(url_for('.bookmarks'))
+
+    return redirect(url_for('.ranking'))
+
+
+@mod.route("/ranking")
+def ranking():
+    from octomarks.models import Bookmark
+    ranking = Bookmark.get_most_bookmarked()
+    return Response(render_template('ranking.html', ranking=ranking), headers={
+        'Cache-Control': 'public, max-age=31536000'
+    })
+
+
+@mod.route("/explore")
+def explore():
+    return render_template('explore.html')
+
+
+@mod.route("/500")
+def five00():
+    return render_template('500.html')

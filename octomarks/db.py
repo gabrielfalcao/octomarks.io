@@ -117,8 +117,8 @@ class Model(object):
     def find_by(cls, **kw):
         proxy = cls.query_by(**kw)
 
-        Users = partial(cls.from_result_proxy, proxy)
-        return map(Users, proxy.fetchall())
+        Models = partial(cls.from_result_proxy, proxy)
+        return map(Models, proxy.fetchall())
 
     @classmethod
     def all(cls):

@@ -1,6 +1,10 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic);
 @import url(http://fonts.googleapis.com/css?family=Muli:300,400,300italic,400italic);
 
+h1, h2, h4, h4, h5, h6 {
+  font-weight: 300;
+}
+
 .vcard {
   display: none;
 }
@@ -14,88 +18,6 @@ body.octomarks {
 a:hover {
   text-decoration:none;
   color: #334767;
-}
-.octomarks .navbar {
-  position:relative;
-  margin-top:0px;
-  margin-bottom: 80px;
-}
-
-.octomarks .navbar.navbar-stashed {
-  margin-top: -40px;
-  margin-bottom: 40px;
-}
-.octomarks .navbar.navbar-stashed .profile {
-  opacity: 0;
-}
-
-.octomarks .navbar .navbar-inner {
-  position:relative;
-}
-
-.octomarks .navbar .navbar-handle-container {
-  position:relative;
-  float: left;
-  margin: 0;
-  padding: 0;
-  background:red;
-  height:51px;
-}
-.octomarks .navbar .navbar-handle {
-  display: inline-block;
-  position:absolute;
-  background-image: url(http://f.cl.ly/items/3m0z2u3g3x2G2Q1m1t0o/navbar-pull-down-handle.png);
-  background-repeat: no-repeat;
-  width: 48px;
-  height:28px;
-  background-position: 0 -3px;
-  bottom: -27px;
-  left: 18px;
-}
-
-.octomarks .navbar-inner, .octomarks .navbar-inner * {
-  color: white;
-  text-shadow: none;
-  font-size: 16px;
-  font-weight: 300;
-}
-
-.octomarks .navbar-inner p {
-  font-weight: 100;
-}
-
-
-.octomarks .navbar-inner {
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  o-border-radius: 0px;
-  border-radius: 0px;
-  border: 0px;
-  text-shadow: 0;
-  border: 1px solid #336;
-  background: #9f9fc6;
-  -moz-box-shadow: inset 0 0 1px 0 #d8d8ff;
-  -webkit-box-shadow: inset 0 0 1px 0 #d8d8ff;
-  box-shadow: inset 0 0 1px 0 #d8d8ff;
-  height: 50px;
-}
-
-.octomarks .navbar-inner ul.nav li {
-  margin-top: 6px;
-  text-shadow: none;
-  margin:0;
-  padding: 0;
-}
-.octomarks .navbar-inner ul.nav li a {
-  background: transparent;
-  text-shadow: none;
-  margin: 0;
-  padding: 14px 20px 14px 20px;
-  color: #FFF;
-}
-
-.octomarks .navbar-inner ul.nav li.active a {
-  background: rgba(255, 255, 247, .1);
 }
 
 .octomarks .project-logo {
@@ -245,7 +167,7 @@ a:hover {
   background-color: #627f75;
 }
 .octomarks .github-btn:active {
-  margin-top: 4px;
+  margin-top: 4xpx;
   -moz-box-shadow: 0 5px 6px rgba(100,74,36,.37), inset 0 0 0 1px rgba(206,255,239,.5);
   -webkit-box-shadow: 0 5px 6px rgba(100,74,36,.37), inset 0 0 0 1px rgba(206,255,239,.5);
   box-shadow: 0 5px 6px rgba(100,74,36,.37), inset 0 0 0 1px rgba(206,255,239,.5);
@@ -277,7 +199,7 @@ a:hover {
 }
 
 .octomarks .search-btn {
-  background-image: url(http://f.cl.ly/items/280a3O103j3L331u0O0b/lupa.png);
+  background-image: url(../img/lupa.png);
   background-repeat: no-repeat;
   background-position: 10px 6px;
   padding-right: 24px;
@@ -358,6 +280,91 @@ a:hover {
   font-size:18px;
 }
 
-octomarks .profile-username {
-  margin: 12px 8px 0 0;
+.octomarks .profile-username {
+  margin: 12px 10px 0 0;
+}
+
+@keyframes rotatepic {
+  0% {
+      transform: rotate(6deg);
+      -moz-transform: rotate(6deg);
+      -webkit-transform: rotate(6deg);
+      opacity: .85;
+  }
+  50% {
+      transform: rotate(-6deg);
+      -moz-transform: rotate(-6deg);
+      -webkit-transform: rotate(-6deg);
+      opacity: .8;
+  }
+  100% {
+      transform: rotate(6deg);
+      -moz-transform: rotate(6deg);
+      -webkit-transform: rotate(6deg);
+      opacity: .85;
+  }
+}
+@-webkit-keyframes rotatepic
+{
+  0% {
+      transform: rotate(15deg);
+      -moz-transform: rotate(15deg);
+      -webkit-transform: rotate(15deg);
+      opacity: .85;
+  }
+  50% {
+      transform: rotate(-15deg);
+      -moz-transform: rotate(-15deg);
+      -webkit-transform: rotate(-15deg);
+      opacity: .8;
+  }
+  100% {
+      transform: rotate(15deg);
+      -moz-transform: rotate(15deg);
+      -webkit-transform: rotate(15deg);
+      opacity: .85;
+  }
+}
+
+
+@-webkit-keyframes show-up
+{
+  0% {
+      opacity: 0;
+  }
+  25% {
+      opacity: 1;
+  }
+  50% {
+      opacity: 1;
+  }
+  75% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
+@-webkit-keyframes hide-up
+{
+  from {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
+  }
+}
+
+.shake {
+  transform-style: preserve-3d;
+  animation: rotatepic 100ms ease-in-out;
+  -webkit-animation: rotatepic 100ms ease-in-out;
+  opacity: .8;
+}
+
+.show-up {
+  transform-style: preserve-3d;
+  animation: show-up 3000ms ease-in-out;
+  -webkit-animation: show-up 3000ms ease-in-out;
 }

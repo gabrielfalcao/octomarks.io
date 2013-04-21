@@ -1,7 +1,7 @@
 $(function(){
     function toggle_navbar (){
         var hiddenClass = "navbar-stashed";
-        var $navbar = $(".navbar");
+        var $navbar = $(".navbar-with-handle");
         var $navbarContents = $navbar.find(".profile,ul,img");
 
         if ($navbar.hasClass(hiddenClass)) {

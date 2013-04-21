@@ -2,6 +2,16 @@
 # -*- coding: utf-8 -*-
 
 import re
+from flask import url_for
+from octomarks import settings
+
+
+def full_url_for(*args, **kw):
+    return settings.absurl(url_for(*args, **kw))
+
+
+def mailtoify(string):
+    return string.replace(' ', '%20').replace('\n', '%0D%0A')
 
 
 class RepoInfo(object):
@@ -27,6 +37,10 @@ class RepoInfo(object):
 
     def remount(self):
         return 'http://github.com/{0}/{1}'.format(self.owner, self.project)
+
+    @property
+    def bookmark_url(self):
+        return full_url_for('.show_bookmark', owner=self.owner, project=self.project)
 
     def to_dict(self):
         return dict(

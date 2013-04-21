@@ -197,9 +197,5 @@ class HttpCache(Model):
         }
 
     @classmethod
-    def get(cls, key):
-        return {}
-
-    @classmethod
-    def set(cls, key, value):
-        return {}
+    def query_by(cls, order_by=None, **kw):
+        raise RuntimeError("WTF")

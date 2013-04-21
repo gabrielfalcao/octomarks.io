@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import time
 import ejson
 import logging
 import requests
@@ -32,6 +33,8 @@ class GithubEndpoint(object):
         return url
 
     def find_cache_object(self, url):
+        self.log.info("GET from CACHE %s at %s", url, str(time.time()))
+
         if self.public:
             return self.cache.find_one_by(url=url)
         else:
@@ -80,6 +83,7 @@ class GithubEndpoint(object):
         response = {}
         error = None
         try:
+            self.log.info("GET from WEB %s at %s", url, str(time.time()))
             response = requests.get(**request)
         except Exception as e:
             error = e

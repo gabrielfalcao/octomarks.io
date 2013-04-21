@@ -2,6 +2,7 @@
 
 import os
 import sys
+import logging
 
 from flask import Flask, render_template
 from flask.ext.script import Manager
@@ -48,6 +49,7 @@ class App(object):
 
         for logger in [self.web.logger, getLogger('sqlalchemy'), getLogger('octomarks.models'), getLogger('octomarks.api')]:
             logger.addHandler(StreamHandler(sys.stderr))
+            logger.setLevel(logging.INFO)
 
         @self.web.errorhandler(500)
         def internal_error(exception):

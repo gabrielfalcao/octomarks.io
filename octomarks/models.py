@@ -195,7 +195,3 @@ class HttpCache(Model):
             'cached': True,
             'status_code': self.status_code,
         }
-
-    @classmethod
-    def query_by(cls, order_by=None, **kw):
-        raise RuntimeError("WTF")

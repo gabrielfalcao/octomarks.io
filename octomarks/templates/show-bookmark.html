@@ -1,5 +1,14 @@
 {% extends "octobase.html" %}
 {% block navbar_classes %}navbar-with-handle{% endblock %}
+{% block css_head %}
+{% if user %}
+  {% set theme_url = user.get_theme()['url'] %}
+{% else %}
+  {% set theme_url = default_theme_url %}
+{% endif %}
+
+<link rel="stylesheet" href="{{ theme_url }}" type="text/css" media="screen" />
+{% endblock %}
 
 
 {% block body %}
@@ -32,7 +41,7 @@
             </p>
           </div><!--.project-logo-container-->
         </div><!--.span4-->
-        <div class="span5 offset1 search-container">
+        <div class="span5 search-container">
           <input type="text" placeholder="search in {{ repository.name }} docs" class="search-box"/>
           <input type="button" value="docs" class="search-btn" />
         </div>
@@ -44,37 +53,63 @@
 
     <div class="container project-doc">
       <div class="row-fluid">
-        <div class="span3 project-doc-index">
+        <div class="span3 project-doc-index" id="index-container">
+          {% if readme_index %}
           <ul class="nav nav-tabs nav-stacked">
-              <li>
-                <a href="#"><h2>In a nutshell</h2></a>
-              </li>
-              <li>
-                <a href="#"><h2>Tutorial</h2></a>
-              </li>
-              <li class="sub">
-                <a href="#"><h3>The decorator</h3></a>
-              </li>
-              <li class="sub">
-                <a href="#"><h3>Expecting a status code</h3></a>
-              </li>
-              <li class="sub">
-                <a href="#"><h3>Expecting a response body</h3></a>
-              </li>
-              <li class="sub">
-                <a href="#"><h3>Rotating responses</h3></a>
-              </li>
-              <li class="sub">
-                <a href="#"><h3>Streaming responses</h3></a>
-              </li>
-              <li class="sub active">
-                <a href="#"><h3>Dynamic responses</h3></a>
-              </li>
+            {% for header in readme_index %}
+              {{ render_header(header) }}
+            {% endfor %}
           </ul>
+          {% else %}
+          <div class="alert">
+            <strong>{{ repository.name }}</strong> doesn't use markdown, so we don't support indexing for it
+            <hr />
+
+            <a class="toggle-readme" href="#toggle-readme">click here</a> to expand the readme
+          </div>
+          {% endif %}
+
         </div>
-        <div class="span8">
-          <article class="code-area">{{ readme|safe }}</article>
+        <div id="readme-container" class="span8">
+          <article class="code-area">
+            {{ readme|safe }}
+          </article>
+          <div class="actions">
+            <a href="#toggle-readme" class="toggle-readme btn">
+              <i class="icon-resize-full"></i>
+            </a>
+          </div>
         </div>
       </div>
     </div>
+<script type="text/javascript">
+$(function(){
+  $(".toggle-readme").on("click", function(e){
+    var $icon = $(this).find("i");
+    var $readme_container = $("#readme-container");
+    var $index_container = $("#index-container");
+    if ($readme_container.hasClass("span8")) {
+      $readme_container.removeClass("span8").addClass("span12");
+      $index_container.hide();
+      $icon.removeClass("icon-resize-full").addClass("icon-resize-small");
+    } else {
+      $readme_container.removeClass("span12").addClass("span8");
+      $index_container.show();
+      $icon.removeClass("icon-resize-small").addClass("icon-resize-full");
+    }
+    return e.preventDefault();
+  });
+});
+</script>
 {% endblock %}
+
+{% macro render_header(header) -%}
+  <li class="{% if header.level > 1 %}sub{% endif %}">
+    <a href="{{ header.anchor }}"><h{{ header.level }}>{{ header.text|safe }}</h{{ header.level }}></a>
+  </li>
+  {% if 'child' in header %}
+    {% for child in header['child'] %}
+      {{ render_header(child) }}
+    {% endfor %}
+  {% endif %}
+{%- endmacro %}

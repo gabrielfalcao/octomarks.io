@@ -5,27 +5,25 @@
 <div class="container">
   {% if is_self %}
   <div class="row-fluid">
-    <div class="span12">
-      <h2>Saving your bookmarks</h2>
-    </div>
-    <div class="span5">
-      <h3>Use the bookmarklet below</h3>
-      <div class="well">
+    <div class="span5 well">
+      <h4>The button below is a bookmarklet just for you</h4>
+      <p>Drag it onto your bookmarks bar, next time you are on a
+         github repository or project page, click on the button and it
+         will be saved as your bookmark.</p>
+      <br />
         {% set bookmarklet_url = full_url_for(".save_bookmark", token=user.gb_token) %}
 
-        <a class="btn btn-success btn-large" href="javascript: (function () { location.href='{{ bookmarklet_url }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1'}());">save github favorite</a>
-
-      </div>
+      <a class="btn btn-success btn-large" href="javascript: (function () { location.href='{{ bookmarklet_url }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1'}());">octomark it</a>
     </div>
-    <div class="span5">
-      <h3>Just paste a github link below:</h3>
-      <div class="well">
-        <div class="uri-wrapper">
-          <span id="uri-message" {% if error %}class="opaque"{% endif %}>{% if error  %}{{ error }}{% endif %}</span>
-          <input id="uri" class="classy-input" type="text" name="bookmark_url" placeholder="paste a github page or repository url here..." {% if uri %}value="{{ uri }}"{% endif %}/>
-        </div>
-        <input type="button" id="main-save" class="btn btn-large btn-warning" name="action" value="save" {% if not uri %}disabled="true" {% endif %}/>
+    <div class="span5 well">
+      <h3>or...</h3>
+      <h4>You can save a link by pasting the url below</h4>
+      <div class="uri-wrapper">
+        <span id="uri-message" {% if error %}class="opaque"{% endif %}>{% if error  %}{{ error }}{% endif %}</span>
+        <input id="uri" class="classy-input" type="text" name="bookmark_url" placeholder="paste a github page or repository url here..." {% if uri %}value="{{ uri }}"{% endif %}/>
       </div>
+      <input type="button" id="main-save" class="btn btn-large btn-warning" name="action" value="save" {% if not uri %}disabled="true" {% endif %}/>
+
     </div>
   </div>
   {% endif %}

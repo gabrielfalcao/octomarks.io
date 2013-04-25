@@ -11,7 +11,7 @@ logger = logging.getLogger('octomarks.models')
 
 from octomarks.db import db, metadata, Model
 from octomarks.core import RepoInfo
-
+from octomarks import settings
 
 def slugify(string):
     return re.sub(r'\W+', '-', string)
@@ -31,6 +31,8 @@ class User(Model):
         db.Column('gb_token', db.String(40), nullable=False, unique=True),
         db.Column('email', db.String(100), nullable=False, unique=True),
         db.Column('created_at', db.DateTime, default=now),
+        db.Column('default_theme_name', db.String(255), default='github',
+                  nullable=False),
         db.Column('updated_at', db.DateTime, default=now),
     )
 
@@ -68,6 +70,17 @@ class User(Model):
             return map(self.save_repo_as_bookmark, repos)
         except Exception:
             logger.exception("Could not get starred repos for %s:\n%s", self.username, repr(repos))
+
+    def change_theme_to(self, name):
+        self.default_theme_name = name
+        self.save()
+
+    def get_theme(self):
+        name = self.default_theme_name
+        return {
+            'name': name,
+            'url': settings.absurl('static', 'themes', '{0}.css'.format(name))
+        }
 
     @classmethod
     def create_from_github_user(cls, data):

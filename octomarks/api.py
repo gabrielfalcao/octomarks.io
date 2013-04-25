@@ -4,7 +4,7 @@ import time
 import ejson
 import logging
 import requests
-import markdown2
+from markment import Markment
 from datetime import datetime
 
 
@@ -151,8 +151,17 @@ class GithubRepository(Resource):
         reply = self.endpoint.retrieve(
             '/repos/{0}/{1}/readme'.format(owner, project))
 
-        readme = reply['content'].decode(reply['encoding'])
-        return markdown2.markdown(readme)
+        filename = reply['name']
+
+        raw = reply['content'].decode(reply['encoding'])
+        if reply['encoding'] != 'utf-8':
+            raw = raw.decode('utf-8')
+
+        if filename.lower().endswith('.md') or filename.lower().endswith('.markdown'):
+            readme = Markment(raw, relative_url_prefix="https://raw.github.com/{0}/{1}/master/".format(owner, project))
+            return readme.rendered, readme.index()
+        else:
+            return raw, []
 
     def get_languages(self, owner, project):
         return self.endpoint.retrieve(

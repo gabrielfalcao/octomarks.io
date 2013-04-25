@@ -47,6 +47,7 @@ def prepare_auth():
 def inject_basics():
     return dict(
         user=g.user,
+        default_theme_url=settings.absurl('/static/themes/github.css'),
         settings=settings,
         RepoInfo=RepoInfo,
         full_url_for=full_url_for,
@@ -158,13 +159,14 @@ def get_repository_data(owner_name, project):
     tags = []
 
     if repository and 'message' not in repository:
-        readme = repository_fetcher.get_readme(owner_name, project)
+        readme, index = repository_fetcher.get_readme(owner_name, project)
         tags = repository_fetcher.get_languages(owner_name, project)
         owner = repository_fetcher.get_owner(owner_name)
 
     return {
         'success': bool(readme),
         'readme': readme,
+        'readme_index': index,
         'project': project,
         'repository': repository,
         'owner': owner,
@@ -174,6 +176,7 @@ def get_repository_data(owner_name, project):
 
 
 @mod.route('/<owner>/<project>')
+@requires_login
 def show_bookmark(owner, project):
     context = get_repository_data(owner, project)
     return render_template('show-bookmark.html', **context)
@@ -193,6 +196,7 @@ def login():
 
 
 @mod.route('/<username>/bookmarks')
+@requires_login
 def bookmarks(username):
     api = GithubEndpoint(g.user.github_token)
     from octomarks.models import User
@@ -255,10 +259,10 @@ def edit_bookmark(bookmark_id):
     bk = Bookmark.find_one_by(id=bookmark_id, user_id=g.user.id)
     info = RepoInfo(bk.url)
 
-    readme = repository.get_readme(info.owner, info.project)
+    readme, index = repository.get_readme(info.owner, info.project)
 
     return render_template('edit-bookmark.html',
-                           bookmark=bk, info=info, readme=readme)
+                           bookmark=bk, info=info, readme=readme, readme_index=index)
 
 
 @mod.route('/.cleanup')

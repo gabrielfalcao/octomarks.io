@@ -85,7 +85,7 @@ a:hover {
 }
 .octomarks .code-area {
   overflow-x: auto;
-  min-width: 870px;
+  min-width: 755px;
   min-height: 400px;
   max-height: 700px;
   -moz-border-radius: 4px;
@@ -367,4 +367,21 @@ a:hover {
   transform-style: preserve-3d;
   animation: show-up 3000ms ease-in-out;
   -webkit-animation: show-up 3000ms ease-in-out;
+}
+
+#readme-container {
+  position: relative;
+  overflow:hidden;
+}
+#readme-container .actions {
+  opacity: .1;
+  background: transparent;
+  top: 0;
+  right:-5px;
+  padding: 10px 15px;
+  position: absolute;
+}
+#readme-container:hover .actions {
+  opacity: 1;
+  background-color: rgba(255, 100, 0, .1);
 }

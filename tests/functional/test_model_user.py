@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from mock import Mock
+
 from .base import db_test, user_test
 from octomarks.models import User, Bookmark
+from octomarks.ui import theme_file
 
 
 @db_test
@@ -191,3 +192,49 @@ def test_save_bookmark_multiple_times(context):
 
     Bookmark.find_by(user_id=context.user.id).should.have.length_of(1)
     Bookmark.find_by(user_id=context.user.id).should.contain(bookmark1)
+
+
+@db_test
+def test_user_change_theme(context):
+    ("Users should be able to change their default theme")
+
+    data = {
+        "login": "octocat",
+        "id": 42,
+        "gravatar_id": "somehexcode",
+        "email": "octocat@github.com",
+        "github_token": "toktok",
+        "type": "User"
+    }
+
+    original_user = context.User.create_from_github_user(data)
+
+    original_user.default_theme_name.should.equal('github')
+    original_user.change_theme_to('emacs')
+
+    original_user.default_theme_name.should.equal('emacs')
+
+    fresh_user = User.find_one_by(username='octocat')
+    fresh_user.default_theme_name.should.equal('emacs')
+
+
+@db_test
+def test_user_load_theme(context):
+    ("Users should be get its css theme")
+
+    data = {
+        "login": "octocat",
+        "id": 42,
+        "gravatar_id": "somehexcode",
+        "email": "octocat@github.com",
+        "github_token": "toktok",
+        "type": "User",
+        "default_theme_name": "emacs",
+    }
+
+    user = context.User.create_from_github_user(data)
+
+    theme = user.get_theme()
+
+    theme.should.have.key('url').being.equal('http://localhost:5000/static/themes/emacs.css')
+    theme.should.have.key('name').being.equal('emacs')

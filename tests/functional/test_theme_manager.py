@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from glob import glob
-from os.path import split
-
-from octomarks.ui import ThemeManager
+from octomarks.ui import (
+    ThemeManager,
+    theme_file,
+    enumerate_themes,
+)
 from octomarks import settings
 
 L = settings.LOCAL_FILE
-
-
-each_filename = lambda path: split(path)[-1]
-theme_file = lambda filename: L('static', 'themes', filename)
-enumerate_themes = lambda name: map(each_filename, glob(theme_file(name)))
 
 
 def test_theme_manager_lists_exising_themes():

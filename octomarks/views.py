@@ -47,7 +47,7 @@ def prepare_auth():
 def inject_basics():
     return dict(
         user=g.user,
-        default_theme_url=settings.absurl('/static/themes/github.css'),
+        default_theme_url=settings.absurl('/static/themes/tango.css'),
         settings=settings,
         RepoInfo=RepoInfo,
         full_url_for=full_url_for,

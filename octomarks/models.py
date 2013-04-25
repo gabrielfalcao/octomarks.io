@@ -13,6 +13,7 @@ from octomarks.db import db, metadata, Model
 from octomarks.core import RepoInfo
 from octomarks import settings
 
+
 def slugify(string):
     return re.sub(r'\W+', '-', string)
 
@@ -31,7 +32,7 @@ class User(Model):
         db.Column('gb_token', db.String(40), nullable=False, unique=True),
         db.Column('email', db.String(100), nullable=False, unique=True),
         db.Column('created_at', db.DateTime, default=now),
-        db.Column('default_theme_name', db.String(255), default='github',
+        db.Column('default_theme_name', db.String(255), default='tango',
                   nullable=False),
         db.Column('updated_at', db.DateTime, default=now),
     )

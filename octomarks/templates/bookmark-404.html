@@ -1,0 +1,20 @@
+{% extends "octobase.html" %}
+
+
+{% block body %}
+<style type="text/css" media="screen">
+.span12 {
+  text-align: center;
+}
+</style>
+
+<div class="container">
+  <div class="row-fluid">
+    <div class="span12">
+      <h1><strong>{{ owner_name }}/{{ project }}</strong> not found</h1>
+      <h4>maybe you mispelled the url ?</h4>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

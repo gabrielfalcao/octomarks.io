@@ -134,7 +134,7 @@ def save_bookmark(token):
         user.save_bookmark(original_uri)
         return redirect(uri)
 
-    context = get_repository_data(owner, project)
+    context = get_repository_data(owner, project, user.github_token)
     repository_exists = bool(context.get('success'))
 
     bookmark = user.save_bookmark(original_uri)
@@ -150,10 +150,11 @@ def save_bookmark(token):
     return redirect(url_for('.show_bookmark', owner=owner, project=project))
 
 
-def get_repository_data(owner_name, project):
-    repository_fetcher = GithubRepository(GithubEndpoint(g.user.github_token, public=True))
+def get_repository_data(owner_name, project, token):
+    repository_fetcher = GithubRepository(GithubEndpoint(token, public=True))
 
     readme = ''
+    index = []
     repository = repository_fetcher.get(owner_name, project)
     owner = {}
     tags = []
@@ -170,15 +171,29 @@ def get_repository_data(owner_name, project):
         'project': project,
         'repository': repository,
         'owner': owner,
+        'owner_name': owner_name,
         'project': project,
         'tags': tags,
     }
 
 
 @mod.route('/<owner>/<project>')
-@requires_login
 def show_bookmark(owner, project):
-    context = get_repository_data(owner, project)
+    from octomarks.models import User
+    if g.user:
+        token = g.user.github_token
+    else:
+        user = User.find_one_by(username=owner)
+        token = user and user.github_token
+
+    if not token:
+        return render_template(
+            'invite.anon.html',
+            username=owner)
+
+    context = get_repository_data(owner, project, token)
+    if not context['success']:
+        return Response(render_template('bookmark-404.html', **context), status=404)
     return render_template('show-bookmark.html', **context)
 
 

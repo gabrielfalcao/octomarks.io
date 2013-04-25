@@ -1,0 +1,24 @@
+{% extends "octobase.html" %}
+
+{% block body %}
+<style type="text/css" media="screen">
+.span12 {
+  text-align: center;
+}
+</style>
+<div class="container">
+  <div class="row-fluid">
+    <div class="span12">
+      <h1>{{ username }} is not yet on octomarks</h1>
+    </div>
+  </div>
+  <br />
+  <div class="row-fluid">
+    <div class="span12">
+      <h4>{{ username }} has to have an octomarks account before people can see his repository</h4>
+      <br />
+      <a target="_blank" href="http://github.com/{{ username }}" class="btn btn-large btn-warning">Invite him to github bookmarks</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

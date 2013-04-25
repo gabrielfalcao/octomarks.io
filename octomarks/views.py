@@ -109,7 +109,6 @@ def github_callback(resp):
 
 
 @mod.route('/save/<token>')
-@requires_login
 def save_bookmark(token):
     from octomarks.models import User
     original_uri = request.args.get('uri')

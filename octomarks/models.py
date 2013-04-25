@@ -185,10 +185,10 @@ class HttpCache(Model):
     table = db.Table('gb_http_cache', metadata,
         db.Column('id', db.Integer, primary_key=True),
         db.Column('url', db.Unicode(length=200), nullable=False),
-        db.Column('token', db.String(length=200), nullable=False),
-        db.Column('content', db.UnicodeText, nullable=False),
-        db.Column('headers', db.UnicodeText, nullable=False),
-        db.Column('status_code', db.Integer, nullable=False),
+        db.Column('token', db.String(length=200), nullable=True),
+        db.Column('content', db.UnicodeText, nullable=True),
+        db.Column('headers', db.UnicodeText, nullable=True),
+        db.Column('status_code', db.Integer, nullable=True),
         db.Column('updated_at', db.DateTime, default=now)
     )
 

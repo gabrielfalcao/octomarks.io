@@ -1,15 +1,44 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import re
+import json
+import httpretty
+from mock import Mock
 from sure import scenario
+
 from octomarks.models import User, db, metadata, Bookmark
 
+HTTPRETY_METHODS = [
+    httpretty.GET,
+    httpretty.POST,
+    httpretty.PUT,
+    httpretty.DELETE,
+]
 
+
+@httpretty.activate
 def prepare(context):
     conn = db.engine.connect()
     metadata.drop_all(db.engine)
     metadata.create_all(db.engine)
     conn.execute(User.table.delete())
+
+    for METHOD in HTTPRETY_METHODS:
+        body = json.dumps(
+            {
+                'access_token': 'httpretty token',
+                'functional testing': True
+            }
+        )
+        httpretty.register_uri(METHOD, re.compile("(.*)"), body)
+
+    class FakeUser(User):
+        api = Mock()
+
+        def initialize(self):
+            self.gb_token = 'abcd' * 10
+
+    context.User = FakeUser
 
 db_test = scenario(prepare)
 

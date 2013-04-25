@@ -40,13 +40,14 @@ class GithubEndpoint(object):
         else:
             return self.cache.find_one_by(url=url, token=self.token)
 
-    def get_or_create_cache_object(self, url):
-        kw = dict(url=url)
+    def get_or_create_cache_object(self, url, content):
+        kw = dict(url=url, content=content)
 
-        if self.public:
-            return self.cache.get_or_create(**kw)
-        else:
-            return self.cache.get_or_create(token=self.token, **kw)
+        if not self.public:
+            kw['token'] = self.token
+
+        existing = self.cache.find_one_by(url=kw['url'])
+        return existing or self.cache.create(**kw)
 
     def get_from_cache(self, path, headers, data=None):
         url = self.full_url(path)
@@ -106,7 +107,7 @@ class GithubEndpoint(object):
         if not response:
             response = self.get_from_web(path, headers, data)
 
-            cached = self.get_or_create_cache_object(response['url'])
+            cached = self.get_or_create_cache_object(response['url'], response['response_data'])
             cached.content = response['response_data']
             cached.headers = ejson.dumps(response['response_headers'])
             cached.status_code = response['status_code']

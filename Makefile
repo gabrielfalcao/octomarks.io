@@ -1,4 +1,5 @@
 SETTINGS_FILE="settings.py"
+export OCTOMARK_TESTING_MODE=on
 
 all:
 	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd
@@ -10,14 +11,14 @@ settings:
 		[ -e $(SETTINGS_FILE) ] || ln -s $(SETTINGS_FILE).sample $(SETTINGS_FILE)
 
 deps:
-	@pip install -r requirements.txt
+	@pip install -r development.txt
 
 clean:
 	find . -name *.pyc -delete
 
 test-kind:
 	@OCTOMARKS_SETTINGS_MODULE="tests.settings" PYTHONPATH="$(PYTHONPATH)" \
-		nosetests --logging-clear-handlers --stop --verbosity=2 -s tests/$(kind)
+		nosetests --nologcapture --logging-clear-handlers --stop --verbosity=2 -s tests/$(kind)
 
 unit:
 	@make test-kind kind=unit

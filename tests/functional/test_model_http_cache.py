@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from .base import db_test
-from datetime import datetime
 from freezegun import freeze_time
 from httpretty import HTTPretty, httprettified
 
@@ -39,7 +38,9 @@ def test_get_from_cache(context):
 
     cached.url.should.equal('https://api.github.com/user')
     cached.status_code.should.equal(200)
-    cached.updated_at.should.equal(datetime(2013, 4, 14))
+    cached.updated_at.year.should.equal(2013)
+    cached.updated_at.month.should.equal(4)
+    cached.updated_at.day.should.equal(14)
 
 
 @db_test

@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from mock import Mock
 from .base import db_test, user_test
 from octomarks.models import User, Bookmark
 
 
 @db_test
 def test_user_signup(context):
-    ("User.create_from_github_user(dict) should create a "
+    ("context.User.create_from_github_user(dict) should create a "
      "user in the database")
     data = {
         "login": "octocat",
@@ -18,7 +18,7 @@ def test_user_signup(context):
         "github_token": 'toktok',
     }
 
-    created = User.create_from_github_user(data)
+    created = context.User.create_from_github_user(data)
 
     created.should.have.property('id').being.equal(1)
     created.should.have.property('username').being.equal("octocat")
@@ -31,7 +31,7 @@ def test_user_signup(context):
 
 @db_test
 def test_user_signup_get_or_create_if_already_exists(context):
-    ("User.get_or_create_from_github_user(dict) should get"
+    ("context.User.get_or_create_from_github_user(dict) should get"
      "user from the database if already exists")
 
     data = {
@@ -43,17 +43,17 @@ def test_user_signup_get_or_create_if_already_exists(context):
         "github_token": '123',
     }
 
-    created = User.create_from_github_user(data)
-    got = User.get_or_create_from_github_user(data)
+    created = context.User.create_from_github_user(data)
+    got = context.User.get_or_create_from_github_user(data)
 
     got.should.equal(created)
 
 
 @db_test
 def test_user_signup_get_or_create_doesnt_exist(context):
-    ("User.get_or_create_from_github_user(dict) should get"
+    ("context.User.get_or_create_from_github_user(dict) should get"
      "user from the database if it does not exist yet")
-
+    context.User.api.get_starred.return_value = []
     data = {
         "login": "octocat",
         "id": 42,
@@ -63,7 +63,7 @@ def test_user_signup_get_or_create_doesnt_exist(context):
         "type": "User"
     }
 
-    created = User.get_or_create_from_github_user(data)
+    created = context.User.get_or_create_from_github_user(data)
 
     created.should.have.property('id').being.equal(1)
     created.should.have.property('username').being.equal("octocat")
@@ -76,7 +76,7 @@ def test_user_signup_get_or_create_doesnt_exist(context):
 
 @db_test
 def test_find_one_by(context):
-    ("User.find_one_by(**kwargs) should fetch user from the database")
+    ("context.User.find_one_by(**kwargs) should fetch user from the database")
 
     data = {
         "login": "octocat",
@@ -87,29 +87,29 @@ def test_find_one_by(context):
         "type": "User"
     }
 
-    original_user = User.create_from_github_user(data)
+    original_user = context.User.create_from_github_user(data)
 
-    User.find_one_by(id=1).should.be.equal(original_user)
-    User.find_one_by(username='octocat').should.be.equal(original_user)
+    context.User.find_one_by(id=1).should.be.equal(original_user)
+    context.User.find_one_by(username='octocat').should.be.equal(original_user)
 
 
 @db_test
 def test_find_one_by_not_exists(context):
-    ("User.find_one_by(**kwargs) should return None if does not exist")
+    ("context.User.find_one_by(**kwargs) should return None if does not exist")
 
-    User.find_one_by(username='octocat').should.be.none
+    context.User.find_one_by(username='octocat').should.be.none
 
 
 @db_test
 def test_find_many_by_not_exists(context):
-    ("User.find_by(**kwargs) should return an empty list if does not exist")
+    ("context.User.find_by(**kwargs) should return an empty list if does not exist")
 
-    User.find_by(username='octocat').should.be.empty
+    context.User.find_by(username='octocat').should.be.empty
 
 
 @db_test
 def test_find_by(context):
-    ("User.find_by(**kwargs) should fetch a list of users from the database")
+    ("context.User.find_by(**kwargs) should fetch a list of users from the database")
 
     data1 = {
         "login": "octocat",
@@ -132,7 +132,7 @@ def test_find_by(context):
     original_user1 = User.create_from_github_user(data1)
     original_user2 = User.create_from_github_user(data2)
 
-    User.find_by(github_token='toktok').should.be.equal([
+    context.User.find_by(github_token='toktok').should.be.equal([
         original_user1,
         original_user2
     ])

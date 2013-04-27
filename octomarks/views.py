@@ -11,6 +11,7 @@ from octomarks import settings
 from octomarks.api import GithubUser, GithubEndpoint, GithubRepository
 from octomarks.core import RepoInfo, mailtoify, full_url_for
 from octomarks.handy.decorators import requires_login
+from octomarks.handy.functions import user_is_authenticated
 from flaskext.github import GithubAuth
 
 
@@ -336,7 +337,7 @@ def logout():
 
 @mod.route("/")
 def index():
-    if g.user:
+    if user_is_authenticated():
         return redirect(url_for('.bookmarks', username=g.user.username))
 
     return redirect(url_for('.ranking'))

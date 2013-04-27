@@ -3,13 +3,15 @@
 
 from functools import wraps
 from octomarks import settings
-from flask import redirect, session
+from flask import redirect
+
+from .functions import user_is_authenticated
 
 
 def requires_login(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not session.get('github_user_data'):
+        if not user_is_authenticated():
             url = settings.absurl('login')
             return redirect(url)
 

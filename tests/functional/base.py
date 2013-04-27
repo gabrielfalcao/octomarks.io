@@ -3,7 +3,7 @@
 import re
 import json
 import httpretty
-from mock import Mock, patch
+from mock import Mock
 from sure import scenario
 
 from octomarks.app import app
@@ -17,8 +17,13 @@ HTTPRETY_METHODS = [
 ]
 
 
-@httpretty.activate
 def prepare(context):
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile('github.com/repos/\w+/\w+/languages'),
+        body='[]',
+        content_type='application/json')
+
     conn = db.engine.connect()
     metadata.drop_all(db.engine)
     metadata.create_all(db.engine)
@@ -42,31 +47,30 @@ def prepare(context):
 
     context.User = FakeUser
 
-db_test = scenario(prepare)
+db_test = scenario([prepare])
 
 
 def create_user(context):
     data = {
-        "login": "octocat",
-        "id": 42,
+        "username": "octocat",
         "gravatar_id": "somehexcode",
         "email": "octocat@github.com",
-        "type": "User",
         "github_token": 'toktok',
+        "github_id": '123',
     }
-    context.user = User.create_from_github_user(data)
+    context.user = User.create(**data)
 
 
 def create_3_users(context):
     for i in range(1, 4):
         data = {}
-        data['login'] = "login{0}".format(i)
-        data['id'] = 42 + i
+        data['username'] = "login{0}".format(i)
+        data['github_id'] = 42 + i
         data['email'] = 'user{0}@gmail.com'.format(i)
         data['github_token'] = str(i) * 10
         data['gravatar_id'] = str(i) * 10
         setattr(context, 'user{0}'.format(i),
-                User.create_from_github_user(data))
+                User.create(**data))
 
 
 def create_bookmark(context):

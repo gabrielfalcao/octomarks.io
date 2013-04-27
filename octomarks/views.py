@@ -359,3 +359,8 @@ def explore():
 @mod.route("/500")
 def five00():
     return render_template('500.html')
+
+
+@mod.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404

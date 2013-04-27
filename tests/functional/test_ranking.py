@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import httpretty
 from .base import multi_user_test
 from octomarks.models import Bookmark
 
 
+@httpretty.activate
 @multi_user_test
 def test_delete_bookmark(context):
     ("Bookmark#delete should delete an existing bookmark")

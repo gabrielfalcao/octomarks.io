@@ -3,9 +3,10 @@
 import re
 import json
 import httpretty
-from mock import Mock
+from mock import Mock, patch
 from sure import scenario
 
+from octomarks.app import app
 from octomarks.models import User, db, metadata, Bookmark
 
 HTTPRETY_METHODS = [
@@ -22,6 +23,7 @@ def prepare(context):
     metadata.drop_all(db.engine)
     metadata.create_all(db.engine)
     conn.execute(User.table.delete())
+    context.app = app.web.test_client()
 
     for METHOD in HTTPRETY_METHODS:
         body = json.dumps(
@@ -77,3 +79,5 @@ def create_bookmark(context):
 user_test = scenario([prepare, create_user])
 multi_user_test = scenario([prepare, create_3_users])
 bookmark_test = scenario([prepare, create_bookmark])
+
+user_bookmark_test = scenario([prepare, create_user, create_bookmark])

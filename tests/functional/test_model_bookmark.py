@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from .base import user_test, bookmark_test
 from octomarks.models import Bookmark
 

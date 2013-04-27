@@ -166,8 +166,8 @@ def get_repository_data(owner_name, project, token):
 
     return {
         'success': bool(readme),
-        'readme': readme,
-        'readme_index': index,
+        'documentation': readme,
+        'documentation_index': index,
         'project': project,
         'repository': repository,
         'owner': owner,
@@ -177,14 +177,38 @@ def get_repository_data(owner_name, project, token):
     }
 
 
-@mod.route('/<owner>/<project>')
-def show_bookmark(owner, project):
+def get_token_with_fallback_for(username):
     from octomarks.models import User
     if g.user:
         token = g.user.github_token
     else:
-        user = User.find_one_by(username=owner)
+        user = User.find_one_by(username=username)
         token = user and user.github_token
+
+    return token
+
+
+@mod.route('/<owner>/<project>')
+def show_bookmark(owner, project):
+    token = get_token_with_fallback_for(owner)
+    if not token:
+        return render_template(
+            'invite.anon.html',
+            username=owner)
+
+    context = get_repository_data(owner, project, token)
+    if not context['success']:
+        return Response(render_template('bookmark-404.html', **context), status=404)
+    return render_template('show-bookmark.html', **context)
+
+
+@mod.route('/<owner>/<project>/docs/<path:path>')
+def show_documentation(owner, project, path):
+    if not path.endswith(".md"):
+        return Response(status=404)
+
+    token = get_token_with_fallback_for(owner)
+    repository_fetcher = GithubRepository(GithubEndpoint(token, public=True))
 
     if not token:
         return render_template(
@@ -192,6 +216,12 @@ def show_bookmark(owner, project):
             username=owner)
 
     context = get_repository_data(owner, project, token)
+    doc, doc_index = repository_fetcher.retrieve_docs(owner, project, path)
+    context.update({
+        'documentation': doc,
+        'documentation_index': doc_index,
+    })
+
     if not context['success']:
         return Response(render_template('bookmark-404.html', **context), status=404)
     return render_template('show-bookmark.html', **context)
@@ -210,7 +240,7 @@ def login():
     return github.authorize(callback_url=cb)
 
 
-@mod.route('/<username>/bookmarks')
+@mod.route('/<username>')
 @requires_login
 def bookmarks(username):
     api = GithubEndpoint(g.user.github_token)

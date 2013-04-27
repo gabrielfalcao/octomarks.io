@@ -54,9 +54,9 @@
     <div class="container project-doc">
       <div class="row-fluid">
         <div class="span3 project-doc-index" id="index-container">
-          {% if readme_index %}
+          {% if documentation_index %}
           <ul class="nav nav-tabs nav-stacked">
-            {% for header in readme_index %}
+            {% for header in documentation_index %}
               {{ render_header(header) }}
             {% endfor %}
           </ul>
@@ -72,7 +72,7 @@
         </div>
         <div id="readme-container" class="span8">
           <article class="code-area">
-            {{ readme|safe }}
+            {{ documentation|safe }}
           </article>
           <div class="actions">
             <a href="#toggle-readme" class="toggle-readme btn">

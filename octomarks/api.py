@@ -147,21 +147,29 @@ class GithubUser(Resource):
 
 
 class GithubRepository(Resource):
-    def get_readme(self, owner, project):
-        reply = self.endpoint.retrieve(
-            '/repos/{0}/{1}/readme'.format(owner, project))
-
-        filename = reply['name']
-
+    def request_markdown(self, owner, project, request_path):
+        url_prefix = "https://raw.github.com/{0}/{1}/master/".format(owner, project)
+        reply = self.endpoint.retrieve(request_path)
         raw = reply['content'].decode(reply['encoding'])
         if reply['encoding'] != 'utf-8':
             raw = raw.decode('utf-8')
 
+        filename = reply['name']
+
         if filename.lower().endswith('.md') or filename.lower().endswith('.markdown'):
-            readme = Markment(raw, relative_url_prefix="https://raw.github.com/{0}/{1}/master/".format(owner, project))
-            return readme.rendered, readme.index()
+            document = Markment(raw, relative_url_prefix=url_prefix)
+            return document.rendered, document.index()
         else:
             return raw, []
+
+    def retrieve_docs(self, owner, project, path):
+        path = path.lstrip("/")
+        request_path = '/repos/{0}/{1}/contents/{2}'.format(owner, project, path)
+        return self.request_markdown(owner, project, request_path)
+
+    def get_readme(self, owner, project):
+        request_path = '/repos/{0}/{1}/readme'.format(owner, project)
+        return self.request_markdown(owner, project, request_path)
 
     def get_languages(self, owner, project):
         return self.endpoint.retrieve(

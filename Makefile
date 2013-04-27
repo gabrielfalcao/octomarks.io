@@ -1,16 +1,9 @@
 SETTINGS_FILE="settings.py"
 export OCTOMARK_TESTING_MODE=on
 
-all:
-	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd
+all: prepare test local-migrate-forward
 
-setup: settings deps
-
-settings:
-	@cd octomarks && \
-		[ -e $(SETTINGS_FILE) ] || ln -s $(SETTINGS_FILE).sample $(SETTINGS_FILE)
-
-deps:
+prepare:
 	@pip install -r development.txt
 
 clean:
@@ -25,16 +18,26 @@ unit:
 functional:
 	@make test-kind kind=functional
 
-test: unit, functional
+acceptance:
+	@lettuce
+
+test: unit functional acceptance
 
 
 shell:
 	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd shell
 
-deploy:
+deploy: test
 	@git push --force heroku master
 	@heroku run "/app/.heroku/python/bin/alembic -c alembic.prod.ini upgrade head"
 	@make release
+	@make migrate-forward
+
+local-migrate-forward:
+	@alembic upgrade head
+
+local-migrate-back:
+	@alembic downgrade -1
 
 migrate-back:
 	@heroku run "/app/.heroku/python/bin/alembic -c alembic.prod.ini downgrade -1"
@@ -45,5 +48,5 @@ migrate-forward:
 release:
 	@heroku config:set RELEASE=`git rev-parse HEAD`
 
-%:
-	@PYTHONPATH=$(PYTHONPATH) ./bin/flaskd $@
+run:
+	@./bin/flaskd run

@@ -79,7 +79,7 @@ def tag_context(**dictionary):
 
 @github.access_token_getter
 def get_github_token(token=None):
-    return session.get('github_token')
+    return session.get('github_token', token)  # might bug
 
 
 @mod.route('/.callback')
@@ -261,7 +261,7 @@ def bookmarks(username):
     return render_template('bookmarks.html', **tag_context(
         bookmarks=bookmarks,
         user=user,
-        is_self=(user == g.user)))
+        is_self=(user.username == session['github_user_data']['login'])))
 
 
 @mod.route('/a/<bookmark_id>/tags', methods=['POST'])

@@ -16,7 +16,7 @@
   <div class="row-fluid">
     <div class="span6">
       {% for repo, total_bookmarks in ranking %}
-      <p style="padding-bottom: 10px"><a href="{{ repo.bookmark_url }}">{{ repo.owner }}/{{ repo.project }}</a> (favorited {{ total_bookmarks }} times)</p>
+      <p class="top-bookmark" style="padding-bottom: 10px"><a href="{{ repo.bookmark_url }}">{{ repo.owner }}/{{ repo.project }}</a> (favorited {{ total_bookmarks }} times)</p>
       {% endfor %}
     </div>
     <div class="span6">

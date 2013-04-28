@@ -67,9 +67,51 @@ javascript:(function(){
   <hr />
 
   <div class="row">
-    <div class="span12">
+    <div class="span6">
       <h2>Default code theme</h2>
-      <p>octomarks uses pygments to render the HTML code within project documentation</p>
+      <p>Octomarks uses pygments to render the HTML code within project documentation.</p>
+      <p>You can choose the default theme here, so it's more comfortable to your eyes.</p>
+      <form id="default-theme-form" method="post">
+        <select name="default_theme_name" id="theme-selector">
+          {% for theme in THEMES %}
+          <option {% if theme.name == user.default_theme_name %}selected="true"{% endif %} value="{{ full_url_for("static", filename="themes/{0}.css".format(theme.name)) }}">{{ theme.name }}</option>
+          {% endfor %}
+        </select>
+        <a id="save-theme" class="btn btn-inverse" href="#save-theme">save theme</a>
+        <script>
+        $("#theme-selector").on("change", function(e){
+          $("#theme-link").remove();
+          var href = $(this).val();
+          $("body").append('<link id="theme-link" rel="stylesheet" href="'+href+'" type="text/css" media="screen" />')
+        });
+        $("#save-theme").on("click", function(e){
+          e.preventDefault();
+          $.ajax({
+            url: "{{ url_for('.change_theme', username=user.username) }}",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({
+              "default_theme_name": $("#theme-selector option:selected").text()
+            }),
+            success: function(data) {
+              $("#theme-preview").parent().effect("highlight", {}, 1500);
+              (new Messenger()).post({
+                message: "Theme changed to " + data.default_theme_name,
+                delay: 3
+              })
+            },
+            error: function(){
+              console.log("ERROR", arguments);
+            }
+          });
+        });
+        </script>
+      </form>
+    </div>
+    <div class="span5 well well-small" style="height: 200px;overflow: hidden">
+      <link id="theme-link" rel="stylesheet" href="{{ user.get_theme()['url'] }}" type="text/css" media="screen" />
+      <div id="theme-preview">{{ theme_preview.rendered|safe }}</div>
     </div>
   </div>
   <hr />

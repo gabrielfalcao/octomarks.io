@@ -13,6 +13,8 @@ from octomarks.api import GithubUser, GithubEndpoint, GithubRepository
 from octomarks.core import RepoInfo, mailtoify, full_url_for
 from octomarks.handy.decorators import requires_login
 from octomarks.handy.functions import user_is_authenticated
+from octomarks.ui import ThemeManager
+from markment import Markment
 from flaskext.github import GithubAuth
 
 
@@ -27,7 +29,7 @@ mod = Blueprint('views', __name__)
 
 
 def json_response(data, status=200):
-    return Response(json.dumps(data), mimetype="text/json", status=str(status))
+    return Response(json.dumps(data), mimetype="text/json", status=int(status))
 
 
 def error_json_response(message):
@@ -55,6 +57,7 @@ def inject_basics():
         RepoInfo=RepoInfo,
         full_url_for=full_url_for,
         mailtoify=mailtoify,
+        THEMES=[dict(name=x.split(".")[0], file=x) for x in ThemeManager.get_theme_files()],
     )
 
 
@@ -110,6 +113,22 @@ def github_callback(resp):
     session['github_user_data'] = github_user_data
 
     return redirect(next_url)
+
+
+@mod.route('/<username>.theme.save', methods=['POST'])
+@requires_login
+def change_theme(username):
+    data = request.json
+    if not data:
+        return error_json_response("missing default_theme_name")
+
+    theme_name = data.get('default_theme_name')
+
+    try:
+        data = g.user.change_theme_to(theme_name)
+        return json_response(data)
+    except Exception as e:
+        return error_json_response(unicode(e))
 
 
 @mod.route('/save/<token>')
@@ -260,9 +279,25 @@ def bookmarks(username):
             githubber=api.retrieve('/users/{0}'.format(username)))
 
     bookmarks = user.get_bookmarks()
+
+    theme_preview = Markment('''
+
+# Theme preview
+
+```c
+#include <stdio.h>
+int main(int argc, char** argv){
+    printf("Hello World\\n");
+    return 0;
+}
+```
+
+''')
+
     return render_template('bookmarks.html', **tag_context(
         bookmarks=bookmarks,
         user=user,
+        theme_preview=theme_preview,
         is_self=(user.username == session['github_user_data']['login'])))
 
 
@@ -296,21 +331,6 @@ def ajax_delete_bookmark(bookmark_id):
         bk.delete()
         return error_json_response('Bookmark {0} does not exist'.format(bookmark_id))
     return json_response({'success': True, 'deleted_object': bk.to_dict()})
-
-
-@mod.route('/bookmark/<bookmark_id>/edit')
-@requires_login
-def edit_bookmark(bookmark_id):
-    from octomarks.models import Bookmark
-
-    repository = GithubRepository.from_token(g.user.github_token)
-    bk = Bookmark.find_one_by(id=bookmark_id, user_id=g.user.id)
-    info = RepoInfo(bk.url)
-
-    readme, index = repository.get_readme(info.owner, info.project)
-
-    return render_template('edit-bookmark.html',
-                           bookmark=bk, info=info, readme=readme, readme_index=index)
 
 
 @mod.route('/.cleanup')

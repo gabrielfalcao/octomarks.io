@@ -75,6 +75,7 @@ class User(Model):
     def change_theme_to(self, name):
         self.default_theme_name = name
         self.save()
+        return self.to_dict()
 
     def get_theme(self):
         name = self.default_theme_name

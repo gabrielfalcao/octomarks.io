@@ -59,7 +59,8 @@ class Model(object):
         return super(Model, self).__setattr__(attr, value)
 
     def to_dict(self):
-        return self.__data__.copy()
+        keys = self.table.columns.keys()
+        return dict([(k, v) for k, v in self.__data__.iteritems() if k in keys])
 
     def to_json(self):
         return json.dumps(self.to_dict())

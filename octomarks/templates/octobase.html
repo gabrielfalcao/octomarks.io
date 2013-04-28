@@ -13,12 +13,21 @@
     <link href="{{ url_for('static', v=settings.RELEASE, filename='css/octomarks.main.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', v=settings.RELEASE, filename='css/octomarks.navbar.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', v=settings.RELEASE, filename='chosen/chosen.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/messenger.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', v=settings.RELEASE, filename='css/messenger-theme-air.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', v=settings.RELEASE, filename='img/favicon.png') }}" rel="shortcut icon" />
 
     <script type="text/javascript" src="{{ url_for('static', v=settings.RELEASE, filename='js/jquery-1.9.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', v=settings.RELEASE, filename='js/jquery-ui-1.10.2.custom.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', v=settings.RELEASE, filename='chosen/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', v=settings.RELEASE, filename='js/messenger.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', v=settings.RELEASE, filename='js/octomarks.js') }}"></script>
+    <script type="text/javascript">
+        Messenger.options = {
+          extraClasses: 'messenger-fixed messenger-on-bottom',
+          theme: 'air'
+        }
+    </script>
     {% block css_head %}{% endblock %}
     {% block js_head %}{% endblock %}
   </head>
@@ -36,7 +45,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="{{ full_url_for('.index') }}">
+          <a id="logo" class="brand" href="{{ full_url_for('.index') }}">
             <img src="http://f.cl.ly/items/0w393i1I2N400n1n1L3G/octomarks.png" alt="octomarks.io"/>
           </a>
           <div class="nav-collapse collapse">

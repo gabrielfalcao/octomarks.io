@@ -15,7 +15,6 @@ def test_theme_manager_lists_exising_themes():
     "ThemeManager should be able to find themes under /static/themes"
 
     expected_files = enumerate_themes('*.css')
-
     ThemeManager.get_theme_files().should.equal(expected_files)
 
 

@@ -63,5 +63,5 @@ Feature: The Explore Screen
       | decadius      |         5 |
       | johnsnake     |         4 |
       | frontendguy   |         3 |
-      | rubywoods     |         2 |
       | jakartarobins |         2 |
+      | rubywoods     |         2 |

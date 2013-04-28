@@ -49,12 +49,12 @@
         </tr>
         {% for item in top_users %}
           <tr class="warning top-user">
-            <td>
+            <td class="name">
               <a href="{{ full_url_for(".bookmarks", username=item.info.username) }}">
                 {{ item.info.username }}
               </a>
             </td>
-            <td>{{ total_bookmarks }}</td>
+            <td class="total"><span>{{ item.total_bookmarks }}</span></td>
           </tr>
         {% endfor %}
       </table>

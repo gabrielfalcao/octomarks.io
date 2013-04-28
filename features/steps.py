@@ -90,10 +90,14 @@ def an_anonymous_user_goes_to_group1(step, url_path):
 @Then(u'he should see there are "([^"]*)" top bookmarks in this order:')
 def he_should_see_there_are_group1_top_bookmarks_in_this_order(step, length):
     expected = int(length)
-    world.dom.cssselect(".top-bookmark").should.have.length_of(expected)
+
     bookmarks = world.dom.cssselect(".top-bookmark .project-name a")
     owners = world.dom.cssselect(".top-bookmark .project-owner a")
     totals = world.dom.cssselect(".top-bookmark .total span")
+
+    bookmarks.should.have.length_of(expected)
+    owners.should.have.length_of(expected)
+    totals.should.have.length_of(expected)
 
     for bookmark, expectation in zip(bookmarks, step.hashes):
         bookmark.text.should.contain(expectation["name"])
@@ -123,8 +127,11 @@ def that_the_user_group1_favorited_5_projects(step, username, favorited_n):
 def he_should_see_there_are_group1_top_users_in_this_order(step, length):
     expected = int(length)
     world.dom.cssselect(".top-user").should.have.length_of(expected)
-    users = world.dom.cssselect(".top-user .user-name a")
+    users = world.dom.cssselect(".top-user .name a")
     totals = world.dom.cssselect(".top-user .total span")
+
+    users.should.have.length_of(expected)
+    totals.should.have.length_of(expected)
 
     for user, expectation in zip(users, step.hashes):
         user.text.should.contain(expectation["name"])

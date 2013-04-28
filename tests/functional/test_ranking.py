@@ -31,7 +31,7 @@ def test_top_projects(context):
 
     first['info'].should.have.key('name').being.equal("HTTPretty")
     first['info'].should.have.key('owner').being.a(dict)
-    first['info']['owner'].should.have.key('name').being.equal('gabrielfalcao')
+    first['info']['owner'].should.have.key('login').being.equal('gabrielfalcao')
     first.should.have.key('meta').being.a(RepoInfo)
 
 

@@ -20,10 +20,10 @@ HTTPRETY_METHODS = [
 
 
 def GithubRepositoryStub(owner, name):
-    return json.dumps(dict(name=name, owner=dict(name=owner)))
+    return json.dumps(dict(name=name, owner=dict(login=owner)))
 
 
-def prepare(context):
+def setup_httpretty():
     httpretty.register_uri(
         httpretty.GET,
         re.compile('github.com/repos/\w+/\w+/languages'),
@@ -38,6 +38,9 @@ def prepare(context):
         re.compile('github.com/repos/([^/]+)/([^/]+)/?$'),
         body=repository_callback)
 
+
+def prepare(context):
+    setup_httpretty()
     conn = db.engine.connect()
     metadata.drop_all(db.engine)
     metadata.create_all(db.engine)

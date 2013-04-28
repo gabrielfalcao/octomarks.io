@@ -15,6 +15,7 @@ from octomarks.models import (
     BookmarkTags,
     HttpCache,
 )
+from tests.functional.base import setup_httpretty
 
 HTTPRETY_METHODS = [
     httpretty.GET,
@@ -27,23 +28,7 @@ HTTPRETY_METHODS = [
 @before.all
 def enable_httpretty(*args):
     httpretty.enable()
-
-    httpretty.register_uri(
-        httpretty.GET,
-        re.compile('github.com/repos/\w+/\w+/languages'),
-        body='[]',
-        content_type='application/json')
-
-    def GithubRepositoryStub(owner, name):
-        return json.dumps(dict(name=name, owner=dict(name=owner)))
-
-    def repository_callback(method, uri, headers):
-        return 200, {'server': 'Github'}, GithubRepositoryStub(*uri.strip("/").split("/")[-2:])
-
-    httpretty.register_uri(
-        httpretty.GET,
-        re.compile('github.com/repos/([^/]+)/([^/]+)/?$'),
-        body=repository_callback)
+    setup_httpretty()
 
 
 @before.all

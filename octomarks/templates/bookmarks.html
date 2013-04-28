@@ -1,39 +1,88 @@
 {% extends "octobase.html" %}
 {% block navbar_classes %}navbar-no-pull{% endblock %}
 
+{% macro make_bookmarklet(url) -%}
+javascript:(function(){
+  location.href=([
+    '{{ url }}?uri=',
+    encodeURIComponent(location.href),
+    '&should_redirect=1'
+  ].join(""));
+}());
+{%- endmacro  %}
+
+{% macro editable_bookmark(bookmark) -%}
+<form id="tags-{{ bookmark.id }}" data-bookmark-id="{{ bookmark.id }}" data-save-url="{{ url_for(".ajax_add_tags", bookmark_id=bookmark.id) }}" method="post">
+  <select data-no-results-text="Type \"Enter\" to create " data-placeholder="Choose or create tags for {{ owner }}/{{ project }}" style="width:350px;" multiple class="chzn-select tags">
+  {% for tag in bookmark.tags %}<option value="{{ tag.name }}" selected="selected">{{ tag.name }}</option>{% endfor %}
+  {% for tag in remaining_tags_for(bookmark.tags) %}<option value="{{ tag.name }}">{{ tag.name }}</option>{% endfor %}
+  </select>
+</form>
+{%- endmacro  %}
+
+{% macro public_bookmark(bookmark) -%}
+  {% for tag in bookmark.tags %}
+    <span class="badge badge-{{ loop.cycle('info', 'success', 'inverse', 'warning', 'important', 'primary') }}">{{ tag.name }}</span>
+  {% endfor %}
+{%- endmacro %}
+
 {% block body %}
 <div class="container">
   {% if is_self %}
-  <div class="row-fluid">
-    <div class="span5 well">
-      <h4>The button below is a bookmarklet just for you</h4>
-      <p>Drag it onto your bookmarks bar, next time you are on a
-         github repository or project page, click on the button and it
-         will be saved as your bookmark.</p>
-      <br />
-        {% set bookmarklet_url = full_url_for(".save_bookmark", token=user.gb_token) %}
-
-      <a class="btn btn-success btn-large" href="javascript: (function () { location.href='{{ bookmarklet_url }}?uri='+encodeURIComponent(location.href)+'&should_redirect=1'}());">octomark it</a>
+  <div class="row">
+    <div class="span12">
+      <h2>How to save</h2>
     </div>
-    <div class="span5 well">
-      <h3>or...</h3>
-      <h4>You can save a link by pasting the url below</h4>
-      <div class="uri-wrapper">
-        <span id="uri-message" {% if error %}class="opaque"{% endif %}>{% if error  %}{{ error }}{% endif %}</span>
-        <input id="uri" class="classy-input" type="text" name="bookmark_url" placeholder="paste a github page or repository url here..." {% if uri %}value="{{ uri }}"{% endif %}/>
-      </div>
-      <input type="button" id="main-save" class="btn btn-large btn-warning" name="action" value="save" {% if not uri %}disabled="true" {% endif %}/>
+    <div class="span4 offset1" style="padding:0;">
+      <div class="well well-small" style="margin:0;">
+        <h4>The button below is a bookmarklet just for you</h4>
 
+        <p>
+         Drag it onto your bookmarks bar, next time you are on a
+         github repository or project page, click on the button and it
+         will be saved as your bookmark.
+        </p>
+        <br />
+        <p style="text-align:center">
+        {% set bookmarklet_url = full_url_for(".save_bookmark", token=user.gb_token) %}
+        <a class="btn btn-success btn-large"
+           href="{{ minify(make_bookmarklet(bookmarklet_url)) }}">octomark it</a>
+        </p>
+      </div>
+    </div>
+    <div class="span1" style="text-align:center; height: 120px; padding: 80px 0">
+      <h2>or...</h2>
+    </div>
+    <div class="span4" style="padding: 0;">
+      <div style="margin:0; height: 150px; padding:50px 10px 0">
+        <h4>You can also save a link by pasting the url below</h4>
+        <div class="uri-wrapper">
+          <span id="uri-message" {% if error %}class="opaque"{% endif %}>{% if error  %}{{ error }}{% endif %}</span>
+          <input id="uri" class="classy-input" type="text" name="bookmark_url" placeholder="paste a github page or repository url here..." {% if uri %}value="{{ uri }}"{% endif %}/>
+          <input type="button" id="main-save" class="btn btn-primary" name="action" value="save" {% if not uri %}disabled="true" {% endif %}/>
+        </div>
+      </div>
     </div>
   </div>
+  <hr />
+
+  <div class="row">
+    <div class="span12">
+      <h2>Default code theme</h2>
+      <p>octomarks uses pygments to render the HTML code within project documentation</p>
+    </div>
+  </div>
+  <hr />
+
   {% endif %}
   <div class="row-fluid">
     <div class="span12">
       {% if is_self %}
         <h2>Your bookmarks</h2>
-{% else %}
-      <h2>{{ user.username }}'{{ user.username.endswith("s") and "" or "s" }} bookmarks</h2>
-{% endif %}
+      {% else %}
+        <h2>{{ user.username }}'{{ user.username.endswith("s") and "" or "s" }} bookmarks</h2>
+      {% endif %}
+
       <br />
       <table class="table table-stripped">
         <thead>
@@ -45,10 +94,11 @@
           </tr>
         </thead>
         <tbody>
-           {% for bookmark in bookmarks %}
-             {% set owner = RepoInfo(bookmark.url).owner %}
-             {% set project = RepoInfo(bookmark.url).project %}
-             {% set gb_url = url_for('.show_bookmark', owner=owner, project=project) %}
+        {% for bookmark in bookmarks %}
+          {% set owner = RepoInfo(bookmark.url).owner %}
+          {% set project = RepoInfo(bookmark.url).project %}
+          {% set gb_url = url_for('.show_bookmark', owner=owner, project=project) %}
+
           <tr id="bookmark-row-{{ bookmark.id }}">
             <td>
               <a href="{{ gb_url }}">{{ project }}</a>
@@ -57,24 +107,22 @@
               <a href="{{ gb_url }}"">{{ owner }}</a>
             </td>
             <td>
-              {% if is_self %}
-              <form id="tags-{{ bookmark.id }}" data-bookmark-id="{{ bookmark.id }}" data-save-url="{{ url_for(".ajax_add_tags", bookmark_id=bookmark.id) }}" method="post">
-                <select data-no-results-text="Type \"Enter\" to create " data-placeholder="Choose or create tags for {{ owner }}/{{ project }}" style="width:350px;" multiple class="chzn-select tags">
-                        {% for tag in bookmark.tags %}<option value="{{ tag.name }}" selected="selected">{{ tag.name }}</option>{% endfor %}
-                        {% for tag in remaining_tags_for(bookmark.tags) %}<option value="{{ tag.name }}">{{ tag.name }}</option>{% endfor %}
-                </select>
-              </form>
-              {% else %}
-                  {% for tag in bookmark.tags %}
-              <span class="badge badge-{{ loop.cycle('info', 'success', 'inverse', 'warning', 'important', 'primary') }}">{{ tag.name }}</span>
-                  {% endfor %}
-              {% endif %}
+            {% if is_self %}
+              {{ editable_bookmark(bookmark) }}
+            {% else %}
+              {{ public_bookmark(bookmark) }}
+            {% endif %}
             </td>
             <td>
-              <a id="delete-bookmark-{{ bookmark.id }}" data-bookmark-name="{{ owner }}/{{ project }}" data-bookmark-id="{{ bookmark.id }}" data-delete-url="{{ url_for('.ajax_delete_bookmark', bookmark_id=bookmark.id) }}" class="delete-bookmark btn btn-warning" href="#delete-bookmark-{{ bookmark.id }}">Delete</a>
+              <a id="delete-bookmark-{{ bookmark.id }}"
+                 data-bookmark-name="{{ owner }}/{{ project }}"
+                 data-bookmark-id="{{ bookmark.id }}"
+                 data-delete-url="{{ url_for('.ajax_delete_bookmark', bookmark_id=bookmark.id) }}"
+                 class="delete-bookmark btn btn-warning"
+                 href="#delete-bookmark-{{ bookmark.id }}">Delete</a>
             </td>
           </tr>
-           {% endfor %}
+        {% endfor %}
         </tbody>
       </table>
     </div>

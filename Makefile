@@ -1,5 +1,6 @@
 SETTINGS_FILE="settings.py"
 export OCTOMARK_TESTING_MODE=on
+export OCTOMARKS_DB=mysql://root@localhost/gb_test
 
 all: prepare test local-migrate-forward
 

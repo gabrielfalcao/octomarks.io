@@ -143,21 +143,6 @@ class Bookmark(Model):
         re.compile(r'(?P<owner>[^.]+).github.io/(?P<project>[^/]+)'),
     ]
 
-    @classmethod
-    def get_most_bookmarked(cls, limit=5):
-        field = cls.table.c
-        q = (db.select([
-            field.url,
-            db.func.count('*')
-        ])
-            .group_by(field.url)
-            .order_by(db.desc(db.func.count('*')))
-            .limit(limit))
-
-        conn = cls.get_connection()
-        res = conn.execute(q)
-        return [(RepoInfo(url), count) for url, count in res.fetchall()]
-
     def add_tag(self, name):
         tag = Tag.get_or_create(name=name.strip())
         return tag, BookmarkTags.get_or_create(
@@ -214,3 +199,73 @@ class HttpCache(Model):
             'cached': True,
             'status_code': self.status_code,
         }
+
+
+class Ranking(object):
+    @classmethod
+    def get_top_projects(cls, limit=5):
+        field = Bookmark.table.c
+        q = (db.select([
+            field.url,
+            db.func.count('user_id')
+        ])
+            .group_by(field.url)
+            .order_by(db.desc(db.func.count('user_id')))
+            .limit(limit))
+
+        conn = Bookmark.get_connection()
+        res = conn.execute(q)
+
+        return [cls.repository_with_data(url, dict(total_bookmarks=count))
+                for url, count in res.fetchall()]
+
+    @classmethod
+    def get_top_users(cls, limit=5):
+        field = Bookmark.table.c
+        q = (db.select([
+            field.user_id,
+            db.func.count('url')
+        ])
+            .group_by(field.user_id)
+            .order_by(db.desc(db.func.count('url')))
+            .limit(limit))
+
+        conn = Bookmark.get_connection()
+        res = conn.execute(q)
+
+        return [cls.user_with_data(user_id, dict(total_bookmarks=count))
+                for user_id, count in res.fetchall()]
+
+    @classmethod
+    def repository_with_data(cls, url, data=None):
+        from octomarks.api import GithubRepository, GithubEndpoint
+
+        data = data or {}
+
+        repo = GithubRepository(GithubEndpoint(cls.get_most_recent_token()))
+        data['meta'] = info = RepoInfo(url)
+        data['info'] = repo.get(owner=info.owner, project=info.project)
+
+        return data
+
+    @classmethod
+    def user_with_data(cls, user_id, data=None):
+        data = data or {}
+
+        data['info'] = User.find_one_by(id=user_id).to_dict()
+
+        return data
+
+    @classmethod
+    def get_most_recent_token(cls):
+        field = User.table.c
+        q = (db.select([field.github_token])
+            .order_by(db.desc(field.updated_at))
+            .limit(1))
+
+        conn = Bookmark.get_connection()
+        res = conn.execute(q)
+        if res.returns_rows:
+            return res.fetchone()[0]
+
+        return 'NONE'

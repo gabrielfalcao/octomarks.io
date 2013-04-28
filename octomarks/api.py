@@ -20,7 +20,8 @@ class GithubEndpoint(object):
         self.public = public
         self.headers = {
             'authorization': 'token {0}'.format(token),
-            'X-GitHub-Media-Type: github.beta': 'github.beta'
+            'X-GitHub-Media-Type: github.beta': 'github.beta',
+            'User-Agent': 'octomarks.io/retriever',
         }
         self.log = logging.getLogger('octomarks.api')
 

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+import re
+import json
 import sure
+import httpretty
 from lxml import html as lhtml
 from lettuce import world, before, after
 from octomarks.testing import Client
@@ -12,6 +15,35 @@ from octomarks.models import (
     BookmarkTags,
     HttpCache,
 )
+
+HTTPRETY_METHODS = [
+    httpretty.GET,
+    httpretty.POST,
+    httpretty.PUT,
+    httpretty.DELETE,
+]
+
+
+@before.all
+def enable_httpretty(*args):
+    httpretty.enable()
+
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile('github.com/repos/\w+/\w+/languages'),
+        body='[]',
+        content_type='application/json')
+
+    def GithubRepositoryStub(owner, name):
+        return json.dumps(dict(name=name, owner=dict(name=owner)))
+
+    def repository_callback(method, uri, headers):
+        return 200, {'server': 'Github'}, GithubRepositoryStub(*uri.strip("/").split("/")[-2:])
+
+    httpretty.register_uri(
+        httpretty.GET,
+        re.compile('github.com/repos/([^/]+)/([^/]+)/?$'),
+        body=repository_callback)
 
 
 @before.all

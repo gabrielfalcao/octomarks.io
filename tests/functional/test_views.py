@@ -8,7 +8,7 @@ from octomarks.testing import Client
 @httpretty.activate
 @user_test
 def test_anonymous_index(context):
-    ("An anonymous user that goes to / should be redirected to the ranking")
+    ("An anonymous user that goes to / should be redirected to the explore")
 
     http = Client()
 
@@ -18,7 +18,7 @@ def test_anonymous_index(context):
      .have
      .property("location")
      .being
-     .equal("http://localhost/ranking"))
+     .equal("http://localhost/explore"))
 
 
 @httpretty.activate

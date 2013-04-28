@@ -14,7 +14,7 @@ PRODUCTION = not DEBUG
 DATABASE = 'mysql://gbookmarks:b00k@BABY@mysql.gabrielfalcao.com/gbookmarks'
 
 if not PRODUCTION:
-    DATABASE = 'mysql://root@localhost/gb'
+    DATABASE = os.getenv('OCTOMARKS_DB', 'mysql://root@localhost/gb')
 
 # Static assets craziness
 LOCAL_FILE = lambda *p: abspath(join(__file__, '..', *p))

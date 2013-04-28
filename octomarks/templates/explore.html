@@ -1,10 +1,84 @@
 {% extends "octobase.html" %}
 
+{% block page_title %}octomarks.io | top bookmarks{% endblock %}
+{% block page_description %}{% endblock %}
+{% block page_keywords %}{% endblock %}
+
 {% block body %}
 <div class="container">
+
+  <!-- Ranking -->
   <div class="row-fluid">
     <div class="span12">
-      <h1>Explore</h1>
+      <h1>Ranking</h1>
+      <hr />
+    </div>
+  </div>
+
+  <!-- Ranking row -->
+  <div class="row-fluid">
+    <div class="span4">
+      <h3>Top Projects</h3>
+      <table class="table table-condensed table-hover">
+        <tr>
+          <th>Project</th>
+          <th>Owner</th>
+          <th>#</th>
+        </tr>
+        {% for item in top_projects %}
+          <tr class="warning top-bookmark">
+            <td class="project-name">
+              <a href="{{ item.meta.bookmark_url }}">
+                {{ item.info.name }}
+              </a>
+            </td>
+            <td class="project-owner">
+              <a href="{{ item.meta.bookmark_url }}">{{ item.info.owner.name }}</a>
+            </td>
+            <td class="total"><span>{{ item.total_bookmarks }}</span></td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="span4">
+      <h3>Top Users</h3>
+      <table class="table table-condensed table-hover">
+        <tr>
+          <th>User</th>
+          <th>#</th>
+        </tr>
+        {% for item in top_users %}
+          <tr class="warning top-user">
+            <td>
+              <a href="{{ full_url_for(".bookmarks", username=item.info.username) }}">
+                {{ item.info.username }}
+              </a>
+            </td>
+            <td>{{ total_bookmarks }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="span4">
+      <h3>Top Tags</h3>
+    </div>
+  </div>
+
+  <!-- Languages -->
+  <div class="row-fluid">
+    <div class="span12">
+      <h1>Languages</h1>
+      <hr />
+    </div>
+  </div>
+
+  <!-- Ranking row -->
+  <div class="row-fluid">
+    <div class="span6">
+      <h3>Most active users</h3>
+    </div>
+    <div class="span6">
+      <h3>Most active projects</h3>
     </div>
   </div>
 </div>

@@ -60,7 +60,6 @@
             {% if user %}
             <ul class="nav">
               <li><a href="{{ url_for('.explore') }}">Explore</a></li>
-              <li><a href="{{ url_for('.ranking') }}">Ranking</a></li>
               {% if user %}
               <li><a href="{{ url_for('.logout') }}">Logout</a></li>
               {% endif %}

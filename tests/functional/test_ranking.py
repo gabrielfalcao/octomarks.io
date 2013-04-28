@@ -1,40 +1,57 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import httpretty
-from .base import multi_user_test
-from octomarks.models import Bookmark
+from .base import db_test, multi_user_test
+from octomarks.core import RepoInfo
+from octomarks.models import Ranking
 
 
 @httpretty.activate
-@multi_user_test
-def test_delete_bookmark(context):
-    ("Bookmark#delete should delete an existing bookmark")
+@db_test
+def test_top_projects(context):
+    ("Ranking.get_top_projects should return the top 5 projects")
 
-    context.user1.save_bookmark(
-        "http://github.com/gabrielfalcao/HTTPretty")
-    context.user2.save_bookmark(
-        "http://github.com/gabrielfalcao/HTTPretty")
-    context.user3.save_bookmark(
-        "http://github.com/gabrielfalcao/HTTPretty")
+    context.bookmark_n_times(5, "github.com/gabrielfalcao/HTTPretty")
+    context.bookmark_n_times(4, "github.com/gabrielfalcao/sure")
+    context.bookmark_n_times(3, "github.com/clarete/forbiddenfruit")
+    context.bookmark_n_times(2, "github.com/spulec/freezegun")
+    context.bookmark_n_times(1, "github.com/gabrielfalcao/lettuce")
+    context.bookmark_n_times(1, "github.com/gabrielfalcao/couleur")
+    context.bookmark_n_times(1, "github.com/gabrielfalcao/markment")
 
-    context.user2.save_bookmark(
-        "http://github.com/gabrielfalcao/lettuce")
+    projects = Ranking.get_top_projects()
 
-    context.user3.save_bookmark(
-        "http://github.com/gabrielfalcao/sure")
+    projects.should.have.length_of(5)
 
-    bookmarks = Bookmark.get_most_bookmarked()
+    first = projects[0]
 
-    bookmarks.should.have.length_of(3)
+    first.should.have.key('total_bookmarks').being.equal(5)
+    first.should.have.key('info').being.a(dict)
 
-    bookmarks[0][0].remount().should.equal(
-        "http://github.com/gabrielfalcao/HTTPretty")
-    bookmarks[0][1].should.equal(3)
+    first['info'].should.have.key('name').being.equal("HTTPretty")
+    first['info'].should.have.key('owner').being.a(dict)
+    first['info']['owner'].should.have.key('name').being.equal('gabrielfalcao')
+    first.should.have.key('meta').being.a(RepoInfo)
 
-    bookmarks[1][0].remount().should.equal(
-        "http://github.com/gabrielfalcao/lettuce")
-    bookmarks[1][1].should.equal(1)
 
-    bookmarks[2][0].remount().should.equal(
-        "http://github.com/gabrielfalcao/sure")
-    bookmarks[2][1].should.equal(1)
+@httpretty.activate
+@multi_user_test(6)
+def test_top_users(context):
+    ("Ranking.get_top_users should return the top 5 users")
+
+    context.add_n_bookmarks(5, context.user1)
+    context.add_n_bookmarks(4, context.user2)
+    context.add_n_bookmarks(3, context.user3)
+    context.add_n_bookmarks(2, context.user4)
+    context.add_n_bookmarks(1, context.user5)
+
+    users = Ranking.get_top_users()
+
+    users.should.have.length_of(5)
+
+    first = users[0]
+
+    first.should.have.key('total_bookmarks').being.equal(5)
+    first.should.have.key('info').being.a(dict)
+    first['info'].should.equal(context.user1.to_dict())

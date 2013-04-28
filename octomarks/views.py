@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import re
 import ejson as json
 from functools import partial
 from flask import (
@@ -48,6 +49,7 @@ def prepare_auth():
 def inject_basics():
     return dict(
         user=g.user,
+        minify=lambda s: re.sub(r'\s+', ' ', "".join([a.strip() for a in s.splitlines()])),
         default_theme_url=settings.absurl('/static/themes/tango.css'),
         settings=settings,
         RepoInfo=RepoInfo,
@@ -340,21 +342,18 @@ def index():
     if user_is_authenticated():
         return redirect(url_for('.bookmarks', username=g.user.username))
 
-    return redirect(url_for('.ranking'))
-
-
-@mod.route("/ranking")
-def ranking():
-    from octomarks.models import Bookmark
-    ranking = Bookmark.get_most_bookmarked()
-    return Response(render_template('ranking.html', ranking=ranking), headers={
-        'Cache-Control': 'public, max-age=31536000'
-    })
+    return redirect(url_for('.explore'))
 
 
 @mod.route("/explore")
 def explore():
-    return render_template('explore.html')
+    from octomarks.models import Ranking
+    top_projects = Ranking.get_top_projects()
+    top_users = Ranking.get_top_users()
+
+    return Response(render_template('explore.html', top_projects=top_projects, top_users=top_users), headers={
+        # 'Cache-Control': 'public, max-age=31536000'
+    })
 
 
 @mod.route("/500")

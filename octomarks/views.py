@@ -388,6 +388,22 @@ def show_tag(slug):
     return Response(render_template('show-tag.html', tag=tag, bookmarks=bookmarks))
 
 
+@mod.route("/search", methods=["POST"])
+def search():
+    data = request.json
+    if not data:
+        return error_json_response("request must be json")
+
+    criteria = data.get('criteria')
+    bookmark_id = data.get('bookmark_id')
+
+    from octomarks.models import Log
+
+    Log.create(message='[SEARCH] {0}: {1}'.format(bookmark_id, criteria),
+               data=request.data)
+    return json_response({"found": 0})
+
+
 @mod.route("/500")
 def five00():
     return render_template('500.html')

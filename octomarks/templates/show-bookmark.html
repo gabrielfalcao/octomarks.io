@@ -42,12 +42,47 @@
           </div><!--.project-logo-container-->
         </div><!--.span4-->
         <div class="span5 search-container">
-          <input type="text" placeholder="search in {{ repository.name }} docs" class="search-box"/>
+          <input type="text" placeholder="search in {{ repository.name }} docs" class="search-box" data-bookmark-id="{{ repository.name }}/{{ repository.owner.login }}"/>
           <input type="button" value="docs" class="search-btn" />
         </div>
         <div class="span2">
           <a href="{{ repository.html_url }}" class="github-btn"><img src="{{ url_for('static', v=settings.RELEASE, filename='img/octocat-mini-white.png') }}" />github</a>
         </div>
+        <script type="text/javascript">
+        function do_search() {
+                $.ajax({
+                    url: "{{ url_for('.search') }}",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "criteria": $(".search-box").val(),
+                        "bookmark_id": $(".search-box").data("bookmark-id")
+                    }),
+                    success: function(data) {
+                        $(".search-box").effect("highlight", {}, 1500);
+                        (new Messenger()).post({
+                            message: "Search not yet implemented",
+        	            extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
+                            delay: 2
+                        })
+                    },
+                    error: function(){
+                        console.log("ERROR", arguments);
+                    }
+                });
+
+        }
+            $(".search-btn").on("click", function(e){
+                do_search();
+                return e.preventDefault();
+            });
+            $(".search-box").on("keydown", function(e){
+                if (e.keyCode === 13) {
+                  do_search();
+                }
+            });
+        </script>
       </div>
     </div>
 

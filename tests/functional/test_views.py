@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
 import httpretty
 from .base import user_test
 from octomarks.testing import Client
+from octomarks.models import Log
 
 
 @httpretty.activate
@@ -39,3 +41,29 @@ def test_authenticated_index(context):
      .property("location")
      .being
      .equal("http://localhost/octocat"))
+
+
+@httpretty.activate
+@user_test
+def test_logging(context):
+    ("An anonymous user that goes to / should be redirected to the explore")
+
+    http = Client()
+
+    payload = json.dumps({
+        'criteria': 'Attempt to search',
+        'bookmark_id': 123,
+        'project': 'foo/bar',
+    })
+    response = http.post("/search", data=payload, content_type="application/json")
+
+    logs = Log.all()
+
+    logs.should.have.length_of(1)
+
+    log = logs[0]
+
+    log.message.should.equal("[SEARCH] 123: Attempt to search")
+    log.data.should.equal(payload)
+
+    response.data.should.equal(json.dumps({"found": 0}))

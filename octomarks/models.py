@@ -125,6 +125,47 @@ class User(Model):
         return instance
 
 
+class Organization(Model):
+    table = db.Table('gb_organization', metadata,
+        db.Column('id', db.Integer, primary_key=True),
+        db.Column('owner_id', db.Integer, nullable=False),
+        db.Column('name', db.String(80), nullable=False),
+        db.Column('email', db.String(100), nullable=False, unique=True),
+        db.Column('company', db.UnicodeText, nullable=True),
+        db.Column('blog', db.UnicodeText, nullable=True),
+        db.Column('avatar_url', db.UnicodeText, nullable=True),
+        db.Column('created_at', db.DateTime, default=now),
+        db.Column('updated_at', db.DateTime, default=now),
+    )
+
+
+class OrganizationUsers(Model):
+    table = db.Table('gb_organization_users', metadata,
+        db.Column('id', db.Integer, primary_key=True),
+        db.Column('user_id', db.Integer, nullable=False),
+        db.Column('organization_id', db.Integer, nullable=False),
+    )
+
+# {
+#   "login": "github",
+#   "id": 1,
+#   "url": "https://api.github.com/orgs/github",
+#   "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+#   "name": "github",
+#   "company": "GitHub",
+#   "blog": "https://github.com/blog",
+#   "location": "San Francisco",
+#   "email": "octocat@github.com",
+#   "public_repos": 2,
+#   "public_gists": 1,
+#   "followers": 20,
+#   "following": 0,
+#   "html_url": "https://github.com/octocat",
+#   "created_at": "2008-01-14T04:33:35Z",
+#   "type": "Organization"
+# }
+
+
 class Tag(Model):
     table = db.Table('gb_tag', metadata,
         db.Column('id', db.Integer, primary_key=True),
@@ -383,3 +424,13 @@ class Ranking(object):
             return res.fetchone()[0]
 
         return 'NONE'
+
+
+class Log(Model):
+    table = db.Table('gb_log', metadata,
+        db.Column('id', db.Integer, primary_key=True),
+        db.Column('user_id', db.Integer, nullable=True),
+        db.Column('message', db.UnicodeText, nullable=True),
+        db.Column('data', db.UnicodeText, nullable=True),
+        db.Column('created_at', db.DateTime, default=now),
+    )

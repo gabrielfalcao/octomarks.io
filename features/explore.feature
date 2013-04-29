@@ -65,3 +65,26 @@ Feature: The Explore Screen
       | frontendguy   |         3 |
       | jakartarobins |         2 |
       | rubywoods     |         2 |
+
+  @later
+  Scenario: Top Tags
+    Given the user "decadius" has the bookmarks:
+      | name       | owner         | tags                       |
+      | anaconda   | johnsnake     | python, testing, mock      |
+      | redberry   | rubywoods     | ruby, testing              |
+      | cafezinho  | jakartarobins | javascript, testing, ui    |
+      | roundhouse | chucknorris   | C, hacking                 |
+      | batbelt    | batman        | C#, enterprise, testing    |
+      | xrayvision | superman      | IO, enterprise             |
+      | foo1       | baz1          | redis, mongodb, enterprise |
+      | foo2       | baz2          | jQuery, css3 , ui          |
+      | foo3       | baz3          | qt, gtk, atk, ui           |
+      | foo4       | baz4          | go, tornado, twisted, testing |
+    When an anonymous user goes to "/explore"
+    Then he should see there are "5" top tags in this order:
+      | name       | favorited |
+      | testing    |         5 |
+      | enterprise |         3 |
+      | ui         |         3 |
+      | hacking    |         2 |
+      | python     |         1 |

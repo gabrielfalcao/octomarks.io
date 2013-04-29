@@ -45,24 +45,26 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a id="logo" class="brand" href="{{ full_url_for('.index') }}">
-            <img src="http://f.cl.ly/items/0w393i1I2N400n1n1L3G/octomarks.png" alt="octomarks.io"/>
+          <a id="logo" class="brand" href="{{ full_url_for('.explore') }}">
+            <img src="{{ full_url_for("static", v=settings.RELEASE, filename="img/octomarks.png") }}" alt="octomarks.io"/>
           </a>
           <div class="nav-collapse collapse">
           {% block user %}
             <div class="profile">
             {% if user %}
-              <a href="{{ full_url_for(".bookmarks", username=user.username) }}">
-                <p class="profile-username">{{ user.username }}</p>
+              <a href="{{ full_url_for(".bookmarks", username=authuser.username) }}">
+                <p class="profile-username">{{ authuser.username }}</p>
                 <div class="profile-pic-container">
-                  <img class="profile-pic" src="https://secure.gravatar.com/avatar/{{ user.gravatar_id }}?s=40" />
+                  <img class="profile-pic" src="https://secure.gravatar.com/avatar/{{ authuser.gravatar_id }}?s=40" />
                 </div>
               </a>
             {% else %}
-              <a href="{{ full_url_for(".login") }}">
-                <p class="profile-login">sign in with github</p>
-              </a>
-
+              <p class="profile-login">
+                <a href="{{ full_url_for(".login") }}">
+                  <span style="font-size: 22px;display:inline-block;padding-top: 2px;">sign in</span>
+                  <img src="{{ full_url_for("static", v=settings.RELEASE, filename="img/octocat-mini-white.png") }}" />
+                </a>
+              </p>
             {% endif %}
             </div>
           {% endblock %}

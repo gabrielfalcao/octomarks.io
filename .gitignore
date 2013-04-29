@@ -33,3 +33,4 @@ cache.sqlite
 #.*
 *#*
 markment
+production-dump.sql

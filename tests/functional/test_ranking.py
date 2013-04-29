@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import httpretty
-from .base import db_test, multi_user_test
+from .base import db_test, multi_user_test, multi_bookmark_test
 from octomarks.core import RepoInfo
 from octomarks.models import Ranking
 
@@ -55,3 +55,105 @@ def test_top_users(context):
     first.should.have.key('total_bookmarks').being.equal(5)
     first.should.have.key('info').being.a(dict)
     first['info'].should.equal(context.user1.to_dict())
+
+
+@httpretty.activate
+@multi_bookmark_test(5)
+def test_top_bookmark_tags(context):
+    ("Ranking.get_top_bookmark_tags should return the top 5 tags")
+
+    context.bookmark1.add_tag("Testing")
+    context.bookmark1.add_tag("UI")
+    context.bookmark1.add_tag("Python")
+    context.bookmark1.add_tag("Hacking")
+
+    context.bookmark2.add_tag("Testing")
+    context.bookmark2.add_tag("Enterprise")
+    context.bookmark2.add_tag("Hacking")
+
+    context.bookmark3.add_tag("Enterprise")
+    context.bookmark3.add_tag("Hacking")
+    context.bookmark3.add_tag("Ruby")
+
+    context.bookmark4.add_tag("Hacking")
+    context.bookmark4.add_tag("GNU")
+    context.bookmark5.add_tag("Testing")
+    context.bookmark4.add_tag("C")
+
+    context.bookmark5.add_tag("Hacking")
+    context.bookmark5.add_tag("Testing")
+    context.bookmark5.add_tag("GNU")
+
+    tags = Ranking.get_top_bookmark_tags()
+    tags.should.have.length_of(5)
+
+    t1, t2, t3, t4, t5 = tags
+
+    t1.should.have.key('tag').being.a(dict)
+    t2.should.have.key('tag').being.a(dict)
+    t3.should.have.key('tag').being.a(dict)
+    t4.should.have.key('tag').being.a(dict)
+    t5.should.have.key('tag').being.a(dict)
+
+    t1['tag'].should.have.key("slug").being.equal("hacking")
+    t2['tag'].should.have.key("slug").being.equal("testing")
+    t3['tag'].should.have.key("slug").being.equal("enterprise")
+    t4['tag'].should.have.key("slug").being.equal("gnu")
+    t5['tag'].should.have.key("slug").being.equal("ui")
+
+    t1.should.have.key('total_bookmarks').being.equal(5)
+    t2.should.have.key('total_bookmarks').being.equal(3)
+    t3.should.have.key('total_bookmarks').being.equal(2)
+    t4.should.have.key('total_bookmarks').being.equal(2)
+    t5.should.have.key('total_bookmarks').being.equal(1)
+
+
+@httpretty.activate
+@multi_user_test(5)
+def test_top_user_tags(context):
+    ("Ranking.get_top_user_tags should return the top 5 tags")
+
+    context.user1.add_tag("Testing")
+    context.user1.add_tag("UI")
+    context.user1.add_tag("Python")
+    context.user1.add_tag("Hacking")
+
+    context.user2.add_tag("Testing")
+    context.user2.add_tag("Enterprise")
+    context.user2.add_tag("Hacking")
+
+    context.user3.add_tag("Enterprise")
+    context.user3.add_tag("Hacking")
+    context.user3.add_tag("Ruby")
+
+    context.user4.add_tag("Hacking")
+    context.user4.add_tag("GNU")
+    context.user5.add_tag("Testing")
+    context.user4.add_tag("C")
+
+    context.user5.add_tag("Hacking")
+    context.user5.add_tag("Testing")
+    context.user5.add_tag("GNU")
+
+    tags = Ranking.get_top_user_tags()
+    tags.should.have.length_of(5)
+
+    t1, t2, t3, t4, t5 = tags
+
+    t1.should.have.key('tag').being.a(dict)
+    t2.should.have.key('tag').being.a(dict)
+    t3.should.have.key('tag').being.a(dict)
+    t4.should.have.key('tag').being.a(dict)
+    t5.should.have.key('tag').being.a(dict)
+
+    t1['tag'].should.have.key("slug").being.equal("hacking")
+    t2['tag'].should.have.key("slug").being.equal("testing")
+    t3['tag'].should.have.key("slug").being.equal("enterprise")
+    t4['tag'].should.have.key("slug").being.equal("gnu")
+    t5['tag'].should.have.key("slug").being.equal("ui")
+
+    t1.should.have.key('total_users').being.equal(5)
+    t2.should.have.key('total_users').being.equal(3)
+    t3.should.have.key('total_users').being.equal(2)
+    t4.should.have.key('total_users').being.equal(2)
+    t5.should.have.key('total_users').being.equal(1)

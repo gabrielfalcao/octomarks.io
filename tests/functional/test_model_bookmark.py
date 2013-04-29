@@ -33,6 +33,23 @@ def test_save_bookmark_with_tags(context):
 
 
 @bookmark_test
+def test_saving_tags_adds_tags_to_user_as_well(context):
+    ("Bookmark#add_tag should add those tags to the user as well")
+
+    context.bookmark.add_tag("Domain Specific Language")
+    context.bookmark.add_tag("Python")
+    context.bookmark.add_tag("Hacking")
+
+    tags = context.user.get_tags()
+    tags.should.have.length_of(3)
+
+    first = tags[0]
+
+    first.should.have.key("name").being.equal("hacking")
+    first.should.have.key("slug").being.equal("hacking")
+
+
+@bookmark_test
 def test_get_bookmark_tags(context):
     ("Bookmark#tags should return a list of tags")
 

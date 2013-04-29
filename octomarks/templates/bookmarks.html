@@ -118,13 +118,22 @@ javascript:(function(){
 
   {% endif %}
   <div class="row-fluid">
-    <div class="span12">
+    <div class="span8">
       {% if is_self %}
         <h2>Your bookmarks</h2>
       {% else %}
         <h2>{{ user.username }}'{{ user.username.endswith("s") and "" or "s" }} bookmarks</h2>
       {% endif %}
-
+    </div>
+  </div>
+  <div class="row-fluid">
+    {% if not is_self %}
+    <div class="span4">
+      <img class="img-polaroid" src="https://secure.gravatar.com/avatar/{{ user.gravatar_id }}?s=270" />
+      <p>Github: <a href="{{ user.get_github_url() }}"> {{ user.get_github_url() }}</a> </p>
+    </div>
+    {% endif %}
+    <div class="{% if is_self %}span12{% else %}span8{% endif %}">
       <br />
       <table class="table table-stripped">
         <thead>
@@ -132,7 +141,9 @@ javascript:(function(){
             <th>owner</th>
             <th>project</th>
             <th>tags</th>
+            {% if is_self %}
             <th></th>
+            {% endif %}
           </tr>
         </thead>
         <tbody>
@@ -155,6 +166,7 @@ javascript:(function(){
               {{ public_bookmark(bookmark) }}
             {% endif %}
             </td>
+            {% if is_self %}
             <td>
               <a id="delete-bookmark-{{ bookmark.id }}"
                  data-bookmark-name="{{ owner }}/{{ project }}"
@@ -163,6 +175,7 @@ javascript:(function(){
                  class="delete-bookmark btn btn-warning"
                  href="#delete-bookmark-{{ bookmark.id }}">Delete</a>
             </td>
+            {% endif %}
           </tr>
         {% endfor %}
         </tbody>

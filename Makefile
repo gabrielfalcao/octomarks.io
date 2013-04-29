@@ -1,6 +1,5 @@
 SETTINGS_FILE="settings.py"
 export OCTOMARK_TESTING_MODE=on
-export OCTOMARKS_DB=mysql://root@localhost/gb_test
 
 all: prepare test local-migrate-forward
 
@@ -11,7 +10,7 @@ clean:
 	find . -name *.pyc -delete
 
 test-kind:
-	@OCTOMARKS_SETTINGS_MODULE="tests.settings" PYTHONPATH="$(PYTHONPATH)" \
+	@OCTOMARKS_DB=mysql://root@localhost/gb_test OCTOMARKS_SETTINGS_MODULE="tests.settings" PYTHONPATH="$(PYTHONPATH)" \
 		nosetests --nologcapture --logging-clear-handlers --stop --verbosity=2 -s tests/$(kind)
 
 unit:
@@ -20,7 +19,7 @@ functional:
 	@make test-kind kind=functional
 
 acceptance:
-	@lettuce
+	@lettuce --tag=-later
 
 test: unit functional acceptance
 
@@ -39,6 +38,12 @@ local-migrate-forward:
 
 local-migrate-back:
 	@alembic downgrade -1
+
+production-dump.sql:
+	@printf "Getting production dump... "
+	@mysqldump -u gbookmarks --password='b00k@BABY' -h mysql.gabrielfalcao.com gbookmarks > production-dump.sql
+	@echo "OK"
+	@echo "Saved at production-dump.sql"
 
 migrate-back:
 	@heroku run "/app/.heroku/python/bin/alembic -c alembic.prod.ini downgrade -1"

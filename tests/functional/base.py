@@ -112,15 +112,35 @@ def create_n_users(number):
     return save_users
 
 
+def create_n_bookmarks(number):
+    total = number
+
+    def save_bookmarks(context):
+        context.bookmarks = []
+        for i in range(1, total + 1):
+            data = {}
+            name = "project".format(uuid4().hex[:4])
+            owner = "owner".format(uuid4().hex[:4])
+            data['user_id'] = context.user.id
+            data['url'] = "http://github.com/{0}/{1}".format(owner, name)
+            user = Bookmark.create(**data)
+
+            setattr(context, 'bookmark{0}'.format(i), user)
+            context.bookmarks.append(user)
+
+    return save_bookmarks
+
+
 def create_bookmark(context):
     context.bookmark = Bookmark.create(
         url="http://github.com/clarete/forbidden_fruit",
-        user_id=1,
+        user_id=context.user.id,
     )
 
 
 user_test = scenario([prepare, create_user])
-multi_user_test = lambda num=5: scenario([prepare, create_n_users(5)])
-bookmark_test = scenario([prepare, create_bookmark])
+multi_user_test = lambda num=5: scenario([prepare, create_n_users(num)])
+multi_bookmark_test = lambda num=5: scenario([prepare, create_user, create_n_bookmarks(num)])
+bookmark_test = scenario([prepare, create_user, create_bookmark])
 
 user_bookmark_test = scenario([prepare, create_user, create_bookmark])

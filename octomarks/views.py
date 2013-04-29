@@ -50,7 +50,7 @@ def prepare_auth():
 @mod.context_processor
 def inject_basics():
     return dict(
-        user=g.user,
+        authuser=g.user,
         minify=lambda s: re.sub(r'\s+', ' ', "".join([a.strip() for a in s.splitlines()])),
         default_theme_url=settings.absurl('/static/themes/tango.css'),
         settings=settings,
@@ -370,10 +370,22 @@ def explore():
     from octomarks.models import Ranking
     top_projects = Ranking.get_top_projects()
     top_users = Ranking.get_top_users()
+    top_user_tags = Ranking.get_top_user_tags()
+    top_bookmark_tags = Ranking.get_top_bookmark_tags()
 
-    return Response(render_template('explore.html', top_projects=top_projects, top_users=top_users), headers={
-        # 'Cache-Control': 'public, max-age=31536000'
-    })
+    return Response(render_template('explore.html',
+                                    top_projects=top_projects,
+                                    top_users=top_users,
+                                    top_user_tags=top_user_tags,
+                                    top_bookmark_tags=top_bookmark_tags))
+
+
+@mod.route("/tag.<slug>")
+def show_tag(slug):
+    from octomarks.models import Tag
+    tag = Tag.find_one_by(slug=slug)
+    bookmarks = tag.get_bookmarks()
+    return Response(render_template('show-tag.html', tag=tag, bookmarks=bookmarks))
 
 
 @mod.route("/500")

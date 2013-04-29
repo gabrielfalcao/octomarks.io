@@ -15,7 +15,7 @@ from octomarks import settings
 
 
 def slugify(string):
-    return re.sub(r'\W+', '-', string)
+    return re.sub(r'\W+', '-', string.lower())
 
 
 def now():
@@ -47,6 +47,19 @@ class User(Model):
 
     def __repr__(self):
         return '<User %r, token=%r>' % (self.username, self.gb_token)
+
+    def add_tag(self, name):
+        tag = Tag.add(name)
+        return tag, UserTags.get_or_create(
+            tag_id=tag.id,
+            user_id=self.id,
+        )
+
+    def get_github_url(self):
+        return "http://github.com/{0}".format(self.username)
+
+    def get_tags(self):
+        return sorted([ut.tag.to_dict() for ut in UserTags.find_by(user_id=self.id)], key=lambda x: x['id'], reverse=True)
 
     def save_bookmark(self, uri):
         # TODO: take project, languages and all the other data that
@@ -130,6 +143,19 @@ class Tag(Model):
 
         return data
 
+    @classmethod
+    def add(cls, name):
+        cleaned_name = re.sub(r'\s+', ' ', name).lower()
+        data = {
+            'name': cleaned_name,
+            'slug': slugify(name),
+        }
+        return cls.get_or_create(**data)
+
+    def get_bookmarks(self):
+        all_bookmarks = BookmarkTags.find_by(tag_id=self.id)
+        return filter(bool, [b.bookmark and b.bookmark.summarized_dict() for b in all_bookmarks])
+
 
 class Bookmark(Model):
     table = db.Table('gb_bookmark', metadata,
@@ -144,8 +170,34 @@ class Bookmark(Model):
         re.compile(r'(?P<owner>[^.]+).github.io/(?P<project>[^/]+)'),
     ]
 
+    def summarized_dict(self):
+        info = RepoInfo(self.url)
+        data = self.to_dict()
+        data['stars'] = 20
+        data['owner'] = info.owner
+        data['project'] = info.project
+        return data
+
+    def initialize(self):
+        self._user = None
+
+    def get_tags(self):
+        return filter(bool, sorted([ut.tag.to_dict() for ut in BookmarkTags.find_by(bookmark_id=self.id)], key=lambda x: x['id'], reverse=True))
+
+    @property
+    def user(self):
+        if not self._user:
+            self._user = User.find_one_by(id=self.user_id)
+
+        return self._user
+
     def add_tag(self, name):
-        tag = Tag.get_or_create(name=name.strip())
+        tag = Tag.add(name)
+
+        UserTags.get_or_create(
+            tag_id=tag.id,
+            user_id=self.id,
+        )
         return tag, BookmarkTags.get_or_create(
             tag_id=tag.id,
             bookmark_id=self.id,
@@ -178,6 +230,22 @@ class BookmarkTags(Model):
     @property
     def bookmark(self):
         return Bookmark.find_one_by(id=self.bookmark_id)
+
+
+class UserTags(Model):
+    table = db.Table('gb_user_tags', metadata,
+        db.Column('id', db.Integer, primary_key=True),
+        db.Column('tag_id', db.Integer, nullable=False),
+        db.Column('user_id', db.Integer, nullable=False),
+    )
+
+    @property
+    def tag(self):
+        return Tag.find_one_by(id=self.tag_id)
+
+    @property
+    def user(self):
+        return User.find_one_by(id=self.user_id)
 
 
 class HttpCache(Model):
@@ -236,6 +304,51 @@ class Ranking(object):
 
         return [cls.user_with_data(user_id, dict(total_bookmarks=count))
                 for user_id, count in res.fetchall()]
+
+    @classmethod
+    def get_query_for_top_X_tags(cls, Model, field_name, limit=5):
+        BT = Model.table.c
+        T = Tag.table.c
+        q = (db.select([
+            BT.tag_id,
+            T.name,
+            T.slug,
+            db.func.count(field_name)
+        ])
+            .where(BT.tag_id == T.id)
+            .group_by(BT.tag_id)
+            .order_by(db.desc(db.func.count(field_name)))
+            .limit(limit))
+
+        return q
+
+    @classmethod
+    def get_top_bookmark_tags(cls, limit=5):
+        query = cls.get_query_for_top_X_tags(BookmarkTags, limit)
+        conn = BookmarkTags.get_connection()
+        res = conn.execute(query)
+
+        return [{
+            'tag_id': tag_id,
+            'total_bookmarks': total_bookmarks,
+            'tag': {
+                'name': name,
+                'slug': slug,
+                }} for tag_id, name, slug, total_bookmarks in res.fetchall()]
+
+    @classmethod
+    def get_top_user_tags(cls, limit=5):
+        query = cls.get_query_for_top_X_tags(UserTags, limit)
+        conn = UserTags.get_connection()
+        res = conn.execute(query)
+
+        return [{
+            'tag_id': tag_id,
+            'total_users': total_users,
+            'tag': {
+                'name': name,
+                'slug': slug,
+                }} for tag_id, name, slug, total_users in res.fetchall()]
 
     @classmethod
     def repository_with_data(cls, url, data=None):

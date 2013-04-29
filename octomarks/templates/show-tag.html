@@ -1,0 +1,50 @@
+{% extends "octobase.html" %}
+
+{% block page_title %}octomarks.io | tag {{ tag.name }}{% endblock %}
+{% block page_description %}{% endblock %}
+{% block page_keywords %}{% endblock %}
+
+{% block body %}
+<div class="container">
+
+  <!-- Ranking -->
+  <div class="row-fluid">
+    <div class="span12">
+      <h1>{{ tag.name.title() }}</h1>
+      <hr />
+    </div>
+  </div>
+
+  <!-- Ranking row -->
+  <div class="row-fluid">
+    <div class="span12">
+      <h3>Bookmarks</h3>
+      <table class="table table-condensed table-hover">
+        <tr>
+          <th>Project</th>
+          <th>Owner</th>
+          <th>URL</th>
+          <!--
+              <th>Stars</th>
+              <th># bookmarked</th>
+          -->
+        </tr>
+        {% for bookmark in bookmarks %}
+          {% set om_url = full_url_for(".show_bookmark", owner=bookmark.owner, project=bookmark.project) %}
+        <tr class="bookmark">
+          <td class="project-name">
+            <a href="{{ om_url }}">{{ bookmark.project }}</a>
+          </td>
+          <td class="owner-name"><a href="{{ full_url_for(".bookmarks", username=bookmark.owner) }}">{{ bookmark.owner }}</a></td>
+          <td class="url"><a href="{{ bookmark.url }}">{{ bookmark.url }}</a></td>
+          {#
+              <td class="stars">{{ bookmark.stars }}</td>
+              <td class="total">{{ bookmark.total_bookmarks }}</td>
+          #}
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -8,6 +8,16 @@ from tornado.ioloop import IOLoop
 from flask.ext.script import Command
 
 
+class UpdateUserTags(Command):
+    def run(self):
+        from octomarks.models import Bookmark
+        for b in Bookmark.all():
+            print "processing from {0}".format(b.url[19:])
+            for tag in b.get_tags():
+                print "    Adding tag {0} to user {1}".format(tag['name'], b.user.username)
+                b.user.add_tag(tag['name'])
+
+
 class SyncDB(Command):
     def __init__(self, destructive=False):
         self.destructive = destructive
@@ -40,5 +50,6 @@ class Runserver(Command):
 def init_command_manager(manager):
     manager.add_command('renewdb', SyncDB(destructive=True))
     manager.add_command('syncdb', SyncDB())
+    manager.add_command('update-user-tags', UpdateUserTags())
     manager.add_command('run', Runserver())
     return manager

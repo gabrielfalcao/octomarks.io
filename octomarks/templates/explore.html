@@ -18,7 +18,7 @@
   <!-- Ranking row -->
   <div class="row-fluid">
     <div class="span4">
-      <h3>Top Projects</h3>
+      <h3>Top projects</h3>
       <table class="table table-condensed table-hover">
         <tr>
           <th>Project</th>
@@ -41,7 +41,7 @@
       </table>
     </div>
     <div class="span4">
-      <h3>Top Users</h3>
+      <h3>Top users</h3>
       <table class="table table-condensed table-hover">
         <tr>
           <th>User</th>
@@ -60,25 +60,64 @@
       </table>
     </div>
     <div class="span4">
-      <h3>Top Tags</h3>
-    </div>
-  </div>
-
-  <!-- Languages -->
-  <div class="row-fluid">
-    <div class="span12">
-      <h1>Languages</h1>
-      <hr />
+      <h3>Top tags</h3>
+      <table class="table table-condensed table-hover">
+        <tr>
+          <th>Tag</th>
+          <th>Bookmarks #</th>
+        </tr>
+        {% for item in top_bookmark_tags %}
+          <tr class="warning top-user">
+            <td class="name">{{ item.tag.name }}</td>
+            <td class="total"><span>{{ item.total_bookmarks }}</span></td>
+          </tr>
+        {% endfor %}
+      </table>
     </div>
   </div>
 
   <!-- Ranking row -->
   <div class="row-fluid">
-    <div class="span6">
-      <h3>Most active users</h3>
+    <div class="span4">
+      <h3>Top tags by user</h3>
+      <table class="table table-condensed table-hover">
+        <tr>
+          <th>Tag</th>
+          <th>Users #</th>
+        </tr>
+        {% for item in top_user_tags %}
+          <tr class="warning top-user">
+            <td class="name">
+              <a href="{{ full_url_for(".show_tag", slug=item.tag.slug) }}">{{ item.tag.name }}</a></td>
+              <td class="total"><span>{{ item.total_users }}</span></td>
+          </tr>
+        {% endfor %}
+      </table>
     </div>
-    <div class="span6">
-      <h3>Most active projects</h3>
+    <div class="span4">
+      <h3>Most active users</h3>
+      <table class="table table-condensed table-hover">
+        <tr>
+          <th>Username</th>
+          <th>Tags #</th>
+          <th>Bookmarks #</th>
+        </tr>
+        {% for item in top_active_users %}
+          <tr class="warning top-user">
+            <a href="{{ full_url_for(".show_tag", slug=item.tag.slug) }}">{{ item.tag.name }}</a></td>
+            <td class="total"><span>{{ item.total_users }}</span></td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="span4">
+      <div class="well well-small" style="height:140px;padding-top:40px;text-align:center;margin-top: 30px">
+      {% if not user %}
+        <h3>Track your bookmarks too</h3>
+        <a href="{{ full_url_for(".login") }}" class="btn btn-success btn-large modern">
+          <img src="{{ full_url_for("static", v=settings.RELEASE, filename="img/octocat-mini-white.png") }}" />&nbsp; Login</a>
+      {% endif %}
+      </div>
     </div>
   </div>
 </div>

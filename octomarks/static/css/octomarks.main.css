@@ -16,7 +16,7 @@ h1, h2, h4, h4, h5, h6 {
   display: none;
 }
 body.octomarks {
-  font-family: Lato;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
   font-weight: 700;
   background: #f0efeb;
   color: #666;
@@ -211,7 +211,7 @@ a:hover {
   background-position: 10px 6px;
   padding-right: 24px;
   color: #fff;
-  font-family: "Lato";
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
   font-size: 18px;
   text-align: right;
   margin:0;
@@ -283,8 +283,17 @@ a:hover {
   color: #fff;
   margin: 12px 0 0 0;
   font-weight: 300;
-  font-style:italic;
-  font-size:18px;
+  font-size: 24px;
+}
+
+.octomarks .profile-login a:hover {
+  font-weight: 400;
+}
+
+.octomarks .profile-username, .octomarks .profile-login span {
+  display: inline-block;
+  padding: 4px 7px 0 0;
+  float: left;
 }
 
 .octomarks .profile-username {
@@ -391,4 +400,9 @@ a:hover {
 #readme-container:hover .actions {
   opacity: 1;
   background-color: rgba(255, 100, 0, .1);
+}
+
+.octomarks .modern {
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  font-weight: 300;
 }

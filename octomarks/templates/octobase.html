@@ -68,14 +68,12 @@
             {% endif %}
             </div>
           {% endblock %}
-            {% if user %}
             <ul class="nav">
               <li><a href="{{ url_for('.explore') }}">Explore</a></li>
               {% if user %}
               <li><a href="{{ url_for('.logout') }}">Logout</a></li>
               {% endif %}
             </ul>
-            {% endif %}
           </div><!--/.nav-collapse -->
         </div>
       </div>

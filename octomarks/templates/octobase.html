@@ -51,7 +51,7 @@
           <div class="nav-collapse collapse">
           {% block user %}
             <div class="profile">
-            {% if user %}
+            {% if authuser %}
               <a href="{{ full_url_for(".bookmarks", username=authuser.username) }}">
                 <p class="profile-username">{{ authuser.username }}</p>
                 <div class="profile-pic-container">

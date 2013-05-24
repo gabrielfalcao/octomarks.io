@@ -112,7 +112,7 @@
     </div>
     <div class="span4">
       <div class="well well-small" style="height:140px;padding-top:40px;text-align:center;margin-top: 30px">
-      {% if not user %}
+      {% if not authuser %}
         <h3>Track your bookmarks too</h3>
         <a href="{{ full_url_for(".login") }}" class="btn btn-success btn-large modern">
           <img src="{{ full_url_for("static", v=settings.RELEASE, filename="img/octocat-mini-white.png") }}" />&nbsp; Login</a>

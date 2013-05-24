@@ -34,6 +34,7 @@ deploy: test
 	@make migrate-forward
 
 local-migrate-forward:
+	@[ "$(reset)" == "yes" ] && echo "drop database gb;create database gb" | mysql -uroot || echo "Running new migrations..."
 	@alembic upgrade head
 
 local-migrate-back:

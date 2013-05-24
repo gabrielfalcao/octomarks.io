@@ -103,6 +103,7 @@
           <th>Bookmarks #</th>
         </tr>
         {% for item in top_active_users %}
+          {{ item }}
           <tr class="warning top-user">
             <a href="{{ full_url_for(".show_tag", slug=item.tag.slug) }}">{{ item.tag.name }}</a></td>
             <td class="total"><span>{{ item.total_users }}</span></td>
@@ -110,15 +111,16 @@
         {% endfor %}
       </table>
     </div>
+    {% if not authuser %}
     <div class="span4">
       <div class="well well-small" style="height:140px;padding-top:40px;text-align:center;margin-top: 30px">
-      {% if not authuser %}
+
         <h3>Track your bookmarks too</h3>
         <a href="{{ full_url_for(".login") }}" class="btn btn-success btn-large modern">
           <img src="{{ full_url_for("static", v=settings.RELEASE, filename="img/octocat-mini-white.png") }}" />&nbsp; Login</a>
-      {% endif %}
       </div>
     </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

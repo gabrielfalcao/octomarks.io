@@ -158,7 +158,7 @@ class GithubRepository(Resource):
         filename = reply['name']
 
         if filename.lower().endswith('.md') or filename.lower().endswith('.markdown'):
-            document = Markment(raw, relative_url_prefix=url_prefix)
+            document = Markment(raw, url_prefix=url_prefix)
             return document.rendered, document.index()
         else:
             return raw, []

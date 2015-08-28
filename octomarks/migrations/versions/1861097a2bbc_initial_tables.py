@@ -27,7 +27,7 @@ def upgrade():
         db.Column('gravatar_id', db.String(40), nullable=False, unique=True),
         db.Column('username', db.String(80), nullable=False, unique=True),
         db.Column('gb_token', db.String(40), nullable=False, unique=True),
-        db.Column('email', db.String(100), nullable=False, unique=True),
+        db.Column('email', db.String(100), nullable=True, unique=True),
         db.Column('created_at', db.DateTime, default=now),
         db.Column('updated_at', db.DateTime, default=now),
     )
